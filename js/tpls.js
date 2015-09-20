@@ -3,11 +3,7 @@ angular.module("enilia.overlay.tpls", ["templates/config.html", "templates/debug
 angular.module("templates/config.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("templates/config.html",
     "\n" +
-    "<a href=\"#/\">dpsmeter</a>\n" +
-    "\n" +
-    "<div>{{loc.path()}}</div>\n" +
-    "<div>{{loc.url()}}</div>\n" +
-    "<div>{{loc.absUrl()}}</div>\n" +
+    "<a href=\"#/\">config</a>\n" +
     "");
 }]);
 
@@ -27,8 +23,6 @@ angular.module("templates/dpsmeter.html", []).run(["$templateCache", function($t
     "\n" +
     "<a href=\"#/config\">config</a>\n" +
     "\n" +
-    "<div>{{loc.path()}}</div>\n" +
-    "<div>{{loc.url()}}</div>\n" +
-    "<div>{{loc.absUrl()}}</div>\n" +
+    "<pre>{{$route | json}}</pre>\n" +
     "");
 }]);
