@@ -1,34 +1,29 @@
 
-angular.module('enilia_overlay', []);
+angular.module('enilia.overlay', ['enilia.overlay.tpls'])
 
+	.controller('test', ['$scope','$document', '$location', function($scope, $document, $location) {
 
+		var lastTime = Date.now();
 
-document.addEventListener('DOMContentLoaded', function() {
+		$scope.location = $location.url();
+		$scope.data = "no data";
+		$scope.state = { isLocked: true };
 
-    var dataElem = document.querySelector('#data')
-      , stateElem = document.querySelector('#state')
-      , locationElem = document.querySelector('#location')
-      ;
+		$document.on('onOverlayDataUpdate', dataUpdate);
+		$document.on('onOverlayStateUpdate', stateUpdate);
 
-    document.addEventListener('onOverlayDataUpdate', dataUpdate);
-    document.addEventListener("onOverlayStateUpdate", stateUpdate);
+	    function dataUpdate(e) {
 
-    function stateUpdate(e) {
-        var details = Date.now() + ": " + JSON.stringify(e.detail);
+	        $scope.data = Date.now() - lastTime;
+	        $scope.$apply();
+	        lastTime = Date.now();
+	    }
 
-        stateElem.textContent = details;
+	    function stateUpdate(e) {
 
-        if (!e.detail.isLocked) {
-            document.documentElement.classList.add("resizable");
-        } else {
-            document.documentElement.classList.remove("resizable");
-        }
-    }
+	        $scope.state = e.detail;
+	        $scope.$apply();
+	    }
 
-    function dataUpdate(e) {
-        var details = JSON.stringify(e.detail);
-
-        dataElem.textContent = Date.now();
-    }
-
-});
+	}])
+;
