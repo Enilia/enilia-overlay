@@ -6,14 +6,12 @@
     <script>document.write('<base href="' + document.location + '" />');</script>
     <link rel="stylesheet" type="text/css" href="css/css.css" />
     <script type="text/javascript" src="js/vendor/angular/angular.min.js"></script>
+    <script type="text/javascript" src="js/vendor/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/tpls.js"></script>
 </head>
-    <body ng-controller="test" ng-class="{resizable: !state.isLocked}">
+    <body ng-controller="stateWatcherController" ng-class="{resizable: !state.isLocked}">
         <div id="container">
-            <div id="data">{{data}}</div>
-            <div id="state">{{ state | json }}</div>
-            <div id="location">{{location}}</div>
         </div>
     </body>
 </html>
