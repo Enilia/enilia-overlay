@@ -15,7 +15,6 @@
     <script type="text/javascript" src="js/controllers/configController.js"></script>
 </head>
     <body ng-controller="stateWatcherController" ng-class="{resizable: !state.isLocked}">
-        <div id="container">
-        </div>
+        <ng-view id="container"></ng-view>
     </body>
 </html>
