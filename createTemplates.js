@@ -25,19 +25,33 @@ var contentTpl = [
 	'}]);\n',
 ];
 
-fs.readdir(CONF.base).then(function(files) {
-	return promise.all(
-		files.map(function(fileName) {
-			fileName = path.join(CONF.base, fileName);
-			return fs.readFile(fileName, 'utf8').then(function(fileContent) {
-				return {
-					name:fileName.replace(/\\/g, "/"),
-					content:fileContent
-				};
-			});
-		})
-	);
-}).then(function(files) {
+function crawl(from, files /* = [] */ ) {
+
+	return fs.readdir(from).then(function(fileNames) {
+		return promise.all(
+			fileNames.map(function(fileName) {
+				fileName = path.join(from, fileName);
+				return fs.stat(fileName).then(function(stats) {
+					if(stats.isDirectory()) {
+						return crawl(fileName, files);
+					} else {
+						return fs.readFile(fileName, 'utf8').then(function(fileContent) {
+							files.push({
+								name:fileName.replace(/\\/g, "/"),
+								content:fileContent
+							});
+						});
+					}
+				});
+			})
+		);
+	}).then(function() {
+		return files;
+	})
+
+}
+
+crawl(CONF.base, []).then(function(files) {
 	var tpls = []
 	files.forEach(function(fileData) {
 		console.log("exporting %s", fileData.name);
