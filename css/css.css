@@ -5,10 +5,10 @@
 }
 body, html {
     margin: 0;
+    background-color: transparent;
 }
 html {
     height: 100%;
-    background-color: transparent;
     overflow: hidden;
 }
 
@@ -23,12 +23,22 @@ html {
     font-weight: 300;
 }
 
+.glyphicon.glyphicon-cog,
+.glyphicon.glyphicon-tasks {
+    color:#DED7BE;
+    text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
+    font-weight: 300;
+    font-size:14px;
+    text-decoration: none;
+}
+
 .resizable {
     background-image: url(../images/handle.png);
     background-position: bottom right;
     background-repeat: no-repeat;
     box-sizing: border-box;
 }
+
 #data {
 }
 #state {
