@@ -1,0 +1,40 @@
+
+* {
+    font-family: "Meiryo";
+    font-size: 11px;
+}
+body, html {
+    height: 100%;
+    margin: 0;
+}
+html {
+    background-color: transparent;
+    overflow: hidden;
+}
+
+#container {
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    padding: 10px;
+    border-radius: 10px;
+
+    /* Blueish */
+    color:#E2EBF5;
+    text-shadow: -1px 0 3px #217AA2, 0 1px 3px #217AA2, 1px 0 3px #217AA2, 0 -1px 3px #217AA2;
+    font-weight: 300;
+}
+
+.resizable {
+    background-image: url(../images/handle.png);
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+}
+#data {
+}
+#state {
+    /* Goldish */
+    color:#DED7BE;
+    text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
+    font-weight: 300;
+}

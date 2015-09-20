@@ -1,0 +1,25 @@
+{
+  "name": "enilia_overlay",
+  "version": "0.0.0",
+  "authors": [
+    "Enilia <florian.olivierandre@gmail.com>"
+  ],
+  "description": "overlay for rainbowmage act overlay plugin",
+  "main": "js/app.js",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "rainbowmage",
+    "act",
+    "overlay"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
