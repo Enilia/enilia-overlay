@@ -1,5 +1,9 @@
 
-angular.module('enilia.overlay', ['enilia.overlay.tpls'])
+angular.module('enilia.overlay', ['ngRoute', 'enilia.overlay.tpls'])
+
+	.config(['$routeProvider', function($routeProvider) {
+		$routeProvider
+	}])
 
 	.controller('stateWatcherController', ['$scope','$document', function($scope, $document) {
 
