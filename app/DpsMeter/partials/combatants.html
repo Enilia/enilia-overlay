@@ -10,7 +10,12 @@
 				<td>(%)</td>
 				<td>overheal</td>
 			</tr>
-			<tr combatant ng-repeat="combatant in combatants"></tr>
+			<tr combatant ng-repeat="combatant in combatants track by combatant.name"></tr>
+			<tr ng-hide="combatants">
+				<td colspan="7" class="waiting">
+					<div>--- Waiting for Data ---</div>
+				</td>
+			</tr>
 	</table>
 
 </div>

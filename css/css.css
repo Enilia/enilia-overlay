@@ -6,12 +6,19 @@
 body, html {
     margin: 0;
     background-color: transparent;
+
 }
 html {
     height: 100%;
     overflow: hidden;
 }
-
+/*
+#containerwrapper {
+    background-image: url(../images/mog.png);
+    background-position: center 45px;
+    background-repeat: no-repeat;
+}
+*/
 #container {
     background: rgba(0,0,0,0.4);
     padding: 10px;
@@ -43,9 +50,13 @@ html {
     box-sizing: border-box;
 }
 
+/* Menu */
+
 .menu {
     float:right;
 }
+
+/* dpsmeter */
 
 .encounter {
 }
@@ -58,12 +69,30 @@ html {
 
 .encounter .encdps {
     text-align:center;
+    /* Greenish */
+    color: #BEDEC5;
+    text-shadow: -1px 0 2px #167930, 0 1px 2px #167930, 1px 0 2px #167930, 0 -1px 2px #167930;
+    font-weight: 300;
+
+    font-size:14px;
+}
+
+.encounter.active .encdps {
+    text-align:center;
     /* Redish */
     color: #DEBEBE;
     text-shadow: 0 0 2px #791616, 0 0 5px #791616, 0 0 10px #791616, 0 0 15px #791616;
     font-weight: 300;
 
     font-size:14px;
+}
+
+.combatants .waiting {
+    text-align: center;
+}
+
+.combatants img.job {
+    height:18px;
 }
 
 /* Table */

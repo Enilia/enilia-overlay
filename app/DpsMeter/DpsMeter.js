@@ -18,7 +18,7 @@ angular.module('enilia.overlay.dpsmeter', [])
 			$scope.encounter = {
 				encdps: "0",
 				duration: "00:00",
-			}
+			};
 
 			function sanitize(unsafe) {
 				var ret = {};
@@ -37,6 +37,7 @@ angular.module('enilia.overlay.dpsmeter', [])
 				$scope.encounter = sanitize(e.detail.Encounter);
 				$scope.combatants = sanitize(e.detail.Combatant);
 				$scope.active = e.detail.isActive;
+				$scope.$broadcast('update');
 				$scope.$apply();
 			}
 
@@ -46,10 +47,15 @@ angular.module('enilia.overlay.dpsmeter', [])
 		['$scope',
 		function($scope) {
 
-			$scope.$watchCollection('encounter', function(encounter) {
-				angular.forEach(encounter, function(value, key) {
+			angular.forEach($scope.encounter, function(value, key) {
+				$scope[key] = value;
+			});
+
+			$scope.$on('update', function() {
+				angular.forEach($scope.encounter, function(value, key) {
 					$scope[key] = value;
 				});
+				$scope.$apply();
 			});
 
 		}])
@@ -58,16 +64,50 @@ angular.module('enilia.overlay.dpsmeter', [])
 		['$scope',
 		function($scope) {
 
+			// $scope.$on('update', function() {
+
+			// 	angular.forEach([1,2,3,4,5,6,7], function(value, index) {
+			// 		$scope.combatants['YOU'+value] = angular.copy($scope.combatants.YOU);
+			// 		$scope.combatants['YOU'+value].name = 'YOU'+value;
+			// 	});
+			// });
 		}])
 
 	.controller('CombatantController',
 		['$scope',
 		function($scope) {
 
-			$scope.$watchCollection('combatant', function(combatant) {
+			$scope.$on('update', function() {
+
+				var index
+				  , combatant = $scope.combatant
+				  ;
+
+				if(!combatant.Job) {
+					if(~(index = combatant.name.indexOf("-Egi ("))) {
+						combatant.Job = combatant.name.substring(0,egiSearch);
+						combatant.isEgi = true;
+					} else if(combatant.name.indexOf("Eos (")==0) {
+						combatant.Job = "Eos";
+						combatant.isFairy = true;
+					} else if(combatant.name.indexOf("Selene (")==0) {
+						combatant.Job = "Selene";
+						combatant.isFairy = true;
+					} else if(combatant.name.indexOf("Carbuncle (")==0) {
+						combatant.Job = "Carbuncle";
+						combatant.isCarbuncle = true;
+					} else if(~combatant.name.indexOf(" (")) {
+						combatant.Job = "Choco";
+						combatant.isChoco = true;
+					} else {
+						combatant.Job = "error";
+					}
+				}
+
 				angular.forEach(combatant, function(value, key) {
 					$scope[key] = value;
 				});
+				$scope.$apply();
 			});
 
 		}])
