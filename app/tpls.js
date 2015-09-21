@@ -1,4 +1,4 @@
-angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html", "app/DpsMeter/partials/combatant.html"]);
+angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html"]);
 
 angular.module("app/Config/config.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/config.html",
@@ -34,23 +34,37 @@ angular.module("app/DpsMeter/dpsmeter.html", []).run(["$templateCache", function
     "");
 }]);
 
+angular.module("app/DpsMeter/partials/combatant.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/DpsMeter/partials/combatant.html",
+    "\n" +
+    "	<!-- <td><img class=\"job\" ng-src=\"images/glow/{{Job}}.png\" /></td> -->\n" +
+    "	<td class=\"job\">{{name}}</td>\n" +
+    "	<td>{{encdps}}</td>\n" +
+    "	<td>{{damagePct}}</td>\n" +
+    "	<td>{{enchps}}</td>\n" +
+    "	<td>{{healedPct}}</td>\n" +
+    "	<td>{{OverHealPct}}</td>\n" +
+    "\n" +
+    "");
+}]);
+
 angular.module("app/DpsMeter/partials/combatants.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/DpsMeter/partials/combatants.html",
     "<div class=\"combatants\">\n" +
     "\n" +
     "	<table>\n" +
     "			<tr class=\"tableheader\">\n" +
-    "				<td>Job</td>\n" +
-    "				<td>Name</td>\n" +
-    "				<td>DPS</td>\n" +
-    "				<td>(%)</td>\n" +
-    "				<td>HPS</td>\n" +
-    "				<td>(%)</td>\n" +
-    "				<td>overheal</td>\n" +
+    "				<!-- <td width=\"1em\">Job</td> -->\n" +
+    "				<td width=\"6em\">Name</td>\n" +
+    "				<td width=\"3em\">DPS</td>\n" +
+    "				<td width=\"2em\">(%)</td>\n" +
+    "				<td width=\"3em\">HPS</td>\n" +
+    "				<td width=\"2em\">(%)</td>\n" +
+    "				<td width=\"2em\">overheal</td>\n" +
     "			</tr>\n" +
-    "			<tr combatant ng-repeat=\"combatant in combatants track by combatant.name\"></tr>\n" +
+    "			<tr combatant ng-repeat=\"combatant in combatants track by combatant.name\" ng-class=\"Job\"></tr>\n" +
     "			<tr ng-hide=\"combatants\">\n" +
-    "				<td colspan=\"7\" class=\"waiting\">\n" +
+    "				<td colspan=\"6\" class=\"waiting\">\n" +
     "					<div>--- Waiting for Data ---</div>\n" +
     "				</td>\n" +
     "			</tr>\n" +
@@ -70,19 +84,5 @@ angular.module("app/DpsMeter/partials/encounter.html", []).run(["$templateCache"
     "		{{encdps}}\n" +
     "	</div>\n" +
     "</div>\n" +
-    "");
-}]);
-
-angular.module("app/DpsMeter/partials/combatant.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/DpsMeter/partials/combatant.html",
-    "\n" +
-    "	<td width=\"1em\"><img class=\"job\" ng-src=\"images/glow/{{Job}}.png\" /></td>\n" +
-    "	<td>{{name}}</td>\n" +
-    "	<td>{{encdps}}</td>\n" +
-    "	<td>{{damagePct}}</td>\n" +
-    "	<td>{{enchps}}</td>\n" +
-    "	<td>{{healedPct}}</td>\n" +
-    "	<td>{{OverHealPct}}</td>\n" +
-    "\n" +
     "");
 }]);

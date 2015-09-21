@@ -2,17 +2,17 @@
 
 	<table>
 			<tr class="tableheader">
-				<td>Job</td>
-				<td>Name</td>
-				<td>DPS</td>
-				<td>(%)</td>
-				<td>HPS</td>
-				<td>(%)</td>
-				<td>overheal</td>
+				<!-- <td width="1em">Job</td> -->
+				<td width="6em">Name</td>
+				<td width="3em">DPS</td>
+				<td width="2em">(%)</td>
+				<td width="3em">HPS</td>
+				<td width="2em">(%)</td>
+				<td width="2em">overheal</td>
 			</tr>
-			<tr combatant ng-repeat="combatant in combatants track by combatant.name"></tr>
+			<tr combatant ng-repeat="combatant in combatants track by combatant.name" ng-class="Job"></tr>
 			<tr ng-hide="combatants">
-				<td colspan="7" class="waiting">
+				<td colspan="6" class="waiting">
 					<div>--- Waiting for Data ---</div>
 				</td>
 			</tr>

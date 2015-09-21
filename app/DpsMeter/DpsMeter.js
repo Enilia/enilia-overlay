@@ -11,14 +11,18 @@ angular.module('enilia.overlay.dpsmeter', [])
 
 	.controller('dpsmeterController',
 		['$scope', '$document',
-		function($scope, $document) {
-
-			$document.on('onOverlayDataUpdate', dataUpdate);
+		function dpsmeterController($scope, $document) {
 
 			$scope.encounter = {
 				encdps: "0",
 				duration: "00:00",
 			};
+
+			$document.on('onOverlayDataUpdate', dataUpdate);
+
+			$scope.$on('$destroy', function $destroy() {
+				console.log('destroy');
+			});
 
 			function sanitize(unsafe) {
 				var ret = {};
@@ -45,13 +49,13 @@ angular.module('enilia.overlay.dpsmeter', [])
 
 	.controller('EncounterController',
 		['$scope',
-		function($scope) {
+		function EncounterController($scope) {
 
 			angular.forEach($scope.encounter, function(value, key) {
 				$scope[key] = value;
 			});
 
-			$scope.$on('update', function() {
+			$scope.$on('update', function update() {
 				angular.forEach($scope.encounter, function(value, key) {
 					$scope[key] = value;
 				});
@@ -62,22 +66,22 @@ angular.module('enilia.overlay.dpsmeter', [])
 
 	.controller('CombatantsController',
 		['$scope',
-		function($scope) {
+		function CombatantsController($scope) {
 
-			// $scope.$on('update', function() {
+			$scope.$on('update', function update() {
 
-			// 	angular.forEach([1,2,3,4,5,6,7], function(value, index) {
-			// 		$scope.combatants['YOU'+value] = angular.copy($scope.combatants.YOU);
-			// 		$scope.combatants['YOU'+value].name = 'YOU'+value;
-			// 	});
-			// });
+				angular.forEach([1,2,3,4,5,6,7], function(value, index) {
+					$scope.combatants['YOU'+value] = angular.copy($scope.combatants.YOU);
+					$scope.combatants['YOU'+value].name = 'YOU'+value;
+				});
+			});
 		}])
 
 	.controller('CombatantController',
 		['$scope',
-		function($scope) {
+		function CombatantController($scope) {
 
-			$scope.$on('update', function() {
+			$scope.$on('update', function update() {
 
 				var index
 				  , combatant = $scope.combatant
@@ -85,7 +89,7 @@ angular.module('enilia.overlay.dpsmeter', [])
 
 				if(!combatant.Job) {
 					if(~(index = combatant.name.indexOf("-Egi ("))) {
-						combatant.Job = combatant.name.substring(0,egiSearch);
+						combatant.Job = combatant.name.substring(0,index);
 						combatant.isEgi = true;
 					} else if(combatant.name.indexOf("Eos (")==0) {
 						combatant.Job = "Eos";
@@ -99,8 +103,11 @@ angular.module('enilia.overlay.dpsmeter', [])
 					} else if(~combatant.name.indexOf(" (")) {
 						combatant.Job = "Choco";
 						combatant.isChoco = true;
+					} else if(combatant.name === "Limit Break") {
+						combatant.Job = "Limit-Break";
+						combatant.isLB = true;
 					} else {
-						combatant.Job = "error";
+						combatant.Job = "Error";
 					}
 				}
 

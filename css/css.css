@@ -12,13 +12,34 @@ html {
     height: 100%;
     overflow: hidden;
 }
-/*
-#containerwrapper {
-    background-image: url(../images/mog.png);
-    background-position: center 45px;
-    background-repeat: no-repeat;
+
+/* Table */
+
+table, .table {
+    display:table;
+    table-layout: fixed;
+    width:100%;
+    border-collapse: collapse;
 }
-*/
+
+thead, .table-header-group {
+    display:table-header-group;
+}
+
+tr, .table-row {
+    display:table-row;
+}
+
+td, .table-cell {
+    display:table-cell;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+    padding: 0.2em 0;
+}
+
+/* Main */
+
 #container {
     background: rgba(0,0,0,0.4);
     padding: 10px;
@@ -87,36 +108,16 @@ html {
     font-size:14px;
 }
 
-.combatants .waiting {
+/* combatants */
+
+.combatants  {
     text-align: center;
 }
 
-.combatants img.job {
-    height:18px;
-}
-
-/* Table */
-
-table, .table {
-    display:table;
-    table-layout: fixed;
-    width:100%;
-    border-collapse: collapse;
-}
-
-thead, .table-header-group {
-    display:table-header-group;
-}
-
-tr, .table-row {
-    display:table-row;
-}
-
-td, .table-cell {
-    display:table-cell;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow:ellipsis;
+.combatants td.job {
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    padding-left: 2em;
 }
 
 .tableheader {
@@ -125,4 +126,37 @@ td, .table-cell {
     color:#DED7BE;
     text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
     font-weight: 300;
+}
+
+/* Jobs */
+
+tr.Gla,
+tr.Pld,
+tr.Mrd,
+tr.War,
+tr.Drk {
+    background-color: rgba(41,112,243,0.2);
+}
+
+tr.Cnj,
+tr.Whm,
+tr.Sch,
+tr.Ast {
+    background-color: rgba(107,240,86,0.2);
+}
+
+tr.Pgl,
+tr.Mnk,
+tr.Lnc,
+tr.Drg,
+tr.Arc,
+tr.Brd,
+tr.Rog,
+tr.Nin,
+tr.Acn,
+tr.Smn,
+tr.Thm,
+tr.Blm,
+tr.Mch {
+    background-color: rgba(200,3,8,0.2);
 }
