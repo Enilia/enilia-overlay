@@ -2,4 +2,4 @@
 
 node createTemplates.js
 
-pause
+REM pause

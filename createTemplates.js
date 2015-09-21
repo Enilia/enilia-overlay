@@ -5,9 +5,10 @@ var promise = require("promised-io")
   ;
 
 const CONF = {
-	base: 'templates',
-	output: 'js/tpls.js',
-	moduleName: 'enilia.overlay.tpls'
+	base: 'app',
+	output: 'app/tpls.js',
+	moduleName: 'enilia.overlay.tpls',
+	extfilter: '.html',
 };
 
 var headerTpl = 'angular.module("%s", [%s]);\n';
@@ -35,12 +36,13 @@ function crawl(from, files /* = [] */ ) {
 					if(stats.isDirectory()) {
 						return crawl(fileName, files);
 					} else {
-						return fs.readFile(fileName, 'utf8').then(function(fileContent) {
-							files.push({
-								name:fileName.replace(/\\/g, "/"),
-								content:fileContent
+						if(path.extname(fileName) === CONF.extfilter)
+							return fs.readFile(fileName, 'utf8').then(function(fileContent) {
+								files.push({
+									name:fileName.replace(/\\/g, "/"),
+									content:fileContent
+								});
 							});
-						});
 					}
 				});
 			})
