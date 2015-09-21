@@ -9,19 +9,30 @@ angular.module('enilia.overlay.dpsmeter', [])
 			})
 	}])
 
-	.controller('dpsmeterController',
-		['$scope', '$document',
-		function dpsmeterController($scope, $document) {
+	.factory('dpsmeterCache',
+		['$cacheFactory',
+		function dpsmeterCache($cacheFactory) {
+			return $cacheFactory('dpsmeter-cache');
+		}])
 
-			$scope.encounter = {
+	.controller('dpsmeterController',
+		['$scope', '$document', 'dpsmeterCache',
+		function dpsmeterController($scope, $document, dpsmeterCache) {
+
+			$scope.encounter = dpsmeterCache.get('encounter') || {
 				encdps: "0",
 				duration: "00:00",
 			};
+			$scope.combatants = dpsmeterCache.get('combatants');
+			$scope.active = dpsmeterCache.get('active');
+
 
 			$document.on('onOverlayDataUpdate', dataUpdate);
 
 			$scope.$on('$destroy', function $destroy() {
-				console.log('destroy');
+				dpsmeterCache.put('encounter', $scope.encounter);
+				dpsmeterCache.put('combatants', $scope.combatants);
+				dpsmeterCache.put('active', $scope.active);
 			});
 
 			function sanitize(unsafe) {
@@ -80,6 +91,10 @@ angular.module('enilia.overlay.dpsmeter', [])
 	.controller('CombatantController',
 		['$scope',
 		function CombatantController($scope) {
+
+			angular.forEach($scope.combatant, function(value, key) {
+				$scope[key] = value;
+			});
 
 			$scope.$on('update', function update() {
 
