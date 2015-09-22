@@ -1,4 +1,4 @@
-angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/Config/partials/checkbox.html", "app/Config/partials/fieldselect.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html"]);
+angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/Config/partials/checkbox.html", "app/Config/partials/fieldselect.html", "app/DpsMeter/partials/encounter.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html"]);
 
 angular.module("app/Config/config.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/config.html",
@@ -139,6 +139,19 @@ angular.module("app/Config/partials/fieldselect.html", []).run(["$templateCache"
     "");
 }]);
 
+angular.module("app/DpsMeter/partials/encounter.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/DpsMeter/partials/encounter.html",
+    "<div class=\"encounter\" ng-class=\"{active: active}\">\n" +
+    "	<div class=\"duration\">\n" +
+    "		{{duration}}\n" +
+    "	</div>\n" +
+    "	<div class=\"encdps\">\n" +
+    "		{{encdps}}\n" +
+    "	</div>\n" +
+    "</div>\n" +
+    "");
+}]);
+
 angular.module("app/DpsMeter/partials/combatant.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/DpsMeter/partials/combatant.html",
     "\n" +
@@ -175,19 +188,6 @@ angular.module("app/DpsMeter/partials/combatants.html", []).run(["$templateCache
     "			</tr>\n" +
     "	</table>\n" +
     "\n" +
-    "</div>\n" +
-    "");
-}]);
-
-angular.module("app/DpsMeter/partials/encounter.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/DpsMeter/partials/encounter.html",
-    "<div class=\"encounter\" ng-class=\"{active: active}\">\n" +
-    "	<div class=\"duration\">\n" +
-    "		{{duration}}\n" +
-    "	</div>\n" +
-    "	<div class=\"encdps\">\n" +
-    "		{{encdps}}\n" +
-    "	</div>\n" +
     "</div>\n" +
     "");
 }]);

@@ -13,6 +13,16 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			})
 	}])
 
+	.factory('removeSelection',
+		['$window',
+		function removeSelectionFactory($window) {
+			return function removeSelection () {
+				$window.requestAnimationFrame(function() {
+					$window.getSelection().removeAllRanges();
+				});
+			};
+		}])
+
 	.controller('configController',
 		['$scope', '$localStorage',
 		function configController($scope, $storage) {
@@ -50,19 +60,16 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		return {
 			restrict:'E',
 			templateUrl:'app/Config/partials/checkbox.html',
-			controller:['$scope', '$window', function checkboxController ($scope, $window) {
+			controller:['$scope', '$window', 'removeSelection',
+				function checkboxController ($scope, $window, removeSelection) {
 				
-				$scope.click = function click () {
-					$scope.checked = !$scope.checked;
-				};
+					$scope.click = function click () {
+						$scope.checked = !$scope.checked;
+					};
 
-				$scope.removeSelection = function removeSelection () {
-					$window.requestAnimationFrame(function() {
-						$window.getSelection().removeAllRanges();
-					});
-				};
+					$scope.removeSelection = removeSelection;
 
-			}],
+				}],
 			scope: {
 				checked: '='
 			},
