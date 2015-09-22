@@ -1,4 +1,5 @@
-enilia_overlay_2.html
 *.sublime-project
 *.sublime-workspace
-data.json
+dataExample.json
+node_modules
+js/vendor
