@@ -1,3 +1,4 @@
+;(function() {
 
 angular.module('enilia.overlay.dpsmeter', [])
 
@@ -79,13 +80,13 @@ angular.module('enilia.overlay.dpsmeter', [])
 		['$scope',
 		function CombatantsController($scope) {
 
-			$scope.$on('update', function update() {
+			// $scope.$on('update', function update() {
 
-				angular.forEach([1,2,3,4,5,6,7], function(value, index) {
-					$scope.combatants['YOU'+value] = angular.copy($scope.combatants.YOU);
-					$scope.combatants['YOU'+value].name = 'YOU'+value;
-				});
-			});
+			// 	angular.forEach([1,2,3,4,5,6,7], function(value, index) {
+			// 		$scope.combatants['YOU'+value] = angular.copy($scope.combatants.YOU);
+			// 		$scope.combatants['YOU'+value].name = 'YOU'+value;
+			// 	});
+			// });
 		}])
 
 	.controller('CombatantController',
@@ -160,3 +161,5 @@ angular.module('enilia.overlay.dpsmeter', [])
 			scope:true,
 		}
 	});
+
+})();

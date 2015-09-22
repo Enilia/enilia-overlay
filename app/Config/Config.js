@@ -1,5 +1,5 @@
 
-angular.module('enilia.overlay.config', [])
+angular.module('enilia.overlay.config', ['ngStorage'])
 
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
@@ -9,6 +9,8 @@ angular.module('enilia.overlay.config', [])
 			})
 	}])
 
-	.controller('configController', ['$scope', function($scope) {
+	.controller('configController',
+		['$scope', '$localStorage',
+		function($scope, $localStorage) {
 
 	}])
