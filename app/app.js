@@ -8,7 +8,7 @@ angular.module('enilia.overlay', ['ngRoute',
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
 			.when('/', {
-				redirectTo: '/config',
+				redirectTo: '/dpsmeter',
 			})
 			.otherwise({
 				templateUrl: 'app/Debug/debug.html',
@@ -44,35 +44,6 @@ angular.module('enilia.overlay', ['ngRoute',
 			    	return $scope.expandFromBottom;
 			    }
 		}])
-
-	// .controller('stateWatcherController',
-	// 	['$scope', '$document', '$localStorage',
-	// 	function($scope, $document, $storage) {
-
-	// 		$storage.$default({
-	// 		    expandFromBottom: false
-	// 		});
-
-	// 		$scope.state = { isLocked: true };
-	// 		$scope.expandFromBottom = $storage.expandFromBottom;
-
-	// 		$document.on('onOverlayStateUpdate', stateUpdate);
-
-	// 	    function stateUpdate(e) {
-
-	// 	        $scope.state = e.detail;
-	// 	        $scope.$apply();
-	// 	    }
-
-	// 	    $scope.setExpandFromBottom = function(set) {
-	// 	    	$scope.expandFromBottom = set;
-	// 	    }
-
-	// 	    $scope.getExpandFromBottom = function() {
-	// 	    	return $scope.expandFromBottom;
-	// 	    }
-
-	// 	}])
 
 	.controller('debugController',
 		['$scope', '$location',
