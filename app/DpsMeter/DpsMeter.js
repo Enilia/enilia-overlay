@@ -13,7 +13,7 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 	}])
 
 	.factory('sanitize',
-		function sanitize() {
+		function sanitizeFactory() {
 			return function sanitize(unsafe) {
 				var ret = {};
 
