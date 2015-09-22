@@ -3,3 +3,4 @@
 dataExample.json
 node_modules
 js/vendor
+*.bat
