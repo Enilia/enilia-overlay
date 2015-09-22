@@ -60,15 +60,19 @@ input, button {
     font-weight: 300;
 }
 
-.glyphicon.glyphicon-cog,
-.glyphicon.glyphicon-tasks {
+.glyphicon,
+.glyphicon:hover,
+.glyphicon:active {
     /* Goldish */
     color:#DED7BE;
     text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
     font-weight: 300;
 
-    font-size:14px;
     text-decoration: none;
+}
+
+.glyphicon {
+    font-size:1.3em;
 }
 
 .expandFromBottom {
@@ -88,12 +92,19 @@ input, button {
 
 .menu {
     float:right;
+    margin-left:-100%;
 }
 
 /* config */
 
 .config {
     clear:both;
+}
+
+/* checkbox */
+
+checkbox .glyphicon {
+    font-size: 1em;
 }
 
 /* fieldselect */
@@ -157,7 +168,7 @@ input, button {
     text-shadow: -1px 0 2px #167930, 0 1px 2px #167930, 1px 0 2px #167930, 0 -1px 2px #167930;
     font-weight: 300;
 
-    font-size:14px;
+    font-size:1.3em;
 }
 
 .encounter.active .encdps {
@@ -167,7 +178,7 @@ input, button {
     text-shadow: 0 0 2px #791616, 0 0 5px #791616, 0 0 10px #791616, 0 0 15px #791616;
     font-weight: 300;
 
-    font-size:14px;
+    font-size:1.3em;
 }
 
 /* combatants */

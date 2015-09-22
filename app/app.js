@@ -16,30 +16,63 @@ angular.module('enilia.overlay', ['ngRoute',
 			});
 	}])
 
-	.controller('stateWatcherController',
-		['$scope', '$document', '$localStorage',
-		function($scope, $document, $storage) {
+	.run(['$rootScope',
+		  '$document',
+		  '$localStorage',
+		  function($scope, $document, $storage) {
 
-			$storage.$default({
-			    expandFromBottom: false
-			});
+				$storage.$default({
+				    expandFromBottom: false
+				});
 
-			$scope.state = { isLocked: true };
-			$scope.expandFromBottom = $storage.expandFromBottom;
+				$scope.state = { isLocked: true };
+				$scope.expandFromBottom = $storage.expandFromBottom;
 
-			$document.on('onOverlayStateUpdate', stateUpdate);
+				$document.on('onOverlayStateUpdate', stateUpdate);
 
-		    function stateUpdate(e) {
+			    function stateUpdate(e) {
 
-		        $scope.state = e.detail;
-		        $scope.$apply();
-		    }
+			        $scope.state = e.detail;
+			        $scope.$apply();
+			    }
 
-		    $scope.setExpandFromBottom = function(set) {
-		    	$scope.expandFromBottom = set;
-		    }
+			    $scope.setExpandFromBottom = function(set) {
+			    	$scope.expandFromBottom = set;
+			    }
 
+			    $scope.getExpandFromBottom = function() {
+			    	return $scope.expandFromBottom;
+			    }
 		}])
+
+	// .controller('stateWatcherController',
+	// 	['$scope', '$document', '$localStorage',
+	// 	function($scope, $document, $storage) {
+
+	// 		$storage.$default({
+	// 		    expandFromBottom: false
+	// 		});
+
+	// 		$scope.state = { isLocked: true };
+	// 		$scope.expandFromBottom = $storage.expandFromBottom;
+
+	// 		$document.on('onOverlayStateUpdate', stateUpdate);
+
+	// 	    function stateUpdate(e) {
+
+	// 	        $scope.state = e.detail;
+	// 	        $scope.$apply();
+	// 	    }
+
+	// 	    $scope.setExpandFromBottom = function(set) {
+	// 	    	$scope.expandFromBottom = set;
+	// 	    }
+
+	// 	    $scope.getExpandFromBottom = function() {
+	// 	    	return $scope.expandFromBottom;
+	// 	    }
+
+	// 	}])
 
 	.controller('debugController',
 		['$scope', '$location',

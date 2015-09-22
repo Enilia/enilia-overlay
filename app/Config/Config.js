@@ -17,15 +17,21 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		['$scope', '$localStorage',
 		function configController($scope, $storage) {
 
+			$storage.$default({
+			    expandFromBottom: false
+			});
+
+			$scope.localExpandFromBottom = $scope.getExpandFromBottom();
+			$scope.confExpandFromBottom = $storage.expandFromBottom;
 			$scope.setExpandFromBottom(false);
-			$scope.expandFromBottom = $storage.expandFromBottom;
 
 			$scope.save = function() {
-				$storage.expandFromBottom = $scope.expandFromBottom;
+				$storage.expandFromBottom = $scope.confExpandFromBottom;
+				$scope.localExpandFromBottom = $scope.confExpandFromBottom;
 			};
 
 			$scope.$on('$destroy', function() {
-				$scope.setExpandFromBottom($storage.expandFromBottom);
+				$scope.setExpandFromBottom($scope.localExpandFromBottom);
 			});
 
 		}])
@@ -36,6 +42,29 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			templateUrl:'app/Config/partials/fieldselect.html',
 			scope: {
 				selected: '='
+			},
+		}
+	})
+
+	.directive('checkbox', function() {
+		return {
+			restrict:'E',
+			templateUrl:'app/Config/partials/checkbox.html',
+			controller:['$scope', '$window', function checkboxController ($scope, $window) {
+				
+				$scope.click = function click () {
+					$scope.checked = !$scope.checked;
+				};
+
+				$scope.removeSelection = function removeSelection () {
+					$window.requestAnimationFrame(function() {
+						$window.getSelection().removeAllRanges();
+					});
+				};
+
+			}],
+			scope: {
+				checked: '='
 			},
 		}
 	})

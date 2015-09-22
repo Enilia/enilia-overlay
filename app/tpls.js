@@ -1,4 +1,4 @@
-angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/Config/partials/fieldselect.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html"]);
+angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/Config/partials/checkbox.html", "app/Config/partials/fieldselect.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html"]);
 
 angular.module("app/Config/config.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/config.html",
@@ -9,7 +9,7 @@ angular.module("app/Config/config.html", []).run(["$templateCache", function($te
     "\n" +
     "<div class=\"config\">\n" +
     "	<div>\n" +
-    "		<input type=\"checkbox\" ng-model=\"expandFromBottom\" /> expand from bottom\n" +
+    "		<checkbox checked=\"confExpandFromBottom\"></checkbox> expand from bottom\n" +
     "	</div>\n" +
     "	\n" +
     "	foobarbaz<fieldselect selected=\"foo\"></fieldselect>\n" +
@@ -37,6 +37,11 @@ angular.module("app/DpsMeter/dpsmeter.html", []).run(["$templateCache", function
   $templateCache.put("app/DpsMeter/dpsmeter.html",
     "\n" +
     "<div class=\"menu\">\n" +
+    "	<a class=\"glyphicon\"\n" +
+    "	   ng-class=\"{\n" +
+    "	   	'glyphicon-object-align-top':		!expandFromBottom,\n" +
+    "	   	'glyphicon-object-align-bottom':	expandFromBottom}\"\n" +
+    "	   ng-click=\"setExpandFromBottom(!expandFromBottom)\"></a>\n" +
     "	<a href=\"#/config\" class=\"glyphicon glyphicon-cog\"></a>\n" +
     "</div>\n" +
     "\n" +
@@ -44,6 +49,17 @@ angular.module("app/DpsMeter/dpsmeter.html", []).run(["$templateCache", function
     "	<encounter></encounter>\n" +
     "	<combatants></combatants>\n" +
     "</div>\n" +
+    "");
+}]);
+
+angular.module("app/Config/partials/checkbox.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/checkbox.html",
+    "<span class=\"glyphicon\"\n" +
+    "		ng-class=\"{\n" +
+    "			'glyphicon-check':		checked,\n" +
+    "			'glyphicon-unchecked':	!checked}\"\n" +
+    "		ng-click=\"click()\"\n" +
+    "		ng-mousedown=\"removeSelection()\"></span>\n" +
     "");
 }]);
 
