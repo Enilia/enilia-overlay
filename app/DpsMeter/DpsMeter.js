@@ -1,6 +1,8 @@
 ;(function() {
 
-angular.module('enilia.overlay.dpsmeter', [])
+angular.module('enilia.overlay.dpsmeter', ['ngRoute',
+										   'ngStorage',
+										   'enilia.overlay.tpls'])
 
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
@@ -10,33 +12,9 @@ angular.module('enilia.overlay.dpsmeter', [])
 			})
 	}])
 
-	.factory('dpsmeterCache',
-		['$cacheFactory',
-		function dpsmeterCache($cacheFactory) {
-			return $cacheFactory('dpsmeter-cache');
-		}])
-
-	.controller('dpsmeterController',
-		['$scope', '$document', 'dpsmeterCache',
-		function dpsmeterController($scope, $document, dpsmeterCache) {
-
-			$scope.encounter = dpsmeterCache.get('encounter') || {
-				encdps: "0",
-				duration: "00:00",
-			};
-			$scope.combatants = dpsmeterCache.get('combatants');
-			$scope.active = dpsmeterCache.get('active');
-
-
-			$document.on('onOverlayDataUpdate', dataUpdate);
-
-			$scope.$on('$destroy', function $destroy() {
-				dpsmeterCache.put('encounter', $scope.encounter);
-				dpsmeterCache.put('combatants', $scope.combatants);
-				dpsmeterCache.put('active', $scope.active);
-			});
-
-			function sanitize(unsafe) {
+	.factory('sanitize',
+		function sanitize() {
+			return function sanitize(unsafe) {
 				var ret = {};
 
 			  	if(angular.isObject(unsafe)) {
@@ -48,6 +26,32 @@ angular.module('enilia.overlay.dpsmeter', [])
 					return unsafe;
 				}
 			}
+		})
+
+	.controller('dpsmeterController',
+		['$scope', '$document', '$sessionStorage', 'sanitize',
+		function dpsmeterController($scope, $document, $sessionStorage, sanitize) {
+
+			$sessionStorage.$default({
+				encounter:{
+					encdps: "0",
+					duration: "00:00",
+				},
+				active: false
+			});
+
+			$scope.encounter = $sessionStorage.encounter;
+			$scope.combatants = $sessionStorage.combatants;
+			$scope.active = $sessionStorage.active;
+
+			// todo: move this to app.js and retrive data on $on/$emit
+			$document.on('onOverlayDataUpdate', dataUpdate);
+
+			$scope.$on('$destroy', function $destroy() {
+				$sessionStorage.encounter = $scope.encounter;
+				$sessionStorage.combatants = $scope.combatants;
+				$sessionStorage.active = $scope.active;
+			});
 
 			function dataUpdate(e) {
 				$scope.encounter = sanitize(e.detail.Encounter);
