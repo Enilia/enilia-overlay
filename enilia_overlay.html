@@ -17,7 +17,7 @@
 </head>
     <body ng-controller="stateWatcherController" ng-class="{resizable: !state.isLocked}">
         <div id="containerwrapper">
-        <div id="container">
+        <div id="container" ng-class="{expandFromBottom: expandFromBottom}">
             <ng-view></ng-view>
         </div>
         </div>

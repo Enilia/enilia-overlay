@@ -38,6 +38,13 @@ td, .table-cell {
     padding: 0.2em 0;
 }
 
+input, button {
+    /* Blueish */
+    color:#E2EBF5;
+    text-shadow: -1px 0 3px #217AA2, 0 1px 3px #217AA2, 1px 0 3px #217AA2, 0 -1px 3px #217AA2;
+    font-weight: 300;
+}
+
 /* Main */
 
 #container {
@@ -64,6 +71,12 @@ td, .table-cell {
     text-decoration: none;
 }
 
+.expandFromBottom {
+    position: absolute;
+    bottom: 0;
+    width:100%;
+}
+
 .resizable {
     background-image: url(../images/handle.png);
     background-position: bottom right;
@@ -75,6 +88,55 @@ td, .table-cell {
 
 .menu {
     float:right;
+}
+
+/* config */
+
+.config {
+    clear:both;
+}
+
+/* fieldselect */
+
+.fieldselect .selected,
+.fieldselect .field {
+    border:1px solid #DED7BE;;
+}
+
+.fieldselect {
+    display:inline;
+}
+
+.fieldselect .selected {
+    display: inline-block;
+    min-width: 3em;
+    min-height:1em;
+    padding: 0em 0.3em;
+}
+
+.fieldselect .fields {
+    display:none;
+    flex-wrap:wrap;
+}
+
+.fieldselect.expanded .fields {
+    display:flex;
+    position:absolute;
+    background: rgba(0,0,0,0.4);
+    padding: 10px;
+    border-radius: 10px;
+    width: 97%;
+    left:1.5%;
+}
+
+.fieldselect .field {
+    flex: 1 1 auto;
+    padding: 0.2em 0.3em;
+    text-align: center;
+    /* Goldish */
+    color:#DED7BE;
+    text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
+    font-weight: 300;
 }
 
 /* dpsmeter */
