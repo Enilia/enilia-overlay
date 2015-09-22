@@ -1,4 +1,4 @@
-angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/Config/partials/fieldselect.html", "app/DpsMeter/partials/combatant.html", "app/Config/partials/checkbox.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html"]);
+angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/Config/partials/checkbox.html", "app/Config/partials/fieldselect.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html"]);
 
 angular.module("app/Config/config.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/config.html",
@@ -12,10 +12,10 @@ angular.module("app/Config/config.html", []).run(["$templateCache", function($te
     "		<checkbox checked=\"confExpandFromBottom\"></checkbox> expand from bottom\n" +
     "	</div>\n" +
     "	\n" +
-    "	foobarbaz<fieldselect selected=\"foo\"></fieldselect>\n" +
+    "	<!-- foobarbaz<fieldselect selected=\"foo\"></fieldselect> -->\n" +
     "\n" +
     "	<div>\n" +
-    "		<button ng-click=\"save()\">Save</button>\n" +
+    "		<a href=\"#/dpsmeter\" class=\"glyphicon glyphicon-ok\" ng-click=\"save()\"></a>\n" +
     "	</div>\n" +
     "\n" +
     "</div>\n" +
@@ -52,6 +52,17 @@ angular.module("app/DpsMeter/dpsmeter.html", []).run(["$templateCache", function
     "");
 }]);
 
+angular.module("app/Config/partials/checkbox.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/checkbox.html",
+    "<span class=\"glyphicon\"\n" +
+    "		ng-class=\"{\n" +
+    "			'glyphicon-check':		checked,\n" +
+    "			'glyphicon-unchecked':	!checked}\"\n" +
+    "		ng-click=\"click()\"\n" +
+    "		ng-mousedown=\"removeSelection()\"></span>\n" +
+    "");
+}]);
+
 angular.module("app/Config/partials/fieldselect.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/partials/fieldselect.html",
     "\n" +
@@ -85,17 +96,6 @@ angular.module("app/DpsMeter/partials/combatant.html", []).run(["$templateCache"
     "	<td>{{healedPct}}</td>\n" +
     "	<td>{{OverHealPct}}</td>\n" +
     "\n" +
-    "");
-}]);
-
-angular.module("app/Config/partials/checkbox.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Config/partials/checkbox.html",
-    "<span class=\"glyphicon\"\n" +
-    "		ng-class=\"{\n" +
-    "			'glyphicon-check':		checked,\n" +
-    "			'glyphicon-unchecked':	!checked}\"\n" +
-    "		ng-click=\"click()\"\n" +
-    "		ng-mousedown=\"removeSelection()\"></span>\n" +
     "");
 }]);
 

@@ -1,15 +1,17 @@
 {
   "name": "enilia_overlay",
-  "version": "1.0.0",
+  "version": "0.1.0-beta",
   "description": "",
   "main": "createTemplates.js",
   "scripts": {
     "install": "bower install",
-    "export-tpl": "node createTemplates.js"
+    "export-tpl": "node createTemplates.js",
+    "build": "node build.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "archiver": "^0.15.1",
     "promised-io": "^0.3.5"
   }
 }
