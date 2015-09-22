@@ -4,7 +4,8 @@
   "description": "",
   "main": "createTemplates.js",
   "scripts": {
-    "install": "bower install"
+    "install": "bower install",
+    "export-tpl": "node createTemplates.js"
   },
   "author": "",
   "license": "ISC",
