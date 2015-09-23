@@ -11,12 +11,35 @@ angular.module('enilia.overlay.config', ['ngRoute',
 				templateUrl: 'app/Config/config.html',
 				controller: 'configController'
 			})
+			.when('/config/preset/:presetId', {
+				templateUrl:'app/Config/partials/presetConfig.html',
+				controller: 'configPresetController'
+			})
 	}])
 
 	.run(['$localStorage',
 		function($storage) {
 			// TODO: use $default for release
 			$storage.$reset({
+				presets: {
+					'DPS': {
+						cols: [
+							{ name: 'name' },
+							{ name: 'encdps' },
+							{ name: 'damagePct' },
+						]
+					},
+					'Heal' : {
+						cols : [
+							{ name: 'name' },
+							{ name: 'encdps' },
+							{ name: 'damagePct' },
+							{ name: 'enchps' },
+							{ name: 'healedPct' },
+							{ name: 'OverHealPct' },
+						]
+					}
+				},
 				cols: [
 					{ name: 'name' },
 					{ name: 'encdps' },
@@ -47,6 +70,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			$scope.setExpandFromBottom(false, false);
 
 			$scope.cols = $storage.cols.slice();
+			$scope.presets = $storage.presets;
 
 			$scope.save = function() {
 				// $storage.expandFromBottom = $scope.confExpandFromBottom;
@@ -57,6 +81,14 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			$scope.$on('$destroy', function() {
 				$scope.setExpandFromBottom($scope.globalExpandFromBottom, false);
 			});
+
+		}])
+
+	.controller('configPresetController',
+		['$scope', '$routeParams', '$localStorage',
+		function configPresetController($scope, $routeParams, $storage) {
+
+			$scope.preset = $storage.presets[$routeParams.presetId];
 
 		}])
 

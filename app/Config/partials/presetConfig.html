@@ -4,13 +4,8 @@
 </div>
 
 <div class="config">
-	<!-- <div>
-		<checkbox checked="confExpandFromBottom"></checkbox> expand from bottom
-	</div> -->
 
-	<span ng-repeat="(name, preset) in presets">
-		<a ng-href="#/config/preset/{{name}}">{{name}}</a>
-	</span>
+	<column-config cols="preset.cols"></column-config>
 
 	<div>
 		<a href="#/dpsmeter" class="glyphicon glyphicon-ok" ng-click="save()"></a>
