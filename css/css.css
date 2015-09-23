@@ -75,6 +75,11 @@ input, button {
     font-size:1.3em;
 }
 
+.glyphicon.disabled {
+    color:#AAA;
+    text-shadow:none;
+}
+
 .expandFromBottom {
     position: absolute;
     bottom: 0;
@@ -128,6 +133,7 @@ checkbox .glyphicon {
 .fieldselect .fields {
     display:none;
     flex-wrap:wrap;
+    z-index:100;
 }
 
 .fieldselect.expanded .fields {
@@ -144,6 +150,7 @@ checkbox .glyphicon {
     flex: 1 1 auto;
     padding: 0.2em 0.3em;
     text-align: center;
+    background: rgba(0,0,0,0.4);
     /* Goldish */
     color:#DED7BE;
     text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;

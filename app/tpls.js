@@ -1,4 +1,4 @@
-angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/Config/partials/checkbox.html", "app/Config/partials/fieldselect.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html"]);
+angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/Config/partials/checkbox.html", "app/Config/partials/fieldselect.html", "app/Config/partials/sorter.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html"]);
 
 angular.module("app/Config/config.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/config.html",
@@ -10,6 +10,12 @@ angular.module("app/Config/config.html", []).run(["$templateCache", function($te
     "<div class=\"config\">\n" +
     "	<div>\n" +
     "		<checkbox checked=\"confExpandFromBottom\"></checkbox> expand from bottom\n" +
+    "	</div>\n" +
+    "\n" +
+    "	<div ng-repeat=\"col in cols\" class=\"cols\">\n" +
+    "		({{$index}})\n" +
+    "		<sorter ng-model=\"cols\" index=\"$index\"></sorter>\n" +
+    "		<fieldselect selected=\"col.name\"></fieldselect>\n" +
     "	</div>\n" +
     "	\n" +
     "	<!-- foobarbaz<fieldselect selected=\"foo\"></fieldselect> -->\n" +
@@ -82,6 +88,21 @@ angular.module("app/Config/partials/fieldselect.html", []).run(["$templateCache"
     "	</div>\n" +
     "\n" +
     "</div>\n" +
+    "");
+}]);
+
+angular.module("app/Config/partials/sorter.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/sorter.html",
+    "<span class=\"sorter\">\n" +
+    "	<span class=\"glyphicon glyphicon-chevron-up\"\n" +
+    "		  ng-class=\"{disabled: $first}\"\n" +
+    "		  ng-click=\"!$first &amp;&amp; up()\"\n" +
+    "		  ng-mousedown=\"removeSelection()\"></span>\n" +
+    "	<span class=\"glyphicon glyphicon-chevron-down\"\n" +
+    "		  ng-class=\"{disabled: $last}\"\n" +
+    "		  ng-click=\"!$last &amp;&amp; down()\"\n" +
+    "		  ng-mousedown=\"removeSelection()\"></span>\n" +
+    "</span>\n" +
     "");
 }]);
 

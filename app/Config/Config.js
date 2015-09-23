@@ -28,12 +28,22 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		function configController($scope, $storage) {
 
 			$storage.$default({
-			    expandFromBottom: false
+			    expandFromBottom: false,
+			    cols: [
+					{ name: 'name' },
+					{ name: 'encdps' },
+					{ name: 'damagePct' },
+					{ name: 'enchps' },
+					{ name: 'healedPct' },
+					{ name: 'OverHealPct' },
+			    ]
 			});
 
 			$scope.localExpandFromBottom = $scope.getExpandFromBottom();
 			$scope.confExpandFromBottom = $storage.expandFromBottom;
 			$scope.setExpandFromBottom(false);
+
+			$scope.cols = $storage.cols.slice();
 
 			$scope.save = function() {
 				$storage.expandFromBottom = $scope.confExpandFromBottom;
@@ -84,11 +94,47 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			scope: {
 				checked: '='
 			},
-			controller:['$scope', '$window', 'removeSelection',
-				function checkboxController ($scope, $window, removeSelection) {
+			controller:['$scope', 'removeSelection',
+				function checkboxController ($scope, removeSelection) {
 				
 					$scope.click = function click () {
 						$scope.checked = !$scope.checked;
+					};
+
+					$scope.removeSelection = removeSelection;
+
+				}],
+		}
+	})
+
+	.directive('sorter', function() {
+		return {
+			restrict:'E',
+			templateUrl:'app/Config/partials/sorter.html',
+			scope: {
+				ngModel:'=',
+				$index:'=index',
+				sortableDirection:'@?',
+			},
+			controller:['$scope', 'removeSelection',
+				function sorterController ($scope, removeSelection) {
+
+					function setScope() {
+						$scope.$first = ($scope.$index === 0);
+						$scope.$last = ($scope.$index === ($scope.ngModel.length - 1));
+					}
+
+					$scope.$watch('$index', setScope);
+				
+					$scope.up = function up() {
+						if($scope.$first) return;
+						var move = $scope.ngModel.splice($scope.$index, 1);
+						$scope.ngModel.splice($scope.$index-1, 0, move[0]);
+					};
+					$scope.down = function down() {
+						if($scope.$last) return;
+						var move = $scope.ngModel.splice($scope.$index, 1);
+						$scope.ngModel.splice($scope.$index+1, 0, move[0]);
 					};
 
 					$scope.removeSelection = removeSelection;

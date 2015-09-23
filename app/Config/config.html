@@ -7,6 +7,12 @@
 	<div>
 		<checkbox checked="confExpandFromBottom"></checkbox> expand from bottom
 	</div>
+
+	<div ng-repeat="col in cols" class="cols">
+		({{$index}})
+		<sorter ng-model="cols" index="$index"></sorter>
+		<fieldselect selected="col.name"></fieldselect>
+	</div>
 	
 	<!-- foobarbaz<fieldselect selected="foo"></fieldselect> -->
 
