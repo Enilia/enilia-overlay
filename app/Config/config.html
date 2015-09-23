@@ -8,9 +8,11 @@
 		<checkbox checked="confExpandFromBottom"></checkbox> expand from bottom
 	</div> -->
 
-	<span ng-repeat="(name, preset) in presets">
-		<a ng-href="#/config/preset/{{name}}">{{name}}</a>
-	</span>
+	<div>
+		<span ng-repeat="preset in presets">
+			<a class="field" ng-href="#/config/preset/{{preset.name}}">{{preset.name}}</a>
+		</span>
+	</div>
 
 	<div>
 		<a href="#/dpsmeter" class="glyphicon glyphicon-ok" ng-click="save()"></a>

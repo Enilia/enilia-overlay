@@ -21,15 +21,17 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		function($storage) {
 			// TODO: use $default for release
 			$storage.$reset({
-				presets: {
-					'DPS': {
+				presets: [
+					{
+						name:'DPS',
 						cols: [
 							{ name: 'name' },
 							{ name: 'encdps' },
 							{ name: 'damagePct' },
 						]
 					},
-					'Heal' : {
+					{
+						name:'Heal',
 						cols : [
 							{ name: 'name' },
 							{ name: 'encdps' },
@@ -39,7 +41,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 							{ name: 'OverHealPct' },
 						]
 					}
-				},
+				],
 				cols: [
 					{ name: 'name' },
 					{ name: 'encdps' },
@@ -88,7 +90,12 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		['$scope', '$routeParams', '$localStorage',
 		function configPresetController($scope, $routeParams, $storage) {
 
-			$scope.preset = $storage.presets[$routeParams.presetId];
+
+			angular.forEach($storage.presets, function(preset) {
+				if(preset.name === $routeParams.presetId) {
+					$scope.preset = preset;
+				}
+			})
 
 		}])
 

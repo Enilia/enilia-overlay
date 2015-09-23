@@ -1,4 +1,4 @@
-angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/DpsMeter/dpsmeter.html", "app/Debug/debug.html", "app/Config/partials/checkbox.html", "app/Config/partials/columnConfig.html", "app/Config/partials/presetConfig.html", "app/Config/partials/sorter.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html", "app/Config/partials/fieldselect.html"]);
+angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/Config/partials/columnConfig.html", "app/Config/partials/checkbox.html", "app/Config/partials/presetConfig.html", "app/Config/partials/fieldselect.html", "app/Config/partials/sorter.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html"]);
 
 angular.module("app/Config/config.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/config.html",
@@ -12,15 +12,28 @@ angular.module("app/Config/config.html", []).run(["$templateCache", function($te
     "		<checkbox checked=\"confExpandFromBottom\"></checkbox> expand from bottom\n" +
     "	</div> -->\n" +
     "\n" +
-    "	<span ng-repeat=\"(name, preset) in presets\">\n" +
-    "		<a ng-href=\"#/config/preset/{{name}}\">{{name}}</a>\n" +
-    "	</span>\n" +
+    "	<div>\n" +
+    "		<span ng-repeat=\"preset in presets\">\n" +
+    "			<a class=\"field\" ng-href=\"#/config/preset/{{preset.name}}\">{{preset.name}}</a>\n" +
+    "		</span>\n" +
+    "	</div>\n" +
     "\n" +
     "	<div>\n" +
     "		<a href=\"#/dpsmeter\" class=\"glyphicon glyphicon-ok\" ng-click=\"save()\"></a>\n" +
     "	</div>\n" +
     "\n" +
     "</div>\n" +
+    "");
+}]);
+
+angular.module("app/Debug/debug.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Debug/debug.html",
+    "\n" +
+    "debug\n" +
+    "\n" +
+    "<div>{{loc.path()}}</div>\n" +
+    "<div>{{loc.url()}}</div>\n" +
+    "<div>{{loc.absUrl()}}</div>\n" +
     "");
 }]);
 
@@ -43,28 +56,6 @@ angular.module("app/DpsMeter/dpsmeter.html", []).run(["$templateCache", function
     "");
 }]);
 
-angular.module("app/Debug/debug.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Debug/debug.html",
-    "\n" +
-    "debug\n" +
-    "\n" +
-    "<div>{{loc.path()}}</div>\n" +
-    "<div>{{loc.url()}}</div>\n" +
-    "<div>{{loc.absUrl()}}</div>\n" +
-    "");
-}]);
-
-angular.module("app/Config/partials/checkbox.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Config/partials/checkbox.html",
-    "<span class=\"glyphicon\"\n" +
-    "		ng-class=\"{\n" +
-    "			'glyphicon-check':		checked,\n" +
-    "			'glyphicon-unchecked':	!checked}\"\n" +
-    "		ng-click=\"click()\"\n" +
-    "		prevent-selection></span>\n" +
-    "");
-}]);
-
 angular.module("app/Config/partials/columnConfig.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/partials/columnConfig.html",
     "\n" +
@@ -84,6 +75,17 @@ angular.module("app/Config/partials/columnConfig.html", []).run(["$templateCache
     "");
 }]);
 
+angular.module("app/Config/partials/checkbox.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/checkbox.html",
+    "<span class=\"glyphicon\"\n" +
+    "		ng-class=\"{\n" +
+    "			'glyphicon-check':		checked,\n" +
+    "			'glyphicon-unchecked':	!checked}\"\n" +
+    "		ng-click=\"click()\"\n" +
+    "		prevent-selection></span>\n" +
+    "");
+}]);
+
 angular.module("app/Config/partials/presetConfig.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/partials/presetConfig.html",
     "\n" +
@@ -93,10 +95,36 @@ angular.module("app/Config/partials/presetConfig.html", []).run(["$templateCache
     "\n" +
     "<div class=\"config\">\n" +
     "\n" +
+    "	<div>\n" +
+    "		<a href=\"#/config\" class=\"glyphicon glyphicon-arrow-left\"></a>\n" +
+    "	</div>\n" +
+    "\n" +
     "	<column-config cols=\"preset.cols\"></column-config>\n" +
     "\n" +
     "	<div>\n" +
     "		<a href=\"#/dpsmeter\" class=\"glyphicon glyphicon-ok\" ng-click=\"save()\"></a>\n" +
+    "	</div>\n" +
+    "\n" +
+    "</div>\n" +
+    "");
+}]);
+
+angular.module("app/Config/partials/fieldselect.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/fieldselect.html",
+    "\n" +
+    "<div class=\"fieldselect\" ng-class=\"{ expanded: isExpanded }\">\n" +
+    "\n" +
+    "	<div class=\"selected field\"\n" +
+    "		 ng-click=\"isExpanded = !isExpanded\"\n" +
+    "		 prevent-selection>{{selected}}</div>\n" +
+    "\n" +
+    "	<div class=\"fields\" ng-click=\"isExpanded = false\">\n" +
+    "		<div class=\"field\"\n" +
+    "			 ng-repeat=\"field in fields\"\n" +
+    "			 ng-click=\"setSelected(field)\"\n" +
+    "			 prevent-selection\n" +
+    "			 >\n" +
+    "			 {{field}}</div>\n" +
     "	</div>\n" +
     "\n" +
     "</div>\n" +
@@ -167,28 +195,6 @@ angular.module("app/DpsMeter/partials/encounter.html", []).run(["$templateCache"
     "	<div class=\"encdps\">\n" +
     "		{{encdps}}\n" +
     "	</div>\n" +
-    "</div>\n" +
-    "");
-}]);
-
-angular.module("app/Config/partials/fieldselect.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Config/partials/fieldselect.html",
-    "\n" +
-    "<div class=\"fieldselect\" ng-class=\"{ expanded: isExpanded }\">\n" +
-    "\n" +
-    "	<div class=\"selected\"\n" +
-    "		 ng-click=\"isExpanded = !isExpanded\"\n" +
-    "		 prevent-selection>{{selected}}</div>\n" +
-    "\n" +
-    "	<div class=\"fields\" ng-click=\"isExpanded = false\">\n" +
-    "		<div class=\"field\"\n" +
-    "			 ng-repeat=\"field in fields\"\n" +
-    "			 ng-click=\"setSelected(field)\"\n" +
-    "			 prevent-selection\n" +
-    "			 >\n" +
-    "			 {{field}}</div>\n" +
-    "	</div>\n" +
-    "\n" +
     "</div>\n" +
     "");
 }]);
