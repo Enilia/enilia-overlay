@@ -36,8 +36,11 @@ angular.module('enilia.overlay', ['ngRoute',
 			        $scope.$apply();
 			    }
 
-			    $scope.setExpandFromBottom = function(set) {
+			    $scope.setExpandFromBottom = function(set, save) {
 			    	$scope.expandFromBottom = set;
+			    	if(save !== false) {
+			    		$storage.expandFromBottom = set;
+			    	}
 			    }
 
 			    $scope.getExpandFromBottom = function() {

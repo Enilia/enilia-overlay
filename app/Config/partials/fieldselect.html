@@ -3,13 +3,13 @@
 
 	<div class="selected"
 		 ng-click="isExpanded = !isExpanded"
-		 ng-mousedown="removeSelection()">{{selected}}</div>
+		 prevent-selection>{{selected}}</div>
 
 	<div class="fields" ng-click="isExpanded = false">
 		<div class="field"
 			 ng-repeat="field in fields"
 			 ng-click="setSelected(field)"
-			 ng-mousedown="removeSelection()"
+			 prevent-selection
 			 >
 			 {{field}}</div>
 	</div>

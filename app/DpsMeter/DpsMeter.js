@@ -12,6 +12,17 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 			})
 	}])
 
+	.run(['$sessionStorage',
+		function($storage) {
+			$storage.$default({
+				encounter:{
+					encdps: "0",
+					duration: "00:00",
+				},
+				active: false
+			});
+		}])
+
 	.factory('sanitize',
 		function sanitizeFactory() {
 			return function sanitize(unsafe) {
@@ -31,14 +42,6 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 	.controller('dpsmeterController',
 		['$scope', '$document', '$sessionStorage', 'sanitize',
 		function dpsmeterController($scope, $document, $sessionStorage, sanitize) {
-
-			$sessionStorage.$default({
-				encounter:{
-					encdps: "0",
-					duration: "00:00",
-				},
-				active: false
-			});
 
 			$scope.encounter = $sessionStorage.encounter;
 			$scope.combatants = $sessionStorage.combatants;

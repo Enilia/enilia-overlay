@@ -80,6 +80,11 @@ input, button {
     text-shadow:none;
 }
 
+.glyphicon.remove {
+    color: #DEBEBE;
+    text-shadow: 0 0 2px #791616, 0 0 5px #791616, 0 0 10px #791616, 0 0 15px #791616;
+}
+
 .expandFromBottom {
     position: absolute;
     bottom: 0;

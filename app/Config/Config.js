@@ -13,6 +13,21 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			})
 	}])
 
+	.run(['$localStorage',
+		function($storage) {
+			// TODO: use $default for release
+			$storage.$reset({
+				cols: [
+					{ name: 'name' },
+					{ name: 'encdps' },
+					{ name: 'damagePct' },
+					{ name: 'enchps' },
+					{ name: 'healedPct' },
+					{ name: 'OverHealPct' },
+				]
+			});
+		}])
+
 	.factory('removeSelection',
 		['$window',
 		function removeSelectionFactory($window) {
@@ -27,44 +42,77 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		['$scope', '$localStorage',
 		function configController($scope, $storage) {
 
-			$storage.$default({
-			    expandFromBottom: false,
-			    cols: [
-					{ name: 'name' },
-					{ name: 'encdps' },
-					{ name: 'damagePct' },
-					{ name: 'enchps' },
-					{ name: 'healedPct' },
-					{ name: 'OverHealPct' },
-			    ]
-			});
-
-			$scope.localExpandFromBottom = $scope.getExpandFromBottom();
-			$scope.confExpandFromBottom = $storage.expandFromBottom;
-			$scope.setExpandFromBottom(false);
+			$scope.globalExpandFromBottom = $scope.getExpandFromBottom();
+			// $scope.confExpandFromBottom = $storage.expandFromBottom;
+			$scope.setExpandFromBottom(false, false);
 
 			$scope.cols = $storage.cols.slice();
 
 			$scope.save = function() {
-				$storage.expandFromBottom = $scope.confExpandFromBottom;
-				$scope.localExpandFromBottom = $scope.confExpandFromBottom;
+				// $storage.expandFromBottom = $scope.confExpandFromBottom;
+				// $scope.globalExpandFromBottom = $scope.confExpandFromBottom;
+				$storage.cols = $scope.cols;
 			};
 
 			$scope.$on('$destroy', function() {
-				$scope.setExpandFromBottom($scope.localExpandFromBottom);
+				$scope.setExpandFromBottom($scope.globalExpandFromBottom, false);
 			});
 
 		}])
 
-	.directive('fieldselect', function() {
+	.directive('preventSelection', ['$window',
+		function preventSelectionDirective($window) {
+			return {
+				restrict:'A',
+				link:function(scope, element) {
+					element.on('mousedown', function() {
+						$window.requestAnimationFrame(function() {
+							$window.getSelection().removeAllRanges();
+						});
+					})
+				}
+			}
+		}])
+
+	.directive('columnConfig', function columnConfigDirective() {
+		return {
+			restrict:'E',
+			templateUrl:'app/Config/partials/columnConfig.html',
+			scope: {
+				cols: '='
+			},
+			controller:['$scope', '$document', 
+				function($scope, $document) {
+
+					$scope.remove = function($event, index) {
+						if($scope.removeIndex === index) {
+							$scope.cols.splice(index, 1);
+						} else {
+							$scope.removeIndex = index;
+							$document.one('click', function() {
+								$scope.removeIndex = -1;
+								$scope.$apply();
+							});
+							$event.stopPropagation();
+						}
+					};
+
+					$scope.add = function() {
+						$scope.cols.push({ name: 'name' })
+					}
+				}],
+		}
+	})
+
+	.directive('fieldselect', function fieldselectDirective() {
 		return {
 			restrict:'E',
 			templateUrl:'app/Config/partials/fieldselect.html',
 			scope: {
 				selected: '='
 			},
-			controller:['$scope', 'removeSelection',
-				function fieldselectController($scope, removeSelection) {
+			controller:['$scope',
+				function fieldselectController($scope) {
 					$scope.fields = [
 						"name","duration","DURATION","damage","damage-m","DAMAGE-k",
 						"DAMAGE-m","damage%","dps","DPS","DPS-k","encdps",
@@ -78,8 +126,6 @@ angular.module('enilia.overlay.config', ['ngRoute',
 						"NAME12","NAME13","NAME14","NAME15","Last10DPS","Last30DPS",
 						"Last60DPS","Job","ParryPct","BlockPct","IncToHit","OverHealPct"];
 
-					$scope.removeSelection = removeSelection;
-
 					$scope.setSelected = function(field) {
 						$scope.selected = field;
 					};
@@ -87,27 +133,25 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		}
 	})
 
-	.directive('checkbox', function() {
+	.directive('checkbox', function checkboxDirective() {
 		return {
 			restrict:'E',
 			templateUrl:'app/Config/partials/checkbox.html',
 			scope: {
 				checked: '='
 			},
-			controller:['$scope', 'removeSelection',
-				function checkboxController ($scope, removeSelection) {
+			controller:['$scope',
+				function checkboxController ($scope) {
 				
 					$scope.click = function click () {
 						$scope.checked = !$scope.checked;
 					};
 
-					$scope.removeSelection = removeSelection;
-
 				}],
 		}
 	})
 
-	.directive('sorter', function() {
+	.directive('sorter', function sorterDirective() {
 		return {
 			restrict:'E',
 			templateUrl:'app/Config/partials/sorter.html',
@@ -116,8 +160,8 @@ angular.module('enilia.overlay.config', ['ngRoute',
 				$index:'=index',
 				sortableDirection:'@?',
 			},
-			controller:['$scope', 'removeSelection',
-				function sorterController ($scope, removeSelection) {
+			controller:['$scope',
+				function sorterController ($scope) {
 
 					function setScope() {
 						$scope.$first = ($scope.$index === 0);
@@ -125,6 +169,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 					}
 
 					$scope.$watch('$index', setScope);
+					$scope.$watch('ngModel.length', setScope);
 				
 					$scope.up = function up() {
 						if($scope.$first) return;
@@ -136,8 +181,6 @@ angular.module('enilia.overlay.config', ['ngRoute',
 						var move = $scope.ngModel.splice($scope.$index, 1);
 						$scope.ngModel.splice($scope.$index+1, 0, move[0]);
 					};
-
-					$scope.removeSelection = removeSelection;
 
 				}],
 		}

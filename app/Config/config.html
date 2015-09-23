@@ -4,17 +4,11 @@
 </div>
 
 <div class="config">
-	<div>
+	<!-- <div>
 		<checkbox checked="confExpandFromBottom"></checkbox> expand from bottom
-	</div>
+	</div> -->
 
-	<div ng-repeat="col in cols" class="cols">
-		({{$index}})
-		<sorter ng-model="cols" index="$index"></sorter>
-		<fieldselect selected="col.name"></fieldselect>
-	</div>
-	
-	<!-- foobarbaz<fieldselect selected="foo"></fieldselect> -->
+	<column-config cols="cols"></column-config>
 
 	<div>
 		<a href="#/dpsmeter" class="glyphicon glyphicon-ok" ng-click="save()"></a>
