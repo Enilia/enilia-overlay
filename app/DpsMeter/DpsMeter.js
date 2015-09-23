@@ -40,12 +40,15 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 		})
 
 	.controller('dpsmeterController',
-		['$scope', '$document', '$sessionStorage', 'sanitize',
-		function dpsmeterController($scope, $document, $sessionStorage, sanitize) {
+		['$scope', '$document', '$sessionStorage', 'sanitize', '$timeout',
+		function dpsmeterController($scope, $document, $sessionStorage, sanitize, $timeout) {
 
 			$scope.encounter = $sessionStorage.encounter;
 			$scope.combatants = $sessionStorage.combatants;
 			$scope.active = $sessionStorage.active;
+			$timeout(function() {
+				$scope.$broadcast('update');
+			})
 
 			// todo: move this to app.js and retrive data on $on/$emit
 			$document.on('onOverlayDataUpdate', dataUpdate);
