@@ -87,13 +87,23 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 		['$scope',
 		function CombatantsController($scope) {
 
-			// $scope.$on('update', function update() {
 
-			// 	angular.forEach([1,2,3,4,5,6,7], function(value, index) {
-			// 		$scope.combatants['YOU'+value] = angular.copy($scope.combatants.YOU);
-			// 		$scope.combatants['YOU'+value].name = 'YOU'+value;
-			// 	});
-			// });
+
+			$scope.$on('update', function update() {
+
+				$scope.bestdps = 0;
+
+				angular.forEach($scope.combatants, function(combatant) {
+					if(parseFloat(combatant.encdps) > $scope.bestdps){
+						$scope.bestdps = parseFloat(combatant.encdps);
+					}
+				});
+
+				// angular.forEach([1,2,3,4,5,6,7], function(value, index) {
+				// 	$scope.combatants['YOU'+value] = angular.copy($scope.combatants.YOU);
+				// 	$scope.combatants['YOU'+value].name = 'YOU'+value;
+				// });
+			});
 		}])
 
 	.controller('CombatantController',
@@ -166,6 +176,12 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 			templateUrl:'app/DpsMeter/partials/combatant.html',
 			controller:'CombatantController',
 			scope:true,
+			link:function(scope, element) {
+				scope.$on('update', function() {
+					var stop = scope.encdps * 100 / scope.bestdps;
+					element.css('background-size', stop + "% 100%, " + stop + "% 100%");
+				})
+			}
 		}
 	});
 
