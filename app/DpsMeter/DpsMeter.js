@@ -40,8 +40,8 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 		})
 
 	.controller('dpsmeterController',
-		['$scope', '$document', '$sessionStorage', 'sanitize',
-		function dpsmeterController($scope, $document, $sessionStorage, sanitize) {
+		['$scope', '$document', '$sessionStorage', 'sanitize', '$timeout',
+		function dpsmeterController($scope, $document, $sessionStorage, sanitize, $timeout) {
 
 			$scope.encounter = $sessionStorage.encounter;
 			$scope.combatants = $sessionStorage.combatants;
@@ -70,16 +70,15 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 		['$scope',
 		function EncounterController($scope) {
 
-			angular.forEach($scope.encounter, function(value, key) {
-				$scope[key] = value;
-			});
+			update();
 
-			$scope.$on('update', function update() {
+			$scope.$on('update', update);
+
+			function update() {
 				angular.forEach($scope.encounter, function(value, key) {
 					$scope[key] = value;
 				});
-				$scope.$apply();
-			});
+			}
 
 		}])
 
@@ -87,9 +86,11 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 		['$scope',
 		function CombatantsController($scope) {
 
+			update();
 
+			$scope.$on('update', update);
 
-			$scope.$on('update', function update() {
+			function update() {
 
 				$scope.bestdps = 0;
 
@@ -103,18 +104,20 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 				// 	$scope.combatants['YOU'+value] = angular.copy($scope.combatants.YOU);
 				// 	$scope.combatants['YOU'+value].name = 'YOU'+value;
 				// });
-			});
+			}
+
 		}])
 
 	.controller('CombatantController',
 		['$scope',
 		function CombatantController($scope) {
 
-			angular.forEach($scope.combatant, function(value, key) {
-				$scope[key] = value;
-			});
+			update();
 
-			$scope.$on('update', function update() {
+			$scope.$on('update', update);
+			// $scope.$on('update', $scope.$apply.bind($scope));
+
+			function update() {
 
 				var index
 				  , combatant = $scope.combatant
@@ -147,8 +150,7 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 				angular.forEach(combatant, function(value, key) {
 					$scope[key] = value;
 				});
-				$scope.$apply();
-			});
+			}
 
 		}])
 
@@ -177,10 +179,12 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 			controller:'CombatantController',
 			scope:true,
 			link:function(scope, element) {
-				scope.$on('update', function() {
+				update();
+				scope.$on('update', update);
+				function update() {
 					var stop = scope.encdps * 100 / scope.bestdps;
 					element.css('background-size', stop + "% 100%, " + stop + "% 100%");
-				})
+				}
 			}
 		}
 	});
