@@ -60,7 +60,6 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 				$scope.encounter = sanitize(e.detail.Encounter);
 				$scope.combatants = sanitize(e.detail.Combatant);
 				$scope.active = e.detail.isActive;
-				$scope.$broadcast('update');
 				$scope.$apply();
 			}
 
@@ -70,25 +69,15 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 		['$scope',
 		function EncounterController($scope) {
 
-			update();
-
-			$scope.$on('update', update);
-
-			function update() {
-				angular.forEach($scope.encounter, function(value, key) {
-					$scope[key] = value;
-				});
-			}
-
 		}])
 
 	.controller('CombatantsController',
 		['$scope',
 		function CombatantsController($scope) {
 
-			update();
+			$scope.bestdps = 0;
 
-			$scope.$on('update', update);
+			$scope.$watch('combatants', update);
 
 			function update() {
 
@@ -99,11 +88,6 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 						$scope.bestdps = parseFloat(combatant.encdps);
 					}
 				});
-
-				// angular.forEach([1,2,3,4,5,6,7], function(value, index) {
-				// 	$scope.combatants['YOU'+value] = angular.copy($scope.combatants.YOU);
-				// 	$scope.combatants['YOU'+value].name = 'YOU'+value;
-				// });
 			}
 
 		}])
@@ -112,10 +96,7 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 		['$scope',
 		function CombatantController($scope) {
 
-			update();
-
-			$scope.$on('update', update);
-			// $scope.$on('update', $scope.$apply.bind($scope));
+			$scope.$watch('combatant', update);
 
 			function update() {
 
@@ -146,10 +127,6 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 						combatant.Job = "Error";
 					}
 				}
-
-				angular.forEach(combatant, function(value, key) {
-					$scope[key] = value;
-				});
 			}
 
 		}])
@@ -159,7 +136,10 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 			restrict: 'E',
 			templateUrl:'app/DpsMeter/partials/encounter.html',
 			controller:'EncounterController',
-			scope:true,
+			scope:{
+				encounter:'=',
+				active:'='
+			},
 		}
 	})
 
@@ -168,7 +148,9 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 			restrict: 'E',
 			templateUrl:'app/DpsMeter/partials/combatants.html',
 			controller:'CombatantsController',
-			scope:true,
+			scope:{
+				combatants:'='
+			},
 		}
 	})
 
@@ -177,13 +159,15 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 			restrict: 'A',
 			templateUrl:'app/DpsMeter/partials/combatant.html',
 			controller:'CombatantController',
-			scope:true,
+			scope:{
+				combatant:'=',
+				bestdps:'='
+			},
 			link:function(scope, element) {
-				update();
-				scope.$on('update', update);
+				scope.$watchGroup(['bestdps', 'combatant.encdps'], update);
 				function update() {
-					var stop = scope.encdps * 100 / scope.bestdps;
-					element.css('background-size', stop + "% 100%, " + stop + "% 100%");
+					var stop = scope.combatant.encdps * 100 / scope.bestdps;
+					element.css('background-size', stop + "% 100%");
 				}
 			}
 		}
