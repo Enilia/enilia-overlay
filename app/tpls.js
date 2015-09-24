@@ -25,12 +25,12 @@ angular.module("app/Config/config.html", []).run(["$templateCache", function($te
     "	</div> -->\n" +
     "\n" +
     "	<div>\n" +
-    "		<fieldselect ng-model=\"preset\" options=\"presets\" label=\"{key}\"></fieldselect>\n" +
+    "		<fieldselect ng-model=\"preset\" options=\"presets\" label=\"name\" on-change=\"onPresetChange\"></fieldselect>\n" +
     "	</div>\n" +
     "\n" +
     "	<div>\n" +
-    "		<span ng-repeat=\"(name, preset) in presets\">\n" +
-    "			<a class=\"field\" ng-href=\"#/config/preset/{{name}}\"><span class=\"glyphicon glyphicon-wrench\"></span> {{name}}</a>\n" +
+    "		<span ng-repeat=\"preset in presets\">\n" +
+    "			<a class=\"field\" ng-href=\"#/config/preset/{{preset.__uid}}\"><span class=\"glyphicon glyphicon-wrench\"></span> {{preset.name}}</a>\n" +
     "		</span>\n" +
     "	</div>\n" +
     "\n" +
@@ -104,7 +104,7 @@ angular.module("app/Config/partials/presetConfig.html", []).run(["$templateCache
     "<div class=\"config\">\n" +
     "\n" +
     "	<div style=\"display:flex\">\n" +
-    "		<span style=\"flex: 0 0 auto\">Name: </span><input type=\"text\" ng-model=\"name\" />\n" +
+    "		<span style=\"flex: 0 0 auto\">Name: </span><input type=\"text\" ng-model=\"preset.name\" />\n" +
     "	</div>\n" +
     "\n" +
     "	<div>\n" +

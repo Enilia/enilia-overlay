@@ -1,5 +1,51 @@
 ;(function() {
 
+if (!Array.prototype.findIndex) {
+  Array.prototype.findIndex = function(predicate) {
+    if (this == null) {
+      throw new TypeError('Array.prototype.findIndex appelé sur null ou undefined');
+    }
+    if (typeof predicate !== 'function') {
+      throw new TypeError('predicate doit être une fonction');
+    }
+    var list = Object(this);
+    var length = list.length >>> 0;
+    var thisArg = arguments[1];
+    var value;
+
+    for (var i = 0; i < length; i++) {
+      value = list[i];
+      if (predicate.call(thisArg, value, i, list)) {
+        return i;
+      }
+    }
+    return -1;
+  };
+}
+
+if (!Array.prototype.find) {
+  Array.prototype.find = function(predicate) {
+    if (this == null) {
+      throw new TypeError('Array.prototype.find a été appelé sur null ou undefined');
+    }
+    if (typeof predicate !== 'function') {
+      throw new TypeError('predicate doit être une fonction');
+    }
+    var list = Object(this);
+    var length = list.length >>> 0;
+    var thisArg = arguments[1];
+    var value;
+
+    for (var i = 0; i < length; i++) {
+      value = list[i];
+      if (predicate.call(thisArg, value, i, list)) {
+        return value;
+      }
+    }
+    return undefined;
+  };
+}
+
 angular.module('enilia.overlay.config', ['ngRoute',
 										 'ngStorage',
 										 'enilia.overlay.tpls',
@@ -21,22 +67,21 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		function($storage) {
 			// TODO: use $default for release
 			$storage.$reset({
-				preset: {
-					cols: [
-						{ name: 'name' },
-						{ name: 'encdps' },
-						{ name: 'damagePct' },
-					]
-				},
-				presets: {
-					'DPS':{
+				__uid:3,
+				preset: 1,
+				presets: [
+					{
+						__uid:1,
+						name:'DPS',
 						cols: [
 							{ name: 'name' },
 							{ name: 'encdps' },
 							{ name: 'damagePct' },
 						]
 					},
-					'Heal':{
+					{
+						__uid:2,
+						name:'Heal',
 						cols : [
 							{ name: 'name' },
 							{ name: 'encdps' },
@@ -46,7 +91,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 							{ name: 'OverHealPct' },
 						]
 					}
-				},
+				],
 				cols: [
 					{ name: 'name' },
 					{ name: 'encdps' },
@@ -68,19 +113,66 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			};
 		}])
 
+	.factory('presetManager',
+		['$localStorage',
+		function presetManagerFactory ($storage) {
+
+			function uidTest (uid) {
+				return function(preset) {
+					return preset.__uid === uid;
+				}
+			}
+
+			function findPos(preset) {
+				return $storage.presets.findIndex(uidTest(preset.__uid));
+			}
+
+			return {
+				get: function getPreset(uid) {
+					uid = uid || $storage.preset;
+					return $storage.presets.find(uidTest(uid));
+				},
+
+				set: function setPreset(preset) {
+					$storage.preset = preset.__uid;
+					return preset;
+				},
+
+				getAll: function getAllPreset() {
+					return $storage.presets;
+				},
+
+				update: function updatePreset (preset) {
+					var index = findPos(preset);
+					return ~index && $storage.presets.splice(index, 1, preset) && preset;
+				},
+
+				remove: function removePreset (preset) {
+					var index = findPos(preset);
+					return ~index && $storage.presets.splice(index, 1)[0];
+				},
+
+				add: function addPreset (preset) {
+					preset.__uid = $storage.__uid++;
+					return $storage.presets.push(preset) && preset;
+				}
+			}
+		}])
+
 	.controller('configController',
-		['$scope', '$localStorage',
-		function configController($scope, $storage) {
+		['$scope', 'presetManager',
+		function configController($scope, presetManager) {
 
 			$scope.globalExpandFromBottom = $scope.getExpandFromBottom();
 			$scope.setExpandFromBottom(false, false);
 
-			$scope.cols = $storage.cols.slice();
-			$scope.presets = $storage.presets;
-			$scope.preset = $storage.preset;
+			$scope.presets = presetManager.getAll();
+			$scope.preset = presetManager.get();
+			$scope.onPresetChange = function onPresetChange(preset) {
+				presetManager.set(preset);
+			}
 
 			$scope.save = function() {
-				$storage.cols = $scope.cols;
 			};
 
 			$scope.$on('$destroy', function() {
@@ -90,18 +182,13 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		}])
 
 	.controller('configPresetController',
-		['$scope', '$routeParams', '$localStorage',
-		function configPresetController($scope, $routeParams, $storage) {
+		['$scope', '$routeParams', 'presetManager',
+		function configPresetController($scope, $routeParams, presetManager) {
 
-			$scope.preset = angular.copy($storage.presets[$routeParams.presetId]);
-			$scope.name = $routeParams.presetId;
+			$scope.preset = angular.copy(presetManager.get(parseInt($routeParams.presetId)));
 
 			$scope.save = function() {
-				if(angular.equals($storage.preset, $storage.presets[$routeParams.presetId])) {
-					$storage.preset = $scope.preset;
-				}
-				delete $storage.presets[$routeParams.presetId];
-				$storage.presets[$scope.name] = $scope.preset;
+				presetManager.update($scope.preset);
 			};
 
 		}])
@@ -171,6 +258,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 				ngModel: '=',
 				options: '=',
 				label: '@?',
+				onChange:'=?',
 			},
 			controller:['$scope', '$parse',
 				function fieldselectController($scope, $parse) {
@@ -195,6 +283,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 					$scope.setSelected = function(option) {
 						$scope.ngModel = option.value;
 						$scope.selectedLabel = option.label;
+						$scope.onChange(option.value);
 					};
 				}],
 		}
