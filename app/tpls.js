@@ -1,4 +1,4 @@
-angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/Config/partials/columnConfig.html", "app/Config/partials/checkbox.html", "app/Config/partials/presetConfig.html", "app/Config/partials/fieldselect.html", "app/Config/partials/sorter.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html"]);
+angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/DpsMeter/dpsmeter.html", "app/Debug/debug.html", "app/Config/partials/checkbox.html", "app/Config/partials/columnConfig.html", "app/Config/partials/fieldselect.html", "app/Config/partials/sorter.html", "app/DpsMeter/partials/combatant.html", "app/Config/partials/presetConfig.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html"]);
 
 angular.module("app/Config/config.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/config.html",
@@ -26,17 +26,6 @@ angular.module("app/Config/config.html", []).run(["$templateCache", function($te
     "");
 }]);
 
-angular.module("app/Debug/debug.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Debug/debug.html",
-    "\n" +
-    "debug\n" +
-    "\n" +
-    "<div>{{loc.path()}}</div>\n" +
-    "<div>{{loc.url()}}</div>\n" +
-    "<div>{{loc.absUrl()}}</div>\n" +
-    "");
-}]);
-
 angular.module("app/DpsMeter/dpsmeter.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/DpsMeter/dpsmeter.html",
     "\n" +
@@ -56,22 +45,14 @@ angular.module("app/DpsMeter/dpsmeter.html", []).run(["$templateCache", function
     "");
 }]);
 
-angular.module("app/Config/partials/columnConfig.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Config/partials/columnConfig.html",
+angular.module("app/Debug/debug.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Debug/debug.html",
     "\n" +
-    "<div ng-repeat=\"col in cols\" class=\"cols\">\n" +
-    "	<span class=\"index\">({{$index}})</span>\n" +
-    "	<sorter ng-model=\"cols\" index=\"$index\"></sorter>\n" +
-    "	<span class=\"glyphicon glyphicon-minus\"\n" +
-    "		  ng-click=\"remove($event, $index)\"\n" +
-    "		  ng-class=\"{remove: removeIndex === $index}\"\n" +
-    "		  prevent-selection></span>\n" +
-    "	<fieldselect selected=\"col.name\"></fieldselect>\n" +
-    "</div>\n" +
+    "debug\n" +
     "\n" +
-    "<div>\n" +
-    "	<span class=\"glyphicon glyphicon-plus\" ng-click=\"add()\" prevent-selection></span>\n" +
-    "</div>\n" +
+    "<div>{{loc.path()}}</div>\n" +
+    "<div>{{loc.url()}}</div>\n" +
+    "<div>{{loc.absUrl()}}</div>\n" +
     "");
 }]);
 
@@ -86,25 +67,21 @@ angular.module("app/Config/partials/checkbox.html", []).run(["$templateCache", f
     "");
 }]);
 
-angular.module("app/Config/partials/presetConfig.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Config/partials/presetConfig.html",
+angular.module("app/Config/partials/columnConfig.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/columnConfig.html",
     "\n" +
-    "<div class=\"menu\">\n" +
-    "	<a href=\"#/dpsmeter\" class=\"glyphicon glyphicon-tasks\"></a>\n" +
+    "<div ng-repeat=\"col in cols\" class=\"cols\">\n" +
+    "	<span class=\"index\">({{$index}})</span>\n" +
+    "	<sorter ng-model=\"cols\" index=\"$index\"></sorter>\n" +
+    "	<span class=\"glyphicon glyphicon-minus\"\n" +
+    "		  ng-click=\"remove($event, $index)\"\n" +
+    "		  ng-class=\"{remove: removeIndex === $index}\"\n" +
+    "		  prevent-selection></span>\n" +
+    "	<fieldselect ng-model=\"col.name\" options=\"colsCollection\"></fieldselect>\n" +
     "</div>\n" +
     "\n" +
-    "<div class=\"config\">\n" +
-    "\n" +
-    "	<div>\n" +
-    "		<a href=\"#/config\" class=\"glyphicon glyphicon-arrow-left\"></a>\n" +
-    "	</div>\n" +
-    "\n" +
-    "	<column-config cols=\"preset.cols\"></column-config>\n" +
-    "\n" +
-    "	<div>\n" +
-    "		<a href=\"#/dpsmeter\" class=\"glyphicon glyphicon-ok\" ng-click=\"save()\"></a>\n" +
-    "	</div>\n" +
-    "\n" +
+    "<div>\n" +
+    "	<span class=\"glyphicon glyphicon-plus\" ng-click=\"add()\" prevent-selection></span>\n" +
     "</div>\n" +
     "");
 }]);
@@ -116,15 +93,15 @@ angular.module("app/Config/partials/fieldselect.html", []).run(["$templateCache"
     "\n" +
     "	<div class=\"selected field\"\n" +
     "		 ng-click=\"isExpanded = !isExpanded\"\n" +
-    "		 prevent-selection>{{selected}}</div>\n" +
+    "		 prevent-selection>{{getLabel(ngModel)}}</div>\n" +
     "\n" +
     "	<div class=\"fields\" ng-click=\"isExpanded = false\">\n" +
     "		<div class=\"field\"\n" +
-    "			 ng-repeat=\"field in fields\"\n" +
-    "			 ng-click=\"setSelected(field)\"\n" +
+    "			 ng-repeat=\"option in parsedOptions\"\n" +
+    "			 ng-click=\"setSelected(option)\"\n" +
     "			 prevent-selection\n" +
     "			 >\n" +
-    "			 {{field}}</div>\n" +
+    "			 {{option.label}}</div>\n" +
     "	</div>\n" +
     "\n" +
     "</div>\n" +
@@ -157,6 +134,29 @@ angular.module("app/DpsMeter/partials/combatant.html", []).run(["$templateCache"
     "	<td>{{healedPct}}</td>\n" +
     "	<td>{{OverHealPct}}</td>\n" +
     "\n" +
+    "");
+}]);
+
+angular.module("app/Config/partials/presetConfig.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/presetConfig.html",
+    "\n" +
+    "<div class=\"menu\">\n" +
+    "	<a href=\"#/dpsmeter\" class=\"glyphicon glyphicon-tasks\"></a>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div class=\"config\">\n" +
+    "\n" +
+    "	<div>\n" +
+    "		<a href=\"#/config\" class=\"glyphicon glyphicon-arrow-left\"></a>\n" +
+    "	</div>\n" +
+    "\n" +
+    "	<column-config cols=\"preset.cols\"></column-config>\n" +
+    "\n" +
+    "	<div>\n" +
+    "		<a href=\"#/dpsmeter\" class=\"glyphicon glyphicon-ok\" ng-click=\"save()\"></a>\n" +
+    "	</div>\n" +
+    "\n" +
+    "</div>\n" +
     "");
 }]);
 

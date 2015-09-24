@@ -6,7 +6,7 @@
 		  ng-click="remove($event, $index)"
 		  ng-class="{remove: removeIndex === $index}"
 		  prevent-selection></span>
-	<fieldselect selected="col.name"></fieldselect>
+	<fieldselect ng-model="col.name" options="colsCollection"></fieldselect>
 </div>
 
 <div>
