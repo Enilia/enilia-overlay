@@ -123,6 +123,19 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			controller:['$scope', '$document', 
 				function($scope, $document) {
 
+					$scope.colsCollection = [
+						"name","duration","DURATION","damage","damage-m","DAMAGE-k",
+						"DAMAGE-m","damage%","dps","DPS","DPS-k","encdps",
+						"ENCDPS","ENCDPS-k","hits","crithits","crithit%","misses",
+						"hitfailed","swings","tohit","TOHIT","maxhit","MAXHIT",
+						"healed","healed%","enchps","ENCHPS","ENCHPS-k","critheals",
+						"critheal%","heals","cures","maxheal","MAXHEAL","maxhealward",
+						"MAXHEALWARD","damagetaken","healstaken","powerdrain","powerheal","kills",
+						"deaths","threatstr","threatdelta","NAME3","NAME4","NAME5",
+						"NAME6","NAME7","NAME8","NAME9","NAME10","NAME11",
+						"NAME12","NAME13","NAME14","NAME15","Last10DPS","Last30DPS",
+						"Last60DPS","Job","ParryPct","BlockPct","IncToHit","OverHealPct"];
+
 					$scope.remove = function($event, index) {
 						if($scope.removeIndex === index) {
 							$scope.cols.splice(index, 1);
@@ -147,26 +160,30 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		return {
 			restrict:'E',
 			templateUrl:'app/Config/partials/fieldselect.html',
+			// require:'?ngModel',
 			scope: {
-				selected: '='
+				ngModel: '=',
+				options: '=',
+				label: '@?',
 			},
-			controller:['$scope',
-				function fieldselectController($scope) {
-					$scope.fields = [
-						"name","duration","DURATION","damage","damage-m","DAMAGE-k",
-						"DAMAGE-m","damage%","dps","DPS","DPS-k","encdps",
-						"ENCDPS","ENCDPS-k","hits","crithits","crithit%","misses",
-						"hitfailed","swings","tohit","TOHIT","maxhit","MAXHIT",
-						"healed","healed%","enchps","ENCHPS","ENCHPS-k","critheals",
-						"critheal%","heals","cures","maxheal","MAXHEAL","maxhealward",
-						"MAXHEALWARD","damagetaken","healstaken","powerdrain","powerheal","kills",
-						"deaths","threatstr","threatdelta","NAME3","NAME4","NAME5",
-						"NAME6","NAME7","NAME8","NAME9","NAME10","NAME11",
-						"NAME12","NAME13","NAME14","NAME15","Last10DPS","Last30DPS",
-						"Last60DPS","Job","ParryPct","BlockPct","IncToHit","OverHealPct"];
+			controller:['$scope', '$parse',
+				function fieldselectController($scope, $parse) {
 
-					$scope.setSelected = function(field) {
-						$scope.selected = field;
+					var parsedOptions = $scope.parsedOptions = []
+					  , getLabel = $scope.label ? $parse($scope.label) : angular.identity
+					  ;
+
+					$scope.getLabel = getLabel;
+
+					angular.forEach($scope.options, function(option) {
+						parsedOptions.push({
+							label:getLabel(option),
+							value:option
+						});
+					});
+
+					$scope.setSelected = function(option) {
+						$scope.ngModel = option.value;
 					};
 				}],
 		}

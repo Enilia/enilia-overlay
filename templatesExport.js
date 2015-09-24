@@ -11,7 +11,7 @@ const CONF = {
 	extfilter: '.html',
 };
 
-var headerTpl = 'angular.module("%s", [%s]);\n';
+var headerTpl = 'angular.module("%s", [\n\t%s,\n]);\n';
 
 // var headerTpl = [
 // 	'angular.module("%s", [',
@@ -48,7 +48,9 @@ function crawl(from, files /* = [] */ ) {
 			})
 		);
 	}).then(function() {
-		return files;
+		return files.sort(function(a, b) {
+			return a.name < b.name ? -1 : 1;
+		});
 	})
 
 }
@@ -77,7 +79,7 @@ crawl(CONF.base, []).then(function(files) {
 	  ;
 
 	fs.writeFile(CONF.output,
-		  util.format(headerTpl, CONF.moduleName, names.join(', '))
+		  util.format(headerTpl, CONF.moduleName, names.join(',\n\t'))
 		+ tpls.join(''),
 	'utf8');
 });
