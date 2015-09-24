@@ -1,4 +1,15 @@
-angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/Config/partials/checkbox.html", "app/Config/partials/fieldselect.html", "app/Config/partials/sorter.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html", "app/Config/partials/columnConfig.html"]);
+angular.module("enilia.overlay.tpls", [
+	"app/Config/config.html",
+	"app/Config/partials/checkbox.html",
+	"app/Config/partials/columnConfig.html",
+	"app/Config/partials/fieldselect.html",
+	"app/Config/partials/sorter.html",
+	"app/Debug/debug.html",
+	"app/DpsMeter/dpsmeter.html",
+	"app/DpsMeter/partials/combatant.html",
+	"app/DpsMeter/partials/combatants.html",
+	"app/DpsMeter/partials/encounter.html",
+]);
 
 angular.module("app/Config/config.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/config.html",
@@ -22,36 +33,6 @@ angular.module("app/Config/config.html", []).run(["$templateCache", function($te
     "");
 }]);
 
-angular.module("app/Debug/debug.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Debug/debug.html",
-    "\n" +
-    "debug\n" +
-    "\n" +
-    "<div>{{loc.path()}}</div>\n" +
-    "<div>{{loc.url()}}</div>\n" +
-    "<div>{{loc.absUrl()}}</div>\n" +
-    "");
-}]);
-
-angular.module("app/DpsMeter/dpsmeter.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/DpsMeter/dpsmeter.html",
-    "\n" +
-    "<div class=\"menu\">\n" +
-    "	<a class=\"glyphicon\"\n" +
-    "	   ng-class=\"{\n" +
-    "	   	'glyphicon-object-align-top':		!expandFromBottom,\n" +
-    "	   	'glyphicon-object-align-bottom':	expandFromBottom}\"\n" +
-    "	   ng-click=\"setExpandFromBottom(!expandFromBottom)\"></a>\n" +
-    "	<a href=\"#/config\" class=\"glyphicon glyphicon-cog\"></a>\n" +
-    "</div>\n" +
-    "\n" +
-    "<div>\n" +
-    "	<encounter encounter=\"encounter\" active=\"active\"></encounter>\n" +
-    "	<combatants combatants=\"combatants\"></combatants>\n" +
-    "</div>\n" +
-    "");
-}]);
-
 angular.module("app/Config/partials/checkbox.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/partials/checkbox.html",
     "<span class=\"glyphicon\"\n" +
@@ -60,6 +41,25 @@ angular.module("app/Config/partials/checkbox.html", []).run(["$templateCache", f
     "			'glyphicon-unchecked':	!checked}\"\n" +
     "		ng-click=\"click()\"\n" +
     "		prevent-selection></span>\n" +
+    "");
+}]);
+
+angular.module("app/Config/partials/columnConfig.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/columnConfig.html",
+    "\n" +
+    "<div ng-repeat=\"col in cols\" class=\"cols\">\n" +
+    "	<span class=\"index\">({{$index}})</span>\n" +
+    "	<sorter ng-model=\"cols\" index=\"$index\"></sorter>\n" +
+    "	<span class=\"glyphicon glyphicon-minus\"\n" +
+    "		  ng-click=\"remove($event, $index)\"\n" +
+    "		  ng-class=\"{remove: removeIndex === $index}\"\n" +
+    "		  prevent-selection></span>\n" +
+    "	<fieldselect selected=\"col.name\"></fieldselect>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div>\n" +
+    "	<span class=\"glyphicon glyphicon-plus\" ng-click=\"add()\" prevent-selection></span>\n" +
+    "</div>\n" +
     "");
 }]);
 
@@ -97,6 +97,36 @@ angular.module("app/Config/partials/sorter.html", []).run(["$templateCache", fun
     "		  ng-click=\"!$last &amp;&amp; down()\"\n" +
     "		  prevent-selection></span>\n" +
     "</span>\n" +
+    "");
+}]);
+
+angular.module("app/Debug/debug.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Debug/debug.html",
+    "\n" +
+    "debug\n" +
+    "\n" +
+    "<div>{{loc.path()}}</div>\n" +
+    "<div>{{loc.url()}}</div>\n" +
+    "<div>{{loc.absUrl()}}</div>\n" +
+    "");
+}]);
+
+angular.module("app/DpsMeter/dpsmeter.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/DpsMeter/dpsmeter.html",
+    "\n" +
+    "<div class=\"menu\">\n" +
+    "	<a class=\"glyphicon\"\n" +
+    "	   ng-class=\"{\n" +
+    "	   	'glyphicon-object-align-top':		!expandFromBottom,\n" +
+    "	   	'glyphicon-object-align-bottom':	expandFromBottom}\"\n" +
+    "	   ng-click=\"setExpandFromBottom(!expandFromBottom)\"></a>\n" +
+    "	<a href=\"#/config\" class=\"glyphicon glyphicon-cog\"></a>\n" +
+    "</div>\n" +
+    "\n" +
+    "<div>\n" +
+    "	<encounter encounter=\"encounter\" active=\"active\"></encounter>\n" +
+    "	<combatants combatants=\"combatants\"></combatants>\n" +
+    "</div>\n" +
     "");
 }]);
 
@@ -148,25 +178,6 @@ angular.module("app/DpsMeter/partials/encounter.html", []).run(["$templateCache"
     "	<div class=\"encdps\">\n" +
     "		{{encounter.encdps}}\n" +
     "	</div>\n" +
-    "</div>\n" +
-    "");
-}]);
-
-angular.module("app/Config/partials/columnConfig.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Config/partials/columnConfig.html",
-    "\n" +
-    "<div ng-repeat=\"col in cols\" class=\"cols\">\n" +
-    "	<span class=\"index\">({{$index}})</span>\n" +
-    "	<sorter ng-model=\"cols\" index=\"$index\"></sorter>\n" +
-    "	<span class=\"glyphicon glyphicon-minus\"\n" +
-    "		  ng-click=\"remove($event, $index)\"\n" +
-    "		  ng-class=\"{remove: removeIndex === $index}\"\n" +
-    "		  prevent-selection></span>\n" +
-    "	<fieldselect selected=\"col.name\"></fieldselect>\n" +
-    "</div>\n" +
-    "\n" +
-    "<div>\n" +
-    "	<span class=\"glyphicon glyphicon-plus\" ng-click=\"add()\" prevent-selection></span>\n" +
     "</div>\n" +
     "");
 }]);
