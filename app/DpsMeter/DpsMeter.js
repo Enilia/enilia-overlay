@@ -2,7 +2,8 @@
 
 angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 										   'ngStorage',
-										   'enilia.overlay.tpls'])
+										   'enilia.overlay.tpls',
+										   'enilia.overlay.config'])
 
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
