@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/DpsMeter/dpsmeter.html", "app/Debug/debug.html", "app/Config/partials/checkbox.html", "app/Config/partials/columnConfig.html", "app/Config/partials/fieldselect.html", "app/Config/partials/sorter.html", "app/DpsMeter/partials/combatant.html", "app/Config/partials/presetConfig.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html"]);
-=======
-angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/Config/partials/checkbox.html", "app/Config/partials/fieldselect.html", "app/Config/partials/sorter.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html", "app/Config/partials/columnConfig.html"]);
->>>>>>> master
+angular.module("enilia.overlay.tpls", ["app/Config/config.html", "app/Debug/debug.html", "app/DpsMeter/dpsmeter.html", "app/Config/partials/checkbox.html", "app/Config/partials/columnConfig.html", "app/Config/partials/fieldselect.html", "app/Config/partials/presetConfig.html", "app/Config/partials/sorter.html", "app/DpsMeter/partials/combatant.html", "app/DpsMeter/partials/combatants.html", "app/DpsMeter/partials/encounter.html"]);
 
 angular.module("app/Config/config.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/config.html",
@@ -60,20 +56,6 @@ angular.module("app/DpsMeter/dpsmeter.html", []).run(["$templateCache", function
     "");
 }]);
 
-<<<<<<< HEAD
-angular.module("app/Debug/debug.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Debug/debug.html",
-    "\n" +
-    "debug\n" +
-    "\n" +
-    "<div>{{loc.path()}}</div>\n" +
-    "<div>{{loc.url()}}</div>\n" +
-    "<div>{{loc.absUrl()}}</div>\n" +
-    "");
-}]);
-
-=======
->>>>>>> master
 angular.module("app/Config/partials/checkbox.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/partials/checkbox.html",
     "<span class=\"glyphicon\"\n" +
@@ -82,7 +64,6 @@ angular.module("app/Config/partials/checkbox.html", []).run(["$templateCache", f
     "			'glyphicon-unchecked':	!checked}\"\n" +
     "		ng-click=\"click()\"\n" +
     "		prevent-selection></span>\n" +
-<<<<<<< HEAD
     "");
 }]);
 
@@ -102,8 +83,6 @@ angular.module("app/Config/partials/columnConfig.html", []).run(["$templateCache
     "<div>\n" +
     "	<span class=\"glyphicon glyphicon-plus\" ng-click=\"add()\" prevent-selection></span>\n" +
     "</div>\n" +
-=======
->>>>>>> master
     "");
 }]);
 
@@ -129,45 +108,6 @@ angular.module("app/Config/partials/fieldselect.html", []).run(["$templateCache"
     "");
 }]);
 
-angular.module("app/Config/partials/sorter.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Config/partials/sorter.html",
-    "<span class=\"sorter\">\n" +
-    "	<span class=\"glyphicon glyphicon-chevron-up\"\n" +
-    "		  ng-class=\"{disabled: $first}\"\n" +
-    "		  ng-click=\"!$first &amp;&amp; up()\"\n" +
-    "		  prevent-selection></span>\n" +
-    "	<span class=\"glyphicon glyphicon-chevron-down\"\n" +
-    "		  ng-class=\"{disabled: $last}\"\n" +
-    "		  ng-click=\"!$last &amp;&amp; down()\"\n" +
-    "		  prevent-selection></span>\n" +
-    "</span>\n" +
-    "");
-}]);
-
-angular.module("app/DpsMeter/partials/combatant.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/DpsMeter/partials/combatant.html",
-    "\n" +
-<<<<<<< HEAD
-    "	<!-- <td><img class=\"job\" ng-src=\"images/glow/{{Job}}.png\" /></td> -->\n" +
-    "	<td class=\"job\">{{name}}</td>\n" +
-    "	<td>{{encdps}}</td>\n" +
-    "	<td>{{damagePct}}</td>\n" +
-    "	<td>{{enchps}}</td>\n" +
-    "	<td>{{healedPct}}</td>\n" +
-    "	<td>{{OverHealPct}}</td>\n" +
-=======
-    "	<td class=\"job\">{{combatant.name}}</td>\n" +
-    "	<td>{{combatant.encdps}}</td>\n" +
-    "	<td>{{combatant.damagePct}}</td>\n" +
-    "	<td>{{combatant.enchps}}</td>\n" +
-    "	<td>{{combatant.healedPct}}</td>\n" +
-    "	<td>{{combatant.OverHealPct}}</td>\n" +
->>>>>>> master
-    "\n" +
-    "");
-}]);
-
-<<<<<<< HEAD
 angular.module("app/Config/partials/presetConfig.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/Config/partials/presetConfig.html",
     "\n" +
@@ -191,8 +131,34 @@ angular.module("app/Config/partials/presetConfig.html", []).run(["$templateCache
     "");
 }]);
 
-=======
->>>>>>> master
+angular.module("app/Config/partials/sorter.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/sorter.html",
+    "<span class=\"sorter\">\n" +
+    "	<span class=\"glyphicon glyphicon-chevron-up\"\n" +
+    "		  ng-class=\"{disabled: $first}\"\n" +
+    "		  ng-click=\"!$first &amp;&amp; up()\"\n" +
+    "		  prevent-selection></span>\n" +
+    "	<span class=\"glyphicon glyphicon-chevron-down\"\n" +
+    "		  ng-class=\"{disabled: $last}\"\n" +
+    "		  ng-click=\"!$last &amp;&amp; down()\"\n" +
+    "		  prevent-selection></span>\n" +
+    "</span>\n" +
+    "");
+}]);
+
+angular.module("app/DpsMeter/partials/combatant.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/DpsMeter/partials/combatant.html",
+    "\n" +
+    "	<td class=\"job\">{{combatant.name}}</td>\n" +
+    "	<td>{{combatant.encdps}}</td>\n" +
+    "	<td>{{combatant.damagePct}}</td>\n" +
+    "	<td>{{combatant.enchps}}</td>\n" +
+    "	<td>{{combatant.healedPct}}</td>\n" +
+    "	<td>{{combatant.OverHealPct}}</td>\n" +
+    "\n" +
+    "");
+}]);
+
 angular.module("app/DpsMeter/partials/combatants.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("app/DpsMeter/partials/combatants.html",
     "<div class=\"combatants\">\n" +
@@ -231,25 +197,3 @@ angular.module("app/DpsMeter/partials/encounter.html", []).run(["$templateCache"
     "</div>\n" +
     "");
 }]);
-<<<<<<< HEAD
-=======
-
-angular.module("app/Config/partials/columnConfig.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Config/partials/columnConfig.html",
-    "\n" +
-    "<div ng-repeat=\"col in cols\" class=\"cols\">\n" +
-    "	<span class=\"index\">({{$index}})</span>\n" +
-    "	<sorter ng-model=\"cols\" index=\"$index\"></sorter>\n" +
-    "	<span class=\"glyphicon glyphicon-minus\"\n" +
-    "		  ng-click=\"remove($event, $index)\"\n" +
-    "		  ng-class=\"{remove: removeIndex === $index}\"\n" +
-    "		  prevent-selection></span>\n" +
-    "	<fieldselect selected=\"col.name\"></fieldselect>\n" +
-    "</div>\n" +
-    "\n" +
-    "<div>\n" +
-    "	<span class=\"glyphicon glyphicon-plus\" ng-click=\"add()\" prevent-selection></span>\n" +
-    "</div>\n" +
-    "");
-}]);
->>>>>>> master
