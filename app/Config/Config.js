@@ -1,55 +1,10 @@
 ;(function() {
 
-if (!Array.prototype.findIndex) {
-  Array.prototype.findIndex = function(predicate) {
-    if (this == null) {
-      throw new TypeError('Array.prototype.findIndex appelé sur null ou undefined');
-    }
-    if (typeof predicate !== 'function') {
-      throw new TypeError('predicate doit être une fonction');
-    }
-    var list = Object(this);
-    var length = list.length >>> 0;
-    var thisArg = arguments[1];
-    var value;
-
-    for (var i = 0; i < length; i++) {
-      value = list[i];
-      if (predicate.call(thisArg, value, i, list)) {
-        return i;
-      }
-    }
-    return -1;
-  };
-}
-
-if (!Array.prototype.find) {
-  Array.prototype.find = function(predicate) {
-    if (this == null) {
-      throw new TypeError('Array.prototype.find a été appelé sur null ou undefined');
-    }
-    if (typeof predicate !== 'function') {
-      throw new TypeError('predicate doit être une fonction');
-    }
-    var list = Object(this);
-    var length = list.length >>> 0;
-    var thisArg = arguments[1];
-    var value;
-
-    for (var i = 0; i < length; i++) {
-      value = list[i];
-      if (predicate.call(thisArg, value, i, list)) {
-        return value;
-      }
-    }
-    return undefined;
-  };
-}
-
 angular.module('enilia.overlay.config', ['ngRoute',
 										 'ngStorage',
 										 'enilia.overlay.tpls',
-										 'enilia.overlay.dpsmeter'])
+										 'enilia.overlay.dpsmeter',
+										 'enilia.overlay.polyfills'])
 
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
