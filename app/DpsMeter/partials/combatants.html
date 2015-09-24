@@ -10,7 +10,7 @@
 				<td width="2em">(%)</td>
 				<td width="2em">overheal</td>
 			</tr>
-			<tr combatant ng-repeat="combatant in combatants track by combatant.name" ng-class="Job"></tr>
+			<tr combatant="combatant" bestdps="bestdps" ng-repeat="combatant in combatants track by combatant.name" ng-class="combatant.Job"></tr>
 			<tr ng-hide="combatants">
 				<td colspan="6" class="waiting">
 					<div>--- Waiting for Data ---</div>
