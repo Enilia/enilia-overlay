@@ -92,14 +92,6 @@ angular.module('enilia.overlay.config', ['ngRoute',
 						]
 					}
 				],
-				cols: [
-					{ name: 'name' },
-					{ name: 'encdps' },
-					{ name: 'damagePct' },
-					{ name: 'enchps' },
-					{ name: 'healedPct' },
-					{ name: 'OverHealPct' },
-				]
 			});
 		}])
 

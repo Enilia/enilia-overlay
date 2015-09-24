@@ -30,8 +30,34 @@ angular.module('enilia.overlay', ['ngRoute',
 
 				/* Placeholder for future db patchs */
 			} else {
-				$storage.$reset();
-				$storage.VERSION = VERSION;
+				$storage.$reset({
+					__uid:3,
+					preset: 1,
+					presets: [
+						{
+							__uid:1,
+							name:'DPS',
+							cols: [
+								{ name: 'name' },
+								{ name: 'encdps' },
+								{ name: 'damagePct' },
+							]
+						},
+						{
+							__uid:2,
+							name:'Heal',
+							cols : [
+								{ name: 'name' },
+								{ name: 'encdps' },
+								{ name: 'damagePct' },
+								{ name: 'enchps' },
+								{ name: 'healedPct' },
+								{ name: 'OverHealPct' },
+							]
+						}
+					],
+					VERSION: VERSION,
+				});
 			}
 		}])
 
