@@ -47,6 +47,8 @@ input, button {
     color:#E2EBF5;
     text-shadow: -1px 0 3px #217AA2, 0 1px 3px #217AA2, 1px 0 3px #217AA2, 0 -1px 3px #217AA2;
     font-weight: 300;
+    background: rgba(0,0,0,0.4);
+    padding: 0 0.2em;
 }
 
 a,

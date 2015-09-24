@@ -94,9 +94,14 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		function configPresetController($scope, $routeParams, $storage) {
 
 			$scope.preset = angular.copy($storage.presets[$routeParams.presetId]);
+			$scope.name = $routeParams.presetId;
 
 			$scope.save = function() {
-
+				if(angular.equals($storage.preset, $storage.presets[$routeParams.presetId])) {
+					$storage.preset = $scope.preset;
+				}
+				delete $storage.presets[$routeParams.presetId];
+				$storage.presets[$scope.name] = $scope.preset;
 			};
 
 		}])

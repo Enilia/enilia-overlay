@@ -103,6 +103,10 @@ angular.module("app/Config/partials/presetConfig.html", []).run(["$templateCache
     "\n" +
     "<div class=\"config\">\n" +
     "\n" +
+    "	<div style=\"display:flex\">\n" +
+    "		<span style=\"flex: 0 0 auto\">Name: </span><input type=\"text\" ng-model=\"name\" />\n" +
+    "	</div>\n" +
+    "\n" +
     "	<div>\n" +
     "		<a href=\"#/config\" class=\"glyphicon glyphicon-arrow-left\"></a>\n" +
     "	</div>\n" +
