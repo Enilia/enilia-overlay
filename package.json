@@ -5,7 +5,7 @@
   "main": "createTemplates.js",
   "scripts": {
     "install": "bower install",
-    "export-tpl": "node createTemplates.js",
+    "export-tpl": "node templatesExport.js",
     "build": "node build.js"
   },
   "author": "",
