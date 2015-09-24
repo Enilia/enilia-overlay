@@ -1,10 +1,10 @@
 angular.module("enilia.overlay.tpls", [
 	"app/Config/config.html",
-	"app/Config/partials/checkbox.html",
-	"app/Config/partials/columnConfig.html",
-	"app/Config/partials/fieldselect.html",
-	"app/Config/partials/presetConfig.html",
-	"app/Config/partials/sorter.html",
+	"app/Config/partials/formcontrols/checkbox.html",
+	"app/Config/partials/formcontrols/columnConfig.html",
+	"app/Config/partials/formcontrols/fieldselect.html",
+	"app/Config/partials/formcontrols/sorter.html",
+	"app/Config/partials/preset.html",
 	"app/Debug/debug.html",
 	"app/DpsMeter/dpsmeter.html",
 	"app/DpsMeter/partials/combatant.html",
@@ -42,8 +42,8 @@ angular.module("app/Config/config.html", []).run(["$templateCache", function($te
     "");
 }]);
 
-angular.module("app/Config/partials/checkbox.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Config/partials/checkbox.html",
+angular.module("app/Config/partials/formcontrols/checkbox.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/formcontrols/checkbox.html",
     "<span class=\"glyphicon\"\n" +
     "		ng-class=\"{\n" +
     "			'glyphicon-check':		checked,\n" +
@@ -53,8 +53,8 @@ angular.module("app/Config/partials/checkbox.html", []).run(["$templateCache", f
     "");
 }]);
 
-angular.module("app/Config/partials/columnConfig.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Config/partials/columnConfig.html",
+angular.module("app/Config/partials/formcontrols/columnConfig.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/formcontrols/columnConfig.html",
     "\n" +
     "<div ng-repeat=\"col in cols\" class=\"cols\">\n" +
     "	<span class=\"index\">({{$index}})</span>\n" +
@@ -72,8 +72,8 @@ angular.module("app/Config/partials/columnConfig.html", []).run(["$templateCache
     "");
 }]);
 
-angular.module("app/Config/partials/fieldselect.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Config/partials/fieldselect.html",
+angular.module("app/Config/partials/formcontrols/fieldselect.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/formcontrols/fieldselect.html",
     "\n" +
     "<div class=\"fieldselect\" ng-class=\"{ expanded: isExpanded }\">\n" +
     "\n" +
@@ -94,8 +94,23 @@ angular.module("app/Config/partials/fieldselect.html", []).run(["$templateCache"
     "");
 }]);
 
-angular.module("app/Config/partials/presetConfig.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Config/partials/presetConfig.html",
+angular.module("app/Config/partials/formcontrols/sorter.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/formcontrols/sorter.html",
+    "<span class=\"sorter\">\n" +
+    "	<span class=\"glyphicon glyphicon-chevron-up\"\n" +
+    "		  ng-class=\"{disabled: $first}\"\n" +
+    "		  ng-click=\"!$first &amp;&amp; up()\"\n" +
+    "		  prevent-selection></span>\n" +
+    "	<span class=\"glyphicon glyphicon-chevron-down\"\n" +
+    "		  ng-class=\"{disabled: $last}\"\n" +
+    "		  ng-click=\"!$last &amp;&amp; down()\"\n" +
+    "		  prevent-selection></span>\n" +
+    "</span>\n" +
+    "");
+}]);
+
+angular.module("app/Config/partials/preset.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("app/Config/partials/preset.html",
     "\n" +
     "<div class=\"menu\">\n" +
     "	<a href=\"#/dpsmeter\" class=\"glyphicon glyphicon-tasks\"></a>\n" +
@@ -118,21 +133,6 @@ angular.module("app/Config/partials/presetConfig.html", []).run(["$templateCache
     "	</div>\n" +
     "\n" +
     "</div>\n" +
-    "");
-}]);
-
-angular.module("app/Config/partials/sorter.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("app/Config/partials/sorter.html",
-    "<span class=\"sorter\">\n" +
-    "	<span class=\"glyphicon glyphicon-chevron-up\"\n" +
-    "		  ng-class=\"{disabled: $first}\"\n" +
-    "		  ng-click=\"!$first &amp;&amp; up()\"\n" +
-    "		  prevent-selection></span>\n" +
-    "	<span class=\"glyphicon glyphicon-chevron-down\"\n" +
-    "		  ng-class=\"{disabled: $last}\"\n" +
-    "		  ng-click=\"!$last &amp;&amp; down()\"\n" +
-    "		  prevent-selection></span>\n" +
-    "</span>\n" +
     "");
 }]);
 

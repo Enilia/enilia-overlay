@@ -12,7 +12,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 				controller: 'configController'
 			})
 			.when('/config/preset/:presetId', {
-				templateUrl:'app/Config/partials/presetConfig.html',
+				templateUrl:'app/Config/partials/preset.html',
 				controller: 'configPresetController'
 			})
 	}])
@@ -156,7 +156,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 	.directive('columnConfig', function columnConfigDirective() {
 		return {
 			restrict:'E',
-			templateUrl:'app/Config/partials/columnConfig.html',
+			templateUrl:'app/Config/partials/formcontrols/columnConfig.html',
 			scope: {
 				cols: '='
 			},
@@ -199,7 +199,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 	.directive('fieldselect', function fieldselectDirective() {
 		return {
 			restrict:'E',
-			templateUrl:'app/Config/partials/fieldselect.html',
+			templateUrl:'app/Config/partials/formcontrols/fieldselect.html',
 			scope: {
 				ngModel: '=',
 				options: '=',
@@ -238,7 +238,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 	.directive('checkbox', function checkboxDirective() {
 		return {
 			restrict:'E',
-			templateUrl:'app/Config/partials/checkbox.html',
+			templateUrl:'app/Config/partials/formcontrols/checkbox.html',
 			scope: {
 				checked: '='
 			},
@@ -256,7 +256,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 	.directive('sorter', function sorterDirective() {
 		return {
 			restrict:'E',
-			templateUrl:'app/Config/partials/sorter.html',
+			templateUrl:'app/Config/partials/formcontrols/sorter.html',
 			scope: {
 				ngModel:'=',
 				$index:'=index',
