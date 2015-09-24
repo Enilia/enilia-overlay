@@ -2,13 +2,21 @@
 <div ng-repeat="col in cols" class="cols">
 	<span class="index">({{$index}})</span>
 	<sorter ng-model="cols" index="$index"></sorter>
-	<span class="glyphicon glyphicon-minus"
+	<span class="glyphicon"
 		  ng-click="remove($event, $index)"
-		  ng-class="{remove: removeIndex === $index}"
+		  ng-class="{
+		    'glyphicon-minus': removeIndex !== $index,
+		  	'glyphicon-trash': removeIndex === $index,
+		  	remove: removeIndex === $index
+		  }"
 		  prevent-selection></span>
 	<fieldselect ng-model="col.name" options="colsCollection"></fieldselect>
 </div>
-
 <div>
-	<span class="glyphicon glyphicon-plus" ng-click="add()" prevent-selection></span>
+	<span class="index">({{cols.length}})</span>
+	<sorter ng-model="newcol" index="0"></sorter>
+	<span class="glyphicon glyphicon-plus"
+		  ng-click="add(newcol[0])"
+		  prevent-selection></span>
+	<fieldselect ng-model="newcol[0].name" options="colsCollection"></fieldselect>
 </div>

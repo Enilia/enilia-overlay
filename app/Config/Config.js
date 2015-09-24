@@ -3,6 +3,7 @@
 angular.module('enilia.overlay.config', ['ngRoute',
 										 'ngStorage',
 										 'enilia.overlay.tpls',
+										 'enilia.overlay.dpsmeter',
 										 'enilia.overlay.polyfills'])
 
 	.config(['$routeProvider', function($routeProvider) {
@@ -11,9 +12,17 @@ angular.module('enilia.overlay.config', ['ngRoute',
 				templateUrl: 'app/Config/config.html',
 				controller: 'configController'
 			})
-			.when('/config/preset/:presetId', {
+			.when('/config/preset/new', {
 				templateUrl:'app/Config/partials/preset.html',
-				controller: 'configPresetController'
+				controller: 'newPresetController'
+			})
+			.when('/config/preset/:presetId/edit', {
+				templateUrl:'app/Config/partials/preset.html',
+				controller: 'editPresetController'
+			})
+			.when('/config/preset/:cloneId/clone', {
+				templateUrl:'app/Config/partials/preset.html',
+				controller: 'clonePresetController'
 			})
 	}])
 
@@ -106,19 +115,28 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		}])
 
 	.controller('configController',
-		['$scope', 'presetManager',
-		function configController($scope, presetManager) {
+		['$scope', 'presetManager', '$document',
+		function configController($scope, presetManager, $document) {
 
 			$scope.globalExpandFromBottom = $scope.getExpandFromBottom();
 			$scope.setExpandFromBottom(false, false);
 
 			$scope.presets = presetManager.getAll();
-			$scope.preset = presetManager.get();
-			$scope.onPresetChange = function onPresetChange(preset) {
-				presetManager.set(preset);
+			$scope.selectedPreset = presetManager.get();
+			$scope.select = function select(preset) {
+				$scope.selectedPreset = presetManager.set(preset);
 			}
-
-			$scope.save = function() {
+			$scope.remove = function($event, preset) {
+				if($scope.checkRemove === preset) {
+					presetManager.remove(preset);
+				} else {
+					$scope.checkRemove = preset;
+					$document.one('click', function() {
+						delete $scope.checkRemove;
+						$scope.$apply();
+					});
+					$event.stopPropagation();
+				}
 			};
 
 			$scope.$on('$destroy', function() {
@@ -127,7 +145,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 
 		}])
 
-	.controller('configPresetController',
+	.controller('editPresetController',
 		['$scope', '$routeParams', 'presetManager',
 		function configPresetController($scope, $routeParams, presetManager) {
 
@@ -135,6 +153,37 @@ angular.module('enilia.overlay.config', ['ngRoute',
 
 			$scope.save = function() {
 				presetManager.update($scope.preset);
+			};
+
+		}])
+
+	.controller('newPresetController',
+		['$scope', 'presetManager',
+		function configPresetController($scope, presetManager) {
+
+			$scope.preset = {
+				name:'Name',
+				cols: [
+					{ name: 'name' },
+					{ name: 'encdps' },
+					{ name: 'damagePct' },
+				]
+			};
+
+			$scope.save = function() {
+				presetManager.add($scope.preset);
+			};
+
+		}])
+
+	.controller('clonePresetController',
+		['$scope', '$routeParams', 'presetManager',
+		function configPresetController($scope, $routeParams, presetManager) {
+
+			$scope.preset = angular.copy(presetManager.get(parseInt($routeParams.cloneId)));
+
+			$scope.save = function() {
+				presetManager.add($scope.preset);
 			};
 
 		}])
@@ -189,8 +238,11 @@ angular.module('enilia.overlay.config', ['ngRoute',
 						}
 					};
 
-					$scope.add = function() {
-						$scope.cols.push({ name: 'name' })
+
+					$scope.newcol = [{name:'name'}];
+
+					$scope.add = function(newcol) {
+						$scope.cols.push({ name: newcol.name })
 					}
 				}],
 		}
@@ -229,7 +281,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 					$scope.setSelected = function(option) {
 						$scope.ngModel = option.value;
 						$scope.selectedLabel = option.label;
-						$scope.onChange(option.value);
+						($scope.onChange || angular.identity)(option.value);
 					};
 				}],
 		}

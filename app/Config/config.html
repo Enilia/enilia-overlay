@@ -4,22 +4,34 @@
 </div>
 
 <div class="config">
-	<!-- <div>
-		<checkbox checked="confExpandFromBottom"></checkbox> expand from bottom
-	</div> -->
 
 	<div>
-		<fieldselect ng-model="preset" options="presets" label="name" on-change="onPresetChange"></fieldselect>
+		<h1>Presets</h1>
+		<div ng-repeat="preset in presets">
+			<span class="glyphicon"
+				  ng-click="remove($event, preset)"
+				  ng-class="{
+				    'glyphicon-minus': checkRemove !== preset,
+				  	'glyphicon-trash': checkRemove === preset,
+				  	'remove': checkRemove === preset
+				  }"
+				  prevent-selection></span>
+			<a 
+			   class="glyphicon glyphicon-eye-open"></a>
+			<a ng-href="#/config/preset/{{preset.__uid}}/clone"
+			   class="glyphicon glyphicon-duplicate"></a>
+			<a ng-href="#/config/preset/{{preset.__uid}}/edit"
+			   class="glyphicon glyphicon-wrench"></a>
+			<span class="field"
+				  ng-class="{selected: selectedPreset === preset}"
+				  ng-click="select(preset)"
+				  >{{preset.name}}</span>
+		</div>
 	</div>
 
 	<div>
-		<span ng-repeat="preset in presets">
-			<a class="field" ng-href="#/config/preset/{{preset.__uid}}"><span class="glyphicon glyphicon-wrench"></span> {{preset.name}}</a>
-		</span>
-	</div>
-
-	<div>
-		<a href="#/dpsmeter" class="glyphicon glyphicon-ok" ng-click="save()"></a>
+		<a ng-href="#/config/preset/new"
+		   class="glyphicon glyphicon-plus"></a>
 	</div>
 
 </div>

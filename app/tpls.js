@@ -20,22 +20,34 @@ angular.module("app/Config/config.html", []).run(["$templateCache", function($te
     "</div>\n" +
     "\n" +
     "<div class=\"config\">\n" +
-    "	<!-- <div>\n" +
-    "		<checkbox checked=\"confExpandFromBottom\"></checkbox> expand from bottom\n" +
-    "	</div> -->\n" +
     "\n" +
     "	<div>\n" +
-    "		<fieldselect ng-model=\"preset\" options=\"presets\" label=\"name\" on-change=\"onPresetChange\"></fieldselect>\n" +
+    "		<h1>Presets</h1>\n" +
+    "		<div ng-repeat=\"preset in presets\">\n" +
+    "			<span class=\"glyphicon\"\n" +
+    "				  ng-click=\"remove($event, preset)\"\n" +
+    "				  ng-class=\"{\n" +
+    "				    'glyphicon-minus': checkRemove !== preset,\n" +
+    "				  	'glyphicon-trash': checkRemove === preset,\n" +
+    "				  	'remove': checkRemove === preset\n" +
+    "				  }\"\n" +
+    "				  prevent-selection></span>\n" +
+    "			<a \n" +
+    "			   class=\"glyphicon glyphicon-eye-open\"></a>\n" +
+    "			<a ng-href=\"#/config/preset/{{preset.__uid}}/clone\"\n" +
+    "			   class=\"glyphicon glyphicon-duplicate\"></a>\n" +
+    "			<a ng-href=\"#/config/preset/{{preset.__uid}}/edit\"\n" +
+    "			   class=\"glyphicon glyphicon-wrench\"></a>\n" +
+    "			<span class=\"field\"\n" +
+    "				  ng-class=\"{selected: selectedPreset === preset}\"\n" +
+    "				  ng-click=\"select(preset)\"\n" +
+    "				  >{{preset.name}}</span>\n" +
+    "		</div>\n" +
     "	</div>\n" +
     "\n" +
     "	<div>\n" +
-    "		<span ng-repeat=\"preset in presets\">\n" +
-    "			<a class=\"field\" ng-href=\"#/config/preset/{{preset.__uid}}\"><span class=\"glyphicon glyphicon-wrench\"></span> {{preset.name}}</a>\n" +
-    "		</span>\n" +
-    "	</div>\n" +
-    "\n" +
-    "	<div>\n" +
-    "		<a href=\"#/dpsmeter\" class=\"glyphicon glyphicon-ok\" ng-click=\"save()\"></a>\n" +
+    "		<a ng-href=\"#/config/preset/new\"\n" +
+    "		   class=\"glyphicon glyphicon-plus\"></a>\n" +
     "	</div>\n" +
     "\n" +
     "</div>\n" +
@@ -59,15 +71,23 @@ angular.module("app/Config/partials/formcontrols/columnConfig.html", []).run(["$
     "<div ng-repeat=\"col in cols\" class=\"cols\">\n" +
     "	<span class=\"index\">({{$index}})</span>\n" +
     "	<sorter ng-model=\"cols\" index=\"$index\"></sorter>\n" +
-    "	<span class=\"glyphicon glyphicon-minus\"\n" +
+    "	<span class=\"glyphicon\"\n" +
     "		  ng-click=\"remove($event, $index)\"\n" +
-    "		  ng-class=\"{remove: removeIndex === $index}\"\n" +
+    "		  ng-class=\"{\n" +
+    "		    'glyphicon-minus': removeIndex !== $index,\n" +
+    "		  	'glyphicon-trash': removeIndex === $index,\n" +
+    "		  	remove: removeIndex === $index\n" +
+    "		  }\"\n" +
     "		  prevent-selection></span>\n" +
     "	<fieldselect ng-model=\"col.name\" options=\"colsCollection\"></fieldselect>\n" +
     "</div>\n" +
-    "\n" +
     "<div>\n" +
-    "	<span class=\"glyphicon glyphicon-plus\" ng-click=\"add()\" prevent-selection></span>\n" +
+    "	<span class=\"index\">({{cols.length}})</span>\n" +
+    "	<sorter ng-model=\"newcol\" index=\"0\"></sorter>\n" +
+    "	<span class=\"glyphicon glyphicon-plus\"\n" +
+    "		  ng-click=\"add(newcol[0])\"\n" +
+    "		  prevent-selection></span>\n" +
+    "	<fieldselect ng-model=\"newcol[0].name\" options=\"colsCollection\"></fieldselect>\n" +
     "</div>\n" +
     "");
 }]);
