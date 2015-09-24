@@ -5,6 +5,8 @@ angular.module('enilia.overlay', ['ngRoute',
 								  'enilia.overlay.dpsmeter',
 								  'enilia.overlay.config'])
 
+	.constant('VERSION', '0.1.1-beta')
+
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
 			.when('/', {
@@ -15,6 +17,23 @@ angular.module('enilia.overlay', ['ngRoute',
 				controller: 'debugController'
 			});
 	}])
+
+	.run(['$localStorage', 'VERSION',
+		function update($storage, VERSION) {
+			if($storage.VERSION) {
+				var version = $storage.VERSION.match(/(\d+).(\d+).(\d+)(?:-(.+))/)
+				  , major = version[1]
+				  , minor = version[2]
+				  , patch = version[3]
+				  , build = version[4]
+				  ;
+
+				/* Placeholder for future db patchs */
+			} else {
+				$storage.$reset();
+				$storage.VERSION = VERSION;
+			}
+		}])
 
 	.run(['$rootScope',
 		  '$document',
