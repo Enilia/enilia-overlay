@@ -277,3 +277,25 @@ tr.Limit-Break {
     background-repeat: no-repeat, repeat;
     background-blend-mode: soft-light;
 }
+
+tr.Choco {
+    background: -webkit-gradient(linear, left top,right top, color-stop(0.95,rgba(245, 240, 0,0.3)), to(rgba(24,24,24,0.0))),
+                linear-gradient(to top, rgba(0,0,0,0.25) 0%,rgba(255,255,255,0.1) 40%);
+    background-attachment: fixed, scroll;
+    background-repeat: no-repeat, repeat;
+    background-blend-mode: soft-light;
+}
+
+
+tr.Titan,
+tr.Eos,
+tr.Selene,
+tr.Carbuncle,
+tr.Garuda,
+tr.Ifrit {
+    background: -webkit-gradient(linear, left top,right top, color-stop(0.95,rgba(153, 0, 245,0.3)), to(rgba(24,24,24,0.0))),
+                linear-gradient(to top, rgba(0,0,0,0.25) 0%,rgba(255,255,255,0.1) 40%);
+    background-attachment: fixed, scroll;
+    background-repeat: no-repeat, repeat;
+    background-blend-mode: soft-light;
+}
