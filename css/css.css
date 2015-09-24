@@ -137,6 +137,10 @@ checkbox .glyphicon {
     text-align: center;
 }
 
+.field .glyphicon {
+    font-size: 1em;
+}
+
 .fieldselect {
     display:inline;
 }

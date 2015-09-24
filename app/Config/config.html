@@ -9,8 +9,12 @@
 	</div> -->
 
 	<div>
-		<span ng-repeat="preset in presets">
-			<a class="field" ng-href="#/config/preset/{{preset.name}}">{{preset.name}}</a>
+		<fieldselect ng-model="preset" options="presets" label="{key}"></fieldselect>
+	</div>
+
+	<div>
+		<span ng-repeat="(name, preset) in presets">
+			<a class="field" ng-href="#/config/preset/{{name}}"><span class="glyphicon glyphicon-wrench"></span> {{name}}</a>
 		</span>
 	</div>
 

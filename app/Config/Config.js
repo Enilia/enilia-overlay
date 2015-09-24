@@ -21,17 +21,22 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		function($storage) {
 			// TODO: use $default for release
 			$storage.$reset({
-				presets: [
-					{
-						name:'DPS',
+				preset: {
+					cols: [
+						{ name: 'name' },
+						{ name: 'encdps' },
+						{ name: 'damagePct' },
+					]
+				},
+				presets: {
+					'DPS':{
 						cols: [
 							{ name: 'name' },
 							{ name: 'encdps' },
 							{ name: 'damagePct' },
 						]
 					},
-					{
-						name:'Heal',
+					'Heal':{
 						cols : [
 							{ name: 'name' },
 							{ name: 'encdps' },
@@ -41,7 +46,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 							{ name: 'OverHealPct' },
 						]
 					}
-				],
+				},
 				cols: [
 					{ name: 'name' },
 					{ name: 'encdps' },
@@ -68,15 +73,13 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		function configController($scope, $storage) {
 
 			$scope.globalExpandFromBottom = $scope.getExpandFromBottom();
-			// $scope.confExpandFromBottom = $storage.expandFromBottom;
 			$scope.setExpandFromBottom(false, false);
 
 			$scope.cols = $storage.cols.slice();
 			$scope.presets = $storage.presets;
+			$scope.preset = $storage.preset;
 
 			$scope.save = function() {
-				// $storage.expandFromBottom = $scope.confExpandFromBottom;
-				// $scope.globalExpandFromBottom = $scope.confExpandFromBottom;
 				$storage.cols = $scope.cols;
 			};
 
@@ -90,12 +93,11 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		['$scope', '$routeParams', '$localStorage',
 		function configPresetController($scope, $routeParams, $storage) {
 
+			$scope.preset = angular.copy($storage.presets[$routeParams.presetId]);
 
-			angular.forEach($storage.presets, function(preset) {
-				if(preset.name === $routeParams.presetId) {
-					$scope.preset = preset;
-				}
-			})
+			$scope.save = function() {
+
+			};
 
 		}])
 
@@ -125,11 +127,11 @@ angular.module('enilia.overlay.config', ['ngRoute',
 
 					$scope.colsCollection = [
 						"name","duration","DURATION","damage","damage-m","DAMAGE-k",
-						"DAMAGE-m","damage%","dps","DPS","DPS-k","encdps",
-						"ENCDPS","ENCDPS-k","hits","crithits","crithit%","misses",
+						"DAMAGE-m","damagePct","dps","DPS","DPS-k","encdps",
+						"ENCDPS","ENCDPS-k","hits","crithits","crithitPct","misses",
 						"hitfailed","swings","tohit","TOHIT","maxhit","MAXHIT",
-						"healed","healed%","enchps","ENCHPS","ENCHPS-k","critheals",
-						"critheal%","heals","cures","maxheal","MAXHEAL","maxhealward",
+						"healed","healedPct","enchps","ENCHPS","ENCHPS-k","critheals",
+						"crithealPct","heals","cures","maxheal","MAXHEAL","maxhealward",
 						"MAXHEALWARD","damagetaken","healstaken","powerdrain","powerheal","kills",
 						"deaths","threatstr","threatdelta","NAME3","NAME4","NAME5",
 						"NAME6","NAME7","NAME8","NAME9","NAME10","NAME11",
@@ -160,7 +162,6 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		return {
 			restrict:'E',
 			templateUrl:'app/Config/partials/fieldselect.html',
-			// require:'?ngModel',
 			scope: {
 				ngModel: '=',
 				options: '=',
@@ -170,20 +171,25 @@ angular.module('enilia.overlay.config', ['ngRoute',
 				function fieldselectController($scope, $parse) {
 
 					var parsedOptions = $scope.parsedOptions = []
-					  , getLabel = $scope.label ? $parse($scope.label) : angular.identity
+					  , getLabel = $scope.label ? ($scope.label === "{key}" ? getKey : $parse($scope.label)) : angular.identity
 					  ;
 
-					$scope.getLabel = getLabel;
+	  				function getKey(option, key) {
+	  					return key;
+	  				}
 
-					angular.forEach($scope.options, function(option) {
-						parsedOptions.push({
-							label:getLabel(option),
-							value:option
-						});
+					angular.forEach($scope.options, function(option, key) {
+						var obj = {
+								label:getLabel(option) || getLabel(null, key),
+								value:option
+							};
+						if(angular.equals(option, $scope.ngModel)) $scope.selectedLabel = obj.label;
+						parsedOptions.push(obj);
 					});
 
 					$scope.setSelected = function(option) {
 						$scope.ngModel = option.value;
+						$scope.selectedLabel = option.label;
 					};
 				}],
 		}

@@ -25,8 +25,12 @@ angular.module("app/Config/config.html", []).run(["$templateCache", function($te
     "	</div> -->\n" +
     "\n" +
     "	<div>\n" +
-    "		<span ng-repeat=\"preset in presets\">\n" +
-    "			<a class=\"field\" ng-href=\"#/config/preset/{{preset.name}}\">{{preset.name}}</a>\n" +
+    "		<fieldselect ng-model=\"preset\" options=\"presets\" label=\"{key}\"></fieldselect>\n" +
+    "	</div>\n" +
+    "\n" +
+    "	<div>\n" +
+    "		<span ng-repeat=\"(name, preset) in presets\">\n" +
+    "			<a class=\"field\" ng-href=\"#/config/preset/{{name}}\"><span class=\"glyphicon glyphicon-wrench\"></span> {{name}}</a>\n" +
     "		</span>\n" +
     "	</div>\n" +
     "\n" +
@@ -75,7 +79,7 @@ angular.module("app/Config/partials/fieldselect.html", []).run(["$templateCache"
     "\n" +
     "	<div class=\"selected field\"\n" +
     "		 ng-click=\"isExpanded = !isExpanded\"\n" +
-    "		 prevent-selection>{{getLabel(ngModel)}}</div>\n" +
+    "		 prevent-selection>{{selectedLabel}}</div>\n" +
     "\n" +
     "	<div class=\"fields\" ng-click=\"isExpanded = false\">\n" +
     "		<div class=\"field\"\n" +
@@ -106,7 +110,7 @@ angular.module("app/Config/partials/presetConfig.html", []).run(["$templateCache
     "	<column-config cols=\"preset.cols\"></column-config>\n" +
     "\n" +
     "	<div>\n" +
-    "		<a href=\"#/dpsmeter\" class=\"glyphicon glyphicon-ok\" ng-click=\"save()\"></a>\n" +
+    "		<a href=\"#/config\" class=\"glyphicon glyphicon-ok\" ng-click=\"save()\"></a>\n" +
     "	</div>\n" +
     "\n" +
     "</div>\n" +
