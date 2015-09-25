@@ -1,7 +1,2 @@
 
-	<td class="job">{{combatant.name}}</td>
-	<td>{{combatant.encdps}}</td>
-	<td>{{combatant.damagePct}}</td>
-	<td>{{combatant.enchps}}</td>
-	<td>{{combatant.healedPct}}</td>
-	<td>{{combatant.OverHealPct}}</td>
+	<td ng-repeat="col in cols" ng-class="[{job: $first}, col.value]">{{combatant[col.value]}}</td>

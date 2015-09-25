@@ -2,7 +2,8 @@
 
 angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 										   'ngStorage',
-										   'enilia.overlay.tpls'])
+										   'enilia.overlay.tpls',
+										   'enilia.overlay.config'])
 
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
@@ -72,10 +73,12 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 		}])
 
 	.controller('CombatantsController',
-		['$scope',
-		function CombatantsController($scope) {
+		['$scope', 'presetManager',
+		function CombatantsController($scope, presetManager) {
 
 			$scope.bestdps = 0;
+
+			$scope.headers = presetManager.get().cols;
 
 			$scope.$watch('combatants', update);
 
@@ -93,8 +96,10 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 		}])
 
 	.controller('CombatantController',
-		['$scope',
-		function CombatantController($scope) {
+		['$scope', 'presetManager',
+		function CombatantController($scope, presetManager) {
+
+			$scope.cols = presetManager.get().cols;
 
 			$scope.$watch('combatant', update);
 

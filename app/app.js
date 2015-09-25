@@ -5,7 +5,7 @@ angular.module('enilia.overlay', ['ngRoute',
 								  'enilia.overlay.dpsmeter',
 								  'enilia.overlay.config'])
 
-	.constant('VERSION', '0.1.1-beta')
+	.constant('VERSION', '1.0.0-beta')
 
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
@@ -30,8 +30,36 @@ angular.module('enilia.overlay', ['ngRoute',
 
 				/* Placeholder for future db patchs */
 			} else {
-				$storage.$reset();
-				$storage.VERSION = VERSION;
+				$storage.$reset({
+					__uid:3,
+					preset: 1,
+					presets: [
+						{
+							__uid:1,
+							name:'DPS',
+							cols: [
+								{label:  'Name',value: 'name'},
+								{label:  'Dps',value: 'encdps'},
+								{label:  'Dps%',value: 'damagePct'},
+								{label:  'Crit%',value: 'crithitPct'},
+								{label:  'Misses',value: 'misses'},
+							]
+						},
+						{
+							__uid:2,
+							name:'Heal',
+							cols : [
+								{label:  'Name',value: 'name'},
+								{label:  'Dps',value: 'encdps'},
+								{label:  'Dps%',value: 'damagePct'},
+								{label:  'Hps',value: 'enchps'},
+								{label:  'Hps%',value: 'healedPct'},
+								{label:  'OverHeal',value: 'OverHealPct'},
+							]
+						}
+					],
+					VERSION: VERSION,
+				});
 			}
 		}])
 
