@@ -160,6 +160,8 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		['$scope', '$routeParams', 'presetManager',
 		function configPresetController($scope, $routeParams, presetManager) {
 
+			$scope.title = "Editing";
+
 			$scope.preset = angular.copy(presetManager.get(parseInt($routeParams.presetId)));
 
 			$scope.save = function() {
@@ -172,6 +174,8 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		['$scope', 'presetManager',
 		function configPresetController($scope, presetManager) {
 
+			$scope.title = "Creating";
+
 			$scope.preset = presetManager.$getDefault();
 
 			$scope.save = function() {
@@ -183,6 +187,8 @@ angular.module('enilia.overlay.config', ['ngRoute',
 	.controller('clonePresetController',
 		['$scope', '$routeParams', 'presetManager',
 		function configPresetController($scope, $routeParams, presetManager) {
+
+			$scope.title = "Cloning";
 
 			$scope.preset = angular.copy(presetManager.get(parseInt($routeParams.cloneId)));
 
@@ -219,10 +225,10 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			}
 		}])
 
-	.directive('columnConfig', function columnConfigDirective() {
+	.directive('presetConfig', function presetConfigDirective() {
 		return {
 			restrict:'E',
-			templateUrl:'app/Config/partials/formcontrols/columnConfig.html',
+			templateUrl:'app/Config/partials/formcontrols/presetConfig.html',
 			scope: {
 				cols: '='
 			},

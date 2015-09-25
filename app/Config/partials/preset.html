@@ -1,21 +1,20 @@
 
 <div class="menu">
-	<a href="#/dpsmeter" class="glyphicon glyphicon-tasks"></a>
+	<a href="#/dpsmeter" class="glyphicon glyphicon-tasks menu-item"></a>
 </div>
 
 <div class="config">
 
-	<div style="display:flex">
-		<span style="flex: 0 0 auto">Name: </span><input type="text" ng-model="preset.name" />
+	<h1>{{title}}: {{preset.name}}</h1>
+
+	<div class="preset-name">
+		<span>Name: </span><input type="text" ng-model="preset.name" />
 	</div>
+
+	<preset-config cols="preset.cols"></preset-config>
 
 	<div>
 		<a href="#/config" class="glyphicon glyphicon-arrow-left"></a>
-	</div>
-
-	<column-config cols="preset.cols"></column-config>
-
-	<div>
 		<a href="#/config" class="glyphicon glyphicon-ok" ng-click="save()"></a>
 	</div>
 

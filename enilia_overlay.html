@@ -5,13 +5,11 @@
     <title></title>
     <script>document.write('<base href="' + document.location + '" />');</script>
     <link rel="stylesheet" type="text/css" href="js/vendor/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="js/vendor/angular-ui/build/angular-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="css/css.css" />
     <link rel="stylesheet" type="text/css" href="css/jobs.css" />
     <script type="text/javascript" src="js/vendor/angular/angular.min.js"></script>
     <script type="text/javascript" src="js/vendor/angular-route/angular-route.min.js"></script>
     <script type="text/javascript" src="js/vendor/ngstorage/ngStorage.min.js"></script>
-    <script type="text/javascript" src="js/vendor/angular-ui/build/angular-ui.min.js"></script>
     <script type="text/javascript" src="app/app.js"></script>
     <script type="text/javascript" src="app/tpls.js"></script>
     <script type="text/javascript" src="app/DpsMeter/DpsMeter.js"></script>
@@ -19,10 +17,8 @@
     <script type="text/javascript" src="app/Config/polyfills.js"></script>
 </head>
     <body ng-class="{resizable: !state.isLocked}">
-        <div id="containerwrapper">
         <div id="container" ng-class="{expandFromBottom: expandFromBottom}">
             <ng-view></ng-view>
-        </div>
         </div>
     </body>
 </html>
