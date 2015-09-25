@@ -97,9 +97,6 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		['$scope', 'presetManager', '$document',
 		function configController($scope, presetManager, $document) {
 
-			$scope.globalExpandFromBottom = $scope.getExpandFromBottom();
-			$scope.setExpandFromBottom(false, false);
-
 			$scope.presets = presetManager.getAll();
 			$scope.selectedPreset = presetManager.get();
 			$scope.select = function select(preset) {
@@ -117,10 +114,6 @@ angular.module('enilia.overlay.config', ['ngRoute',
 					$event.stopPropagation();
 				}
 			};
-
-			$scope.$on('$destroy', function() {
-				$scope.setExpandFromBottom($scope.globalExpandFromBottom, false);
-			});
 
 		}])
 

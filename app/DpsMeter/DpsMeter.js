@@ -44,6 +44,11 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 		['$scope', '$document', '$sessionStorage', 'sanitize', '$timeout',
 		function dpsmeterController($scope, $document, $sessionStorage, sanitize, $timeout) {
 
+			$scope.setExpandFromBottom($scope.getExpandFromBottom(), false);
+			$scope.$on('$destroy', function() {
+				$scope.setExpandFromBottom(false, false);
+			});
+
 			$scope.encounter = $sessionStorage.encounter;
 			$scope.combatants = $sessionStorage.combatants;
 			$scope.active = $sessionStorage.active;

@@ -91,7 +91,7 @@ angular.module('enilia.overlay', ['ngRoute',
 			    }
 
 			    $scope.getExpandFromBottom = function() {
-			    	return $scope.expandFromBottom;
+			    	return $storage.expandFromBottom;
 			    }
 		}])
 
