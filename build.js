@@ -23,6 +23,7 @@ const CONF = {
 		'js/vendor/angular-route/angular-route.min.js.map',
 		'js/vendor/ngstorage/ngStorage.min.js',
 		'enilia_overlay.html',
+		'cover.jpg',
 	],
 	out: 'Releases'
 };
