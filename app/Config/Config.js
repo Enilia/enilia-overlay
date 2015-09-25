@@ -26,38 +26,6 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			})
 	}])
 
-	.run(['$localStorage',
-		function($storage) {
-			// TODO: use $default for release
-			$storage.$reset({
-				__uid:3,
-				preset: 1,
-				presets: [
-					{
-						__uid:1,
-						name:'DPS',
-						cols: [
-							{label:  'Name',value: 'name'},
-							{label:  'Encdps',value: 'encdps'},
-							{label:  'Damage (%)',value: 'damagePct'},
-						]
-					},
-					{
-						__uid:2,
-						name:'Heal',
-						cols : [
-							{label:  'Name',value: 'name'},
-							{label:  'Encdps',value: 'encdps'},
-							{label:  'Damage (%)',value: 'damagePct'},
-							{label:  'Enchps',value: 'enchps'},
-							{label:  'Healed (%)',value: 'healedPct'},
-							{label:  'OverHeal (%)',value: 'OverHealPct'},
-						]
-					}
-				],
-			});
-		}])
-
 	.factory('removeSelection',
 		['$window',
 		function removeSelectionFactory($window) {

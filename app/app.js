@@ -5,7 +5,7 @@ angular.module('enilia.overlay', ['ngRoute',
 								  'enilia.overlay.dpsmeter',
 								  'enilia.overlay.config'])
 
-	.constant('VERSION', '0.1.1-beta')
+	.constant('VERSION', '1.0.0-beta')
 
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
@@ -39,8 +39,10 @@ angular.module('enilia.overlay', ['ngRoute',
 							name:'DPS',
 							cols: [
 								{label:  'Name',value: 'name'},
-								{label:  'Encdps',value: 'encdps'},
-								{label:  'Damage (%)',value: 'damagePct'},
+								{label:  'Dps',value: 'encdps'},
+								{label:  'Dps%',value: 'damagePct'},
+								{label:  'Crit%',value: 'crithitPct'},
+								{label:  'Misses',value: 'misses'},
 							]
 						},
 						{
@@ -48,11 +50,11 @@ angular.module('enilia.overlay', ['ngRoute',
 							name:'Heal',
 							cols : [
 								{label:  'Name',value: 'name'},
-								{label:  'Encdps',value: 'encdps'},
-								{label:  'Damage (%)',value: 'damagePct'},
-								{label:  'Enchps',value: 'enchps'},
-								{label:  'Healed (%)',value: 'healedPct'},
-								{label:  'OverHeal (%)',value: 'OverHealPct'},
+								{label:  'Dps',value: 'encdps'},
+								{label:  'Dps%',value: 'damagePct'},
+								{label:  'Hps',value: 'enchps'},
+								{label:  'Hps%',value: 'healedPct'},
+								{label:  'OverHeal',value: 'OverHealPct'},
 							]
 						}
 					],

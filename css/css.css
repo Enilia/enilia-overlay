@@ -199,7 +199,12 @@ a:active {
     font-weight: 300;
 }
 
-.header {}
+.header {
+    width:2em;
+}
+.header.name {
+    width:6em;
+}
 
 /* combatant */
 
