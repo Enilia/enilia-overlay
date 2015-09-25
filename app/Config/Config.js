@@ -316,7 +316,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 					});
 
 					$scope.setSelected = function(option) {
-						$scope.ngModel = option.value;
+						$scope.ngModel = angular.copy(option.value);
 						$scope.selectedLabel = option.label;
 						($scope.onChange || angular.identity)(option.value);
 					};

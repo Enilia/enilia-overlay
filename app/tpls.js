@@ -120,6 +120,7 @@ angular.module("app/Config/partials/formcontrols/presetConfig.html", []).run(["$
     "		   class=\"preset-col-label\"\n" +
     "		   auto-select />\n" +
     "</div>\n" +
+    "\n" +
     "<div class=\"preset-col preset-col-template\">\n" +
     "	<div class=\"controls\">\n" +
     "		<span class=\"preset-col-index\">({{cols.length}})</span>\n" +
