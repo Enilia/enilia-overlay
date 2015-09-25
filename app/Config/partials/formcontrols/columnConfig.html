@@ -10,7 +10,8 @@
 		  	remove: removeIndex === $index
 		  }"
 		  prevent-selection></span>
-	<fieldselect ng-model="col.name" options="colsCollection"></fieldselect>
+	<fieldselect ng-model="col.value" options="colsCollection" label="label" value="value"></fieldselect>
+	<input type="text" ng-model="col.label" auto-select />
 </div>
 <div>
 	<span class="index">({{cols.length}})</span>
@@ -18,5 +19,6 @@
 	<span class="glyphicon glyphicon-plus"
 		  ng-click="add(newcol[0])"
 		  prevent-selection></span>
-	<fieldselect ng-model="newcol[0].name" options="colsCollection"></fieldselect>
+	<fieldselect ng-model="newcol[0]" options="colsCollection" label="label"></fieldselect>
+	<input type="text" ng-model="newcol[0].label" auto-select />
 </div>

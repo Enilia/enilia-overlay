@@ -79,7 +79,8 @@ angular.module("app/Config/partials/formcontrols/columnConfig.html", []).run(["$
     "		  	remove: removeIndex === $index\n" +
     "		  }\"\n" +
     "		  prevent-selection></span>\n" +
-    "	<fieldselect ng-model=\"col.name\" options=\"colsCollection\"></fieldselect>\n" +
+    "	<fieldselect ng-model=\"col.value\" options=\"colsCollection\" label=\"label\" value=\"value\"></fieldselect>\n" +
+    "	<input type=\"text\" ng-model=\"col.label\" auto-select />\n" +
     "</div>\n" +
     "<div>\n" +
     "	<span class=\"index\">({{cols.length}})</span>\n" +
@@ -87,7 +88,8 @@ angular.module("app/Config/partials/formcontrols/columnConfig.html", []).run(["$
     "	<span class=\"glyphicon glyphicon-plus\"\n" +
     "		  ng-click=\"add(newcol[0])\"\n" +
     "		  prevent-selection></span>\n" +
-    "	<fieldselect ng-model=\"newcol[0].name\" options=\"colsCollection\"></fieldselect>\n" +
+    "	<fieldselect ng-model=\"newcol[0]\" options=\"colsCollection\" label=\"label\"></fieldselect>\n" +
+    "	<input type=\"text\" ng-model=\"newcol[0].label\" auto-select />\n" +
     "</div>\n" +
     "");
 }]);

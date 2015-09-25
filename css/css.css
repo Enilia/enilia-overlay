@@ -143,6 +143,16 @@ checkbox .glyphicon {
     text-align: center;
 }
 
+.field.selected {
+    font-weight: 800;
+}
+.field.selected:before {
+    content:'->';
+}
+.field.selected:after {
+    content:'<-';
+}
+
 .field .glyphicon {
     font-size: 1em;
 }

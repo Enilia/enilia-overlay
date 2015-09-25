@@ -38,21 +38,21 @@ angular.module('enilia.overlay', ['ngRoute',
 							__uid:1,
 							name:'DPS',
 							cols: [
-								{ name: 'name' },
-								{ name: 'encdps' },
-								{ name: 'damagePct' },
+								{label:  'Name',value: 'name'},
+								{label:  'Encdps',value: 'encdps'},
+								{label:  'Damage (%)',value: 'damagePct'},
 							]
 						},
 						{
 							__uid:2,
 							name:'Heal',
 							cols : [
-								{ name: 'name' },
-								{ name: 'encdps' },
-								{ name: 'damagePct' },
-								{ name: 'enchps' },
-								{ name: 'healedPct' },
-								{ name: 'OverHealPct' },
+								{label:  'Name',value: 'name'},
+								{label:  'Encdps',value: 'encdps'},
+								{label:  'Damage (%)',value: 'damagePct'},
+								{label:  'Enchps',value: 'enchps'},
+								{label:  'Healed (%)',value: 'healedPct'},
+								{label:  'OverHeal (%)',value: 'OverHealPct'},
 							]
 						}
 					],
