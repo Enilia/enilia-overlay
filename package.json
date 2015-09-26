@@ -1,15 +1,50 @@
 {
   "name": "enilia_overlay",
-  "version": "1.0.0-beta",
-  "description": "",
-  "main": "createTemplates.js",
+  "version": "1.0.1-beta",
+  "description": "overlay for rainbowmage ACT plugin",
+  "keywords": ["overlay", "rainbowmage", "ACT"],
+  "homepage": "https://github.com/Enilia/enilia_overlay/",
+  "bugs": "https://github.com/Enilia/enilia_overlay/issues",
+  "files": [
+    "app",
+    "css",
+    "images/glow",
+    "images/cover.jpg",
+    "js/vendor/bootstrap/dist/css/bootstrap.min.css",
+    "js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",
+    "js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",
+    "js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",
+    "js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.woff",
+    "js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2",
+    "js/vendor/angular/angular.min.js",
+    "js/vendor/angular/angular.min.js.map",
+    "js/vendor/angular-route/angular-route.min.js",
+    "js/vendor/angular-route/angular-route.min.js.map",
+    "js/vendor/ngstorage/ngStorage.min.js",
+    "enilia_overlay.html",
+  ],
+  "repository" : {
+    "type" : "git"
+  , "url" : "https://github.com/Enilia/enilia_overlay.git"
+  },
+  "config": {
+    "releaseDirectory": "Releases",
+    "parseDirectory": "parse/public",
+    "templatesRoot": "app",
+    "templatesOut": "app/tpls.js",
+    "templatesModuleName": "enilia.overlay.tpls",
+    "templatesExtension": ".html"
+  },
+  "main": "",
   "scripts": {
     "install": "bower install",
-    "export-tpl": "node templatesExport.js",
-    "build": "node build.js"
+    "export-tpl": "node scripts/templatesExport.js",
+    "build": "node scripts/build.js",
+    "build-parse": "node scripts/buildParse.js"
   },
-  "author": "",
+  "author": "Florian Olivier-André <florian.olivierandre@gmail.com>",
   "license": "ISC",
+  "private": true,
   "dependencies": {
     "archiver": "^0.15.1",
     "promised-io": "^0.3.5"
