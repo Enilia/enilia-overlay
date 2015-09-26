@@ -2,21 +2,10 @@ var promise = require("promised-io")
   , fs = require("promised-io/fs")
   , path = require("path")
   , util = require("util")
+  , project = require('../package.json')
   ;
 
-const CONF = {
-	base: 'app',
-	output: 'app/tpls.js',
-	moduleName: 'enilia.overlay.tpls',
-	extfilter: '.html',
-};
-
 var headerTpl = 'angular.module("%s", [\n\t%s,\n]);\n';
-
-// var headerTpl = [
-// 	'angular.module("%s", [',
-// 	']);\n'
-// ];
 
 var contentTpl = [
 	'\nangular.module("%s", []).run(["$templateCache", function($templateCache) {\n',
@@ -26,7 +15,9 @@ var contentTpl = [
 	'}]);\n',
 ];
 
-function crawl(from, files /* = [] */ ) {
+function crawl(from) {
+
+	var files = [];
 
 	return fs.readdir(from).then(function(fileNames) {
 		return promise.all(
@@ -34,28 +25,42 @@ function crawl(from, files /* = [] */ ) {
 				fileName = path.join(from, fileName);
 				return fs.stat(fileName).then(function(stats) {
 					if(stats.isDirectory()) {
-						return crawl(fileName, files);
+						return crawl(fileName).then(function (fileNames) {
+							files = files.concat(fileNames);
+						});
 					} else {
-						if(path.extname(fileName) === CONF.extfilter)
-							return fs.readFile(fileName, 'utf8').then(function(fileContent) {
-								files.push({
-									name:fileName.replace(/\\/g, "/"),
-									content:fileContent
-								});
-							});
+						files.push(fileName);
 					}
 				});
 			})
 		);
 	}).then(function() {
-		return files.sort(function(a, b) {
-			return a.name < b.name ? -1 : 1;
-		});
+		return files;
 	})
 
 }
 
-crawl(CONF.base, []).then(function(files) {
+crawl(project.config.templatesRoot)
+.then(function(fileNames) {
+	return fileNames.filter(function(fileName) {
+		return path.extname(fileName) === project.config.templatesExtension;
+	}).sort(function(a, b) {
+		return a < b ? -1 : 1;
+	});
+})
+.then(function(fileNames) {
+	return promise.all(
+		fileNames.map(function(fileName) {
+			return fs.readFile(fileName, 'utf8').then(function(fileContent) {
+				return {
+					name:fileName.replace(/\\/g, "/"),
+					content:fileContent
+				};
+			})
+		})
+	);
+})
+.then(function(files) {
 	var tpls = []
 	files.forEach(function(fileData) {
 		console.log("exporting %s", fileData.name);
@@ -73,13 +78,14 @@ crawl(CONF.base, []).then(function(files) {
 		files.map(function(fileData) { return '"' + fileData.name + '"'; }),
 		tpls
 	];
-}).then(function(data) {
+})
+.then(function(data) {
 	var names = data[0]
 	  , tpls = data[1]
 	  ;
 
-	fs.writeFile(CONF.output,
-		  util.format(headerTpl, CONF.moduleName, names.join(',\n\t'))
+	fs.writeFile(project.config.templatesOut,
+		  util.format(headerTpl, project.config.templatesModuleName, names.join(',\n\t'))
 		+ tpls.join(''),
 	'utf8');
 });
