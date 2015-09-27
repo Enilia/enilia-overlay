@@ -4,7 +4,6 @@ var fs = require('fs-extra-promise')
   , _extend = require('util')._extend
   , Promise = fs.Promise
   , glob = Promise.promisify(require('glob-all'))
-  , package = require('../package.json')
   ;
 
 var headerTpl = 'angular.module("%s", [\n\t%s,\n]);\n';
@@ -19,18 +18,21 @@ var contentTpl = [
 
 module.exports = build;
 
-function parse(tokens, contents) {
-	tokens = _extend({
-		version: package.version
-	}, tokens);
-	return contents.replace(/\{#(.+?)#\}/g, function(match, token) {
-		return tokens[token] || "";
-	})
-}
-
 function build(config) {
-	var coreFiles = package.config.files.core.concat(config.files.core || [])
-	  , staticFiles = package.config.files.static.concat(config.files.static || []);
+	var package = require('../package.json')
+	  , coreFiles = package.config.files.core.concat(config.files.core || [])
+	  , staticFiles = package.config.files.static.concat(config.files.static || [])
+	  ;
+
+	function parse(tokens, contents) {
+		tokens = _extend({
+			VERSION: package.version
+		}, tokens);
+		return contents.replace(/\{#(.+?)#\}/g, function(match, token) {
+			return tokens[token] || "";
+		})
+	}
+
 	// empty build dir
 	return fs.emptyDirAsync(config.out).cancellable()
 	// get files

@@ -1,35 +1,29 @@
 var archiver = require('archiver')
-  , fs = require('promised-io/fs')
-  , promise = require('promised-io')
+  , fs = require('fs')
   , path = require('path')
   , util = require('util')
-  , project = require('../package.json')
   ;
 
-var archive = archiver.create('zip', {})
-  , outName = path.join(
-  		project.config.releaseDirectory,
-  		util.format('%s_v%s.zip', project.name, project.version)
-  	)
-  , outStream = fs.createWriteStream(outName)
-  ;
+module.exports = release
 
-archive.pipe(outStream);
+function release(onfinish) {
+  var package = require('../package.json')
+    , archive = archiver.create('zip', {})
+    , outName = path.join(
+      package.config.releaseDirectory,
+      util.format('%s_v%s.zip', package.name, package.version)
+    )
+    , outStream = fs.createWriteStream(outName)
+    ;
 
-outStream.on('finish', function() {
-	console.log('%s bytes written in %s', archive.pointer(), outName);
-})
+  outStream.on('finish', function() {
+    onfinish(archive.pointer(), outName)
+  })
 
-promise.all(
-	project.files.map(function(file) {
-		return fs.stat(file).then(function(stats) {
-			if(stats.isDirectory()) {
-				archive.directory(file);
-			} else {
-				archive.file(file);
-			}
-		});
-	})
-).then(function() {
-	archive.finalize();
-});
+  archive.pipe(outStream);
+  archive.directory("build", false);
+  archive.finalize();
+
+  return archive;
+
+}
