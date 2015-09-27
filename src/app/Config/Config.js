@@ -26,16 +26,6 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			})
 	}])
 
-	.factory('removeSelection',
-		['$window',
-		function removeSelectionFactory($window) {
-			return function removeSelection () {
-				$window.requestAnimationFrame(function() {
-					$window.getSelection().removeAllRanges();
-				});
-			};
-		}])
-
 	.factory('presetManager',
 		['$localStorage',
 		function presetManagerFactory ($storage) {

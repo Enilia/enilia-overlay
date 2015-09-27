@@ -5,7 +5,7 @@ angular.module('enilia.overlay', ['ngRoute',
 								  'enilia.overlay.dpsmeter',
 								  'enilia.overlay.config'])
 
-	.constant('VERSION', '1.0.0-beta')
+	.constant('VERSION', '1.1.0-beta')
 
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
