@@ -1,8 +1,20 @@
+
+# Sublime files
 *.sublime-project
 *.sublime-workspace
-dataExample.json
-node_modules
-js/vendor
+
+# Windows
 *.bat
-Releases
+
+# project specific
+dataExample.json
 cover.png
+parse
+
+# Dependency directory
+node_modules
+src/js/vendor
+
+# Builds
+build
+Releases

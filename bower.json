@@ -1,11 +1,11 @@
 {
   "name": "enilia_overlay",
-  "version": "1.0.0-beta",
+  "version": "1.1.0-beta",
   "authors": [
-    "Enilia <florian.olivierandre@gmail.com>"
+    "Florian Olivier-André <florian.olivierandre@gmail.com>"
   ],
   "description": "overlay for rainbowmage act overlay plugin",
-  "main": "js/app.js",
+  "main": "",
   "moduleType": [
     "node"
   ],
@@ -23,6 +23,7 @@
     "tests"
   ],
   "dependencies": {
+    "angular": "~1.4.6",
     "angular-route": "~1.4.6",
     "angular-ui": "~0.4.0",
     "bootstrap": "~3.3.5",
