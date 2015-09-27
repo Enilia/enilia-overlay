@@ -1,52 +1,67 @@
 {
   "name": "enilia_overlay",
-  "version": "1.0.1-beta",
+  "version": "1.1.0-beta",
   "description": "overlay for rainbowmage ACT plugin",
-  "keywords": ["overlay", "rainbowmage", "ACT"],
+  "keywords": [
+    "overlay",
+    "rainbowmage",
+    "ACT"
+  ],
   "homepage": "https://github.com/Enilia/enilia_overlay/",
   "bugs": "https://github.com/Enilia/enilia_overlay/issues",
-  "files": [
-    "app",
-    "css",
-    "images/glow",
-    "images/cover.jpg",
-    "js/vendor/bootstrap/dist/css/bootstrap.min.css",
-    "js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",
-    "js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",
-    "js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",
-    "js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.woff",
-    "js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2",
-    "js/vendor/angular/angular.min.js",
-    "js/vendor/angular/angular.min.js.map",
-    "js/vendor/angular-route/angular-route.min.js",
-    "js/vendor/angular-route/angular-route.min.js.map",
-    "js/vendor/ngstorage/ngStorage.min.js",
-    "enilia_overlay.html",
-  ],
-  "repository" : {
-    "type" : "git"
-  , "url" : "https://github.com/Enilia/enilia_overlay.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Enilia/enilia_overlay.git"
   },
   "config": {
+    "files": {
+      "core": [
+        "src/*.*",
+        "src/app/**/*.*",
+        "!src/app/**/*.html",
+        "!src/app/tpls.js"
+      ],
+      "static": [
+        "src/css/**/*.*",
+        "src/images/glow/**/*.*",
+        "src/images/handle.png",
+        "src/images/cover.jpg",
+        "src/js/vendor/bootstrap/dist/css/bootstrap.min.css",
+        "src/js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.{eot,svg,ttf,woff,woff2}",
+        "src/js/vendor/angular/angular.min.{js,js.map}",
+        "src/js/vendor/angular-route/angular-route.min.{js,js.map}",
+        "src/js/vendor/ngstorage/ngStorage.min.js"
+      ]
+    },
+    "build": {
+      "files": {},
+      "tokens": {},
+      "out": "build"
+    },
+    "parse": {
+      "files": {},
+      "tokens": {},
+      "out": "parse/public"
+    },
     "releaseDirectory": "Releases",
-    "parseDirectory": "parse/public",
-    "templatesRoot": "app",
+    "templatesRoot": "src/app/**/*.html",
     "templatesOut": "app/tpls.js",
-    "templatesModuleName": "enilia.overlay.tpls",
-    "templatesExtension": ".html"
+    "templatesModuleName": "enilia.overlay.tpls"
   },
-  "main": "",
+  "main": "index.js",
   "scripts": {
     "install": "bower install",
-    "export-tpl": "node scripts/templatesExport.js",
-    "build": "node scripts/build.js",
-    "build-parse": "node scripts/buildParse.js"
+    "build-local": "node . -b",
+    "build-parse": "node . -p"
   },
   "author": "Florian Olivier-André <florian.olivierandre@gmail.com>",
   "license": "ISC",
   "private": true,
   "dependencies": {
     "archiver": "^0.15.1",
+    "commander": "^2.8.1",
+    "fs-extra-promise": "^0.2.1",
+    "node-watch": "^0.3.4",
     "promised-io": "^0.3.5"
   }
 }
