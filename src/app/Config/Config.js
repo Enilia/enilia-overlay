@@ -1,10 +1,9 @@
 ;(function() {
 
 angular.module('enilia.overlay.config', ['ngRoute',
-										 'ngStorage',
 										 'enilia.overlay.tpls',
 										 'enilia.overlay.dpsmeter',
-										 'enilia.overlay.polyfills'])
+										 'enilia.overlay.dbmanager'])
 
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
@@ -25,63 +24,6 @@ angular.module('enilia.overlay.config', ['ngRoute',
 				controller: 'clonePresetController'
 			})
 	}])
-
-	.factory('presetManager',
-		['$localStorage',
-		function presetManagerFactory ($storage) {
-
-			function uidTest (uid) {
-				return function(preset) {
-					return preset.__uid === uid;
-				}
-			}
-
-			function findPos(preset) {
-				return $storage.presets.findIndex(uidTest(preset.__uid));
-			}
-
-			return {
-				get: function getPreset(uid) {
-					uid = uid || $storage.preset;
-					return $storage.presets.find(uidTest(uid));
-				},
-
-				set: function setPreset(preset) {
-					$storage.preset = preset.__uid;
-					return preset;
-				},
-
-				getAll: function getAllPreset() {
-					return $storage.presets;
-				},
-
-				update: function updatePreset (preset) {
-					var index = findPos(preset);
-					return ~index && $storage.presets.splice(index, 1, preset) && preset;
-				},
-
-				remove: function removePreset (preset) {
-					var index = findPos(preset);
-					return ~index && $storage.presets.splice(index, 1)[0];
-				},
-
-				add: function addPreset (preset) {
-					preset.__uid = $storage.__uid++;
-					return $storage.presets.push(preset) && preset;
-				},
-
-				$getDefault: function $getDefault () {
-					return {
-						name:'DPS',
-						cols: [
-							{label:  'Name',value: 'name'},
-							{label:  'Encdps',value: 'encdps'},
-							{label:  'Damage (%)',value: 'damagePct'},
-						]
-					}
-				}
-			}
-		}])
 
 	.controller('configController',
 		['$scope', 'presetManager', '$document',

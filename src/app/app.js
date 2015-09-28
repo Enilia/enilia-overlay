@@ -1,9 +1,9 @@
 
 angular.module('enilia.overlay', ['ngRoute',
-								  'ngStorage',
 								  'enilia.overlay.tpls',
 								  'enilia.overlay.dpsmeter',
-								  'enilia.overlay.config'])
+								  'enilia.overlay.config',
+								  'enilia.overlay.dbmanager'])
 
 	.constant('VERSION', '{#VERSION#}')
 
@@ -18,64 +18,29 @@ angular.module('enilia.overlay', ['ngRoute',
 			});
 	}])
 
-	.run(['$localStorage', 'VERSION',
-		function update($storage, VERSION) {
-			if($storage.VERSION) {
-				var version = $storage.VERSION.match(/(\d+).(\d+).(\d+)(?:-(.+))/)
-				  , major = version[1]
-				  , minor = version[2]
-				  , patch = version[3]
-				  , build = version[4]
-				  ;
-
-				/* Placeholder for future db patchs */
-			} else {
-				$storage.$reset({
-					__uid:3,
-					preset: 1,
-					presets: [
-						{
-							__uid:1,
-							name:'DPS',
-							cols: [
-								{label:  'Name',value: 'name'},
-								{label:  'Dps',value: 'encdps'},
-								{label:  'Dps%',value: 'damagePct'},
-								{label:  'Crit%',value: 'crithitPct'},
-								{label:  'Misses',value: 'misses'},
-							]
-						},
-						{
-							__uid:2,
-							name:'Heal',
-							cols : [
-								{label:  'Name',value: 'name'},
-								{label:  'Dps',value: 'encdps'},
-								{label:  'Dps%',value: 'damagePct'},
-								{label:  'Hps',value: 'enchps'},
-								{label:  'Hps%',value: 'healedPct'},
-								{label:  'OverHeal',value: 'OverHealPct'},
-							]
-						}
-					],
-					VERSION: VERSION,
-				});
+	.factory('sanitize',
+		function sanitizeFactory() {
+			return function sanitize(unsafe) {
+			  	if(angular.isObject(unsafe)) {
+			  		angular.forEach(unsafe, function(value, key) {
+			  			unsafe[key.replace(/%/g, 'Pct')] = sanitize(value);
+			  		});
+				}
+				return unsafe;
 			}
-		}])
+		})
 
 	.run(['$rootScope',
 		  '$document',
-		  '$localStorage',
-		  function($scope, $document, $storage) {
-
-				$storage.$default({
-				    expandFromBottom: false
-				});
+		  'userManager',
+		  'sanitize',
+		  function($scope, $document, userManager, sanitize) {
 
 				$scope.state = { isLocked: true };
-				$scope.expandFromBottom = $storage.expandFromBottom;
+				$scope.expandFromBottom = userManager.get('expandFromBottom');
 
 				$document.on('onOverlayStateUpdate', stateUpdate);
+				$document.on('onOverlayDataUpdate', dataUpdate);
 
 			    function stateUpdate(e) {
 
@@ -83,15 +48,22 @@ angular.module('enilia.overlay', ['ngRoute',
 			        $scope.$apply();
 			    }
 
-			    $scope.setExpandFromBottom = function(set, save) {
-			    	$scope.expandFromBottom = set;
+			    function dataUpdate (e) {
+			    	var session = userManager.getSession();
+					session.encounter = sanitize(e.detail.Encounter);
+					session.combatants = sanitize(e.detail.Combatant);
+					session.active = e.detail.isActive;
+			    }
+
+			    $scope.setExpandFromBottom = function(value, save) {
+			    	$scope.expandFromBottom = value;
 			    	if(save !== false) {
-			    		$storage.expandFromBottom = set;
+			    		userManager.set('expandFromBottom', value);
 			    	}
 			    }
 
 			    $scope.getExpandFromBottom = function() {
-			    	return $storage.expandFromBottom;
+			    	return userManager.get('expandFromBottom');
 			    }
 		}])
 

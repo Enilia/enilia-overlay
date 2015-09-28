@@ -3,7 +3,7 @@
 angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 										   'ngStorage',
 										   'enilia.overlay.tpls',
-										   'enilia.overlay.config'])
+										   'enilia.overlay.dbmanager'])
 
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
@@ -13,59 +13,29 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 			})
 	}])
 
-	.run(['$sessionStorage',
-		function($storage) {
-			$storage.$default({
-				encounter:{
-					encdps: "0",
-					duration: "00:00",
-				},
-				active: false
-			});
-		}])
-
-	.factory('sanitize',
-		function sanitizeFactory() {
-			return function sanitize(unsafe) {
-				var ret = {};
-
-			  	if(angular.isObject(unsafe)) {
-			  		angular.forEach(unsafe, function(value, key) {
-			  			ret[key.replace(/%/g, 'Pct')] = sanitize(value);
-			  		});
-					return ret;
-				} else {
-					return unsafe;
-				}
-			}
-		})
-
 	.controller('dpsmeterController',
-		['$scope', '$document', '$sessionStorage', 'sanitize', '$timeout',
-		function dpsmeterController($scope, $document, $sessionStorage, sanitize, $timeout) {
+		['$scope', '$document', 'userManager',
+		function dpsmeterController($scope, $document, userManager) {
+
+			var session = userManager.getSession();
 
 			$scope.setExpandFromBottom($scope.getExpandFromBottom(), false);
-			$scope.$on('$destroy', function() {
-				$scope.setExpandFromBottom(false, false);
-			});
 
-			$scope.encounter = $sessionStorage.encounter;
-			$scope.combatants = $sessionStorage.combatants;
-			$scope.active = $sessionStorage.active;
+			$scope.encounter = session.encounter;
+			$scope.combatants = session.combatants;
+			$scope.active = session.active;
 
-			// todo: move this to app.js and retrive data on $on/$emit
 			$document.on('onOverlayDataUpdate', dataUpdate);
 
 			$scope.$on('$destroy', function $destroy() {
-				$sessionStorage.encounter = $scope.encounter;
-				$sessionStorage.combatants = $scope.combatants;
-				$sessionStorage.active = $scope.active;
+				$scope.setExpandFromBottom(false, false);
+				$document.off('onOverlayDataUpdate', dataUpdate);
 			});
 
 			function dataUpdate(e) {
-				$scope.encounter = sanitize(e.detail.Encounter);
-				$scope.combatants = sanitize(e.detail.Combatant);
-				$scope.active = e.detail.isActive;
+				$scope.encounter = session.encounter;
+				$scope.combatants = session.combatants;
+				$scope.active = session.active;
 				$scope.$apply();
 			}
 
