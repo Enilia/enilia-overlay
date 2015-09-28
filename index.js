@@ -1,6 +1,7 @@
 
 var program = require('commander')
   , path = require('path')
+  , util = require('util')
   , watch = require('node-watch')
   , package = require('./package.json')
   ;
@@ -14,26 +15,30 @@ program
 	.parse(process.argv);
 
 
+function log() {
+	console.log.apply(console, ["[%s]", new Date().toTimeString().split(' ')[0]].concat(Array.from(arguments)))
+}
+
 function main() {
 	delete require.cache[path.resolve('./package.json')]
 	package = require('./package.json')
 
 	if(program.buildlocal) {
-		console.log("build local app");
+		log("build local app");
 		var local = require('./scripts/build.js')(package.config.build);
 		if(program.release) local.then(release)
 	} else if(program.release) {
 		release();
 	}
 	if(program.buildparse) {
-		console.log("build parse app");
+		log("build parse app");
 		require('./scripts/build.js')(package.config.parse);
 	}
 }
 
 function release() {
 	require('./scripts/buildRelease.js')(function(pointer, outName) {
-		console.log('%s bytes written in %s', pointer, outName);
+		log('%s bytes written in %s', pointer, outName);
 	})
 }
 
