@@ -30,14 +30,21 @@ angular.module('enilia.overlay', ['ngRoute',
 			}
 		})
 
-	.run(['$rootScope',
+	.controller('overlayController',
+		['$scope',
 		  '$document',
 		  'userManager',
 		  'sanitize',
 		  function($scope, $document, userManager, sanitize) {
 
+		  		$scope.$on('$routeChangeStart', function($event, next) {
+		  			if(!userManager.isUserDefined() && !next.$$route.isLoginManager) {
+		  				$event.preventDefault();
+		  				userManager.load().then($route.reload)
+		  			}
+		  		});
+
 				$scope.state = { isLocked: true };
-				$scope.expandFromBottom = userManager.get('expandFromBottom');
 
 				$document.on('onOverlayStateUpdate', stateUpdate);
 				$document.on('onOverlayDataUpdate', dataUpdate);

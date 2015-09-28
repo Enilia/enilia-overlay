@@ -4,8 +4,8 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 											'ngStorage'])
 
 	.factory('userManager',
-		['$localStorage',
-		function userManagerFactory ($storage) {
+		['$localStorage', '$q',
+		function userManagerFactory ($storage, $q) {
 
 			var session = {
 					encounter:{
@@ -13,7 +13,9 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 						duration: "00:00",
 					},
 					active: false
-				};
+				}
+			  , isLoading
+			  ;
 			
 			return {
 				get: function get(key) {
@@ -26,6 +28,17 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 
 				getSession: function getSession() {
 					return session;
+				},
+
+				isUserDefined: function isUserDefined () {
+					return true;
+				},
+
+				load: function() {
+					if(isLoading) return $q.reject();
+					return isLoading = $q.resolve().then(function () {
+						isLoading = false;
+					})
 				}
 			}
 
