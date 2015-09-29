@@ -1,7 +1,17 @@
 ;(function() {
 	
 angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
-											'ngStorage'])
+											'enilia.overlay.dbmanager.db',
+											'ngStorage',
+											'ngRoute'])
+
+	.config(['$routeProvider', function($routeProvider) {
+		$routeProvider
+			.when('/config/save', {
+				templateUrl: 'app/DBManager/partials/save.html',
+				controller: 'saveConfigController'
+			})
+	}])
 
 	.factory('userManager',
 		['$localStorage', '$q',
@@ -101,8 +111,16 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 			}
 		}])
 
-	.run(['$localStorage', 'VERSION',
-		function update($storage, VERSION) {
+	.run(['$localStorage', 'VERSION', 'DEFAULT_DB',
+		function update($storage, VERSION, DEFAULT_DB) {
+			if(!$storage.presets) {
+				var __uid = [];
+				$storage.$default(DEFAULT_DB);
+				angular.forEach($storage.presets, function(preset) {
+					__uid[preset.__uid] = null;
+				});
+				$storage.__uid = __uid.length;
+			}
 			if($storage.VERSION) {
 				var version = $storage.VERSION.match(/(\d+).(\d+).(\d+)(?:-(.+))/)
 				  , major = version[1]
@@ -112,37 +130,6 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 				  ;
 
 				/* Placeholder for future db patchs */
-			} else {
-				$storage.$reset({
-					__uid:3,
-					preset: 1,
-					presets: [
-						{
-							__uid:1,
-							name:'DPS',
-							cols: [
-								{label:  'Name',value: 'name'},
-								{label:  'Dps',value: 'encdps'},
-								{label:  'Dps%',value: 'damagePct'},
-								{label:  'Crit%',value: 'crithitPct'},
-								{label:  'Misses',value: 'misses'},
-							]
-						},
-						{
-							__uid:2,
-							name:'Heal',
-							cols : [
-								{label:  'Name',value: 'name'},
-								{label:  'Dps',value: 'encdps'},
-								{label:  'Dps%',value: 'damagePct'},
-								{label:  'Hps',value: 'enchps'},
-								{label:  'Hps%',value: 'healedPct'},
-								{label:  'OverHeal',value: 'OverHealPct'},
-							]
-						}
-					],
-					VERSION: VERSION,
-				});
 			}
 		}])
 
