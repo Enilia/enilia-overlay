@@ -39,7 +39,14 @@
       "out": "build"
     },
     "parse": {
-      "files": {},
+      "files": {
+        "static": [
+          "node_modules/parse/dist/parse-latest.js"
+        ],
+        "map": {
+          "node_modules/parse/dist/parse-latest.js": "js/vendor/parse/dist/parse-latest.js"
+        }
+      },
       "tokens": {},
       "out": "parse/public"
     },
@@ -64,6 +71,7 @@
     "bluebird": "^2.10.2",
     "commander": "^2.8.1",
     "fs-extra-promise": "^0.2.1",
-    "node-watch": "^0.3.4"
+    "node-watch": "^0.3.4",
+    "parse": "^1.6.4"
   }
 }
