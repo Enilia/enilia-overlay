@@ -1,5 +1,5 @@
 
-angular.module('enilia.overlay.dbmanager.db')
+angular.module('enilia.overlay.dbmanager.db', [])
 
 	.constant('DEFAULT_DB', {
 			preset: 1,
