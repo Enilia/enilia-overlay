@@ -5,14 +5,6 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 											'ngStorage',
 											'ngRoute'])
 
-	.config(['$routeProvider', function($routeProvider) {
-		$routeProvider
-			.when('/config/save', {
-				templateUrl: 'app/DBManager/partials/save.html',
-				controller: 'saveConfigController'
-			})
-	}])
-
 	.factory('userManager',
 		['$localStorage', '$q',
 		function userManagerFactory ($storage, $q) {
@@ -131,6 +123,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 
 				/* Placeholder for future db patchs */
 			}
+			$storage.VERSION = VERSION;
 		}])
 
 	.run(function() {
