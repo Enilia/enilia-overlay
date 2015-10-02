@@ -16,8 +16,12 @@ function release(onfinish) {
     , outStream = fs.createWriteStream(outName)
     ;
 
+  outStream.on('error', function(e) {
+    onfinish(e, archive.pointer(), outName)
+  })
+
   outStream.on('finish', function() {
-    onfinish(archive.pointer(), outName)
+    onfinish(null, archive.pointer(), outName)
   })
 
   archive.pipe(outStream);
