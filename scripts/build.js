@@ -38,7 +38,7 @@ function build(config) {
 		map = package.config.files.map;
 		if(map && fileName in map) return map[fileName];
 
-		return path.relative("src", fileName);
+		return path.posix.relative("src", fileName);
 		// var pathObject = path.posix.parse(fileName);
 		// pathObject.dir = pathObject.dir.split('/').slice(1).join('/');
 		// return path.posix.format(pathObject);
