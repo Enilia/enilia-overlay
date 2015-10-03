@@ -52,7 +52,9 @@
   "scripts": {
     "install": "bower install",
     "build-local": "node . -b",
-    "build-parse": "node . -p"
+    "build-parse": "node . -p",
+    "build-release": "node . -r",
+    "start": "php -S localhost:80 -t parse/public"
   },
   "author": "Florian Olivier-André <florian.olivierandre@gmail.com>",
   "license": "ISC",

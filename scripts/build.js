@@ -33,6 +33,17 @@ function build(config) {
 		})
 	}
 
+	function getPath(fileName, map) {
+		if(map && fileName in map) return map[fileName];
+		map = package.config.files.map;
+		if(map && fileName in map) return map[fileName];
+
+		return path.posix.relative("src", fileName);
+		// var pathObject = path.posix.parse(fileName);
+		// pathObject.dir = pathObject.dir.split('/').slice(1).join('/');
+		// return path.posix.format(pathObject);
+	}
+
 	// empty build dir
 	return fs.emptyDirAsync(config.out).cancellable()
 	// get files
@@ -44,7 +55,7 @@ function build(config) {
 				return fs.readFileAsync(fileName, 'utf8')
 						.then(parse.bind(null, config.tokens))
 						.then(function(contents) {
-							return fs.outputFileAsync(path.join(config.out, path.relative("src", fileName)), contents)
+							return fs.outputFileAsync(path.posix.join(config.out, getPath(fileName)), contents)
 						})
 			}),
 			// compile templates
@@ -54,7 +65,7 @@ function build(config) {
 				return fs.readFileAsync(fileName, 'utf8')
 						.then(parse.bind(null, config.tokens))
 						.then(function (contents) {
-							fileName = path.relative("src", fileName).replace(/\\/g, "/");
+							fileName = getPath(fileName);
 							return {
 								fileName: '"' + fileName + '"',
 								contents: util.format(contentTpl[0], fileName)
@@ -71,14 +82,14 @@ function build(config) {
 				  , tpls = files.map(function(fileData) { return fileData.contents })
 				  ;
 
-				return fs.outputFileAsync(path.join(config.out, package.config.templatesOut),
+				return fs.outputFileAsync(path.posix.join(config.out, package.config.templatesOut),
 					  util.format(headerTpl, package.config.templatesModuleName, names.join(',\n\t'))
 					+ tpls.join(''),
 				'utf8');
 			}),
 			// save static files
 			staticFiles.map(function(fileName) {
-				return fs.copyAsync(fileName, path.join(config.out, path.relative("src", fileName)));
+				return fs.copyAsync(fileName, path.posix.join(config.out, getPath(fileName, config.files.map)));
 			})
 		)
 	}).return()
