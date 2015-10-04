@@ -33,26 +33,6 @@
         "src/js/vendor/ngstorage/ngStorage.min.js"
       ]
     },
-<<<<<<< HEAD
-    "build": {
-      "files": {},
-      "tokens": {},
-      "out": "build"
-    },
-    "parse": {
-      "files": {
-        "static": [
-          "node_modules/parse/dist/parse-latest.js"
-        ],
-        "map": {
-          "node_modules/parse/dist/parse-latest.js": "js/vendor/parse/dist/parse-latest.js"
-        }
-      },
-      "tokens": {},
-      "out": "parse/public"
-    },
-=======
->>>>>>> master
     "releaseDirectory": "Releases",
     "templatesRoot": "src/app/**/*.html",
     "templatesOut": "app/tpls.js",

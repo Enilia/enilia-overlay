@@ -1,5 +1,15 @@
 {
-  "files": {},
-  "tokens": {},
-  "out": "build"
+  "files": {
+    "static": [
+      "node_modules/parse/dist/parse-latest.js"
+    ],
+    "map": {
+      "node_modules/parse/dist/parse-latest.js": "js/vendor/parse/dist/parse-latest.js"
+    }
+  },
+  "tokens": {
+    "appId": "LskqcGbieZk8smuFlbNG6BvgOYs1PGmB0WonWo13",
+    "jsKey": "x1HImL2Ezwm1SWFyPjSNNeW5BgV3sDX41U61mCZd"
+  },
+  "out": "parse/public"
 }
