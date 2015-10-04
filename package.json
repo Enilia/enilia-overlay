@@ -1,5 +1,5 @@
 {
-  "name": "enilia_overlay",
+  "name": "enilia-overlay",
   "version": "1.1.0-beta",
   "description": "overlay for rainbowmage ACT plugin",
   "keywords": [
@@ -7,11 +7,11 @@
     "rainbowmage",
     "ACT"
   ],
-  "homepage": "https://github.com/Enilia/enilia_overlay/",
-  "bugs": "https://github.com/Enilia/enilia_overlay/issues",
+  "homepage": "https://github.com/Enilia/enilia-overlay/",
+  "bugs": "https://github.com/Enilia/enilia-overlay/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Enilia/enilia_overlay.git"
+    "url": "https://github.com/Enilia/enilia-overlay.git"
   },
   "config": {
     "files": {
