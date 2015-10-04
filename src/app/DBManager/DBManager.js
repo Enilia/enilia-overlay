@@ -8,66 +8,111 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 			.when('/user/load/:userName', {
 				templateUrl: 'app/DBManager/partials/load.html',
 				controller: 'loadUserController',
-				isLoginManager: true,
+			})
+			.when('/user/:user/not/found', {
+				templateUrl: 'app/DBManager/partials/userNotFound.html',
+				controller: 'userNotFoundController',
 			})
 	}])
 
 	.controller('loadUserController',
 		['$scope', '$routeParams', 'userManager', '$location',
-		function($scope, $routeParams, userManager, $location) {
+		function loadUserController($scope, $routeParams, userManager, $location) {
 			userManager.load($routeParams.userName)
 				.then(function() {
-					// $location.path('/')
+					$location.path('/')
 				})
 		}])
 
-	.factory('userManager',
-		['$localStorage', '$q', '$rootScope',
-		function userManagerFactory ($storage, $q, $rootScope) {
+	.controller('userNotFoundController',
+		['$scope', '$routeParams',
+		function userNotFoundController($scope, $routeParams) {
 
-			var session = {
-					encounter:{
-						encdps: "0",
-						duration: "00:00",
-					},
-					active: false
-				}
-			  , isLoading
-			  ;
-			
-			return {
-				get: function get(key) {
-					return $storage[key];
-				},
-
-				set: function set(key, value) {
-					$storage[key] = value;
-				},
-
-				getSession: function getSession() {
-					return session;
-				},
-
-				isUserDefined: function isUserDefined () {
-					return !!$rootScope.user;
-				},
-
-				load: function(userName) {
-					if(isLoading) return $q.reject();
-					return isLoading = $q(function(resolve, reject) {
-						new Parse.Query(Parse.User)
-							.equalTo("username", userName)
-							.first()
-							.then(resolve, reject);
-					}).then(function(user) {
-						$rootScope.user = user
-					}).finally(function() {
-						isLoading = false;
-					})
-				}
-			}
+			$scope.user = $routeParams.user;
 
 		}])
+
+	.provider('userManager', function userManagerProvider() {
+
+		Parse.initialize("LskqcGbieZk8smuFlbNG6BvgOYs1PGmB0WonWo13", "x1HImL2Ezwm1SWFyPjSNNeW5BgV3sDX41U61mCZd");
+
+		this.load = ['userManager', function (userManager) {
+			return userManager.getUser() || userManager.load("anon");
+		}]
+
+		this.$get = ['$localStorage', '$q', '$rootScope', '$location',
+			function userManagerFactory ($storage, $q, $rootScope, $location) {
+
+				var session = {
+						encounter:{
+							encdps: "0",
+							duration: "00:00",
+						},
+						active: false
+					}
+				  , isLoading
+				  ;
+				
+				return {
+					get: function get(key) {
+						return $storage[key];
+					},
+
+					set: function set(key, value) {
+						$storage[key] = value;
+					},
+
+					getSession: function getSession() {
+						return session;
+					},
+
+					getUser: function getUser() {
+						return $rootScope.user;
+					},
+
+					getUserName: function getUserName() {
+						return $rootScope.user && $rootScope.user.get('username')
+					},
+
+					load: function(userName) {
+
+						if(this.getUserName() === userName){
+							return $q.resolve($rootScope.user);
+						}
+
+						function innerLoad() {
+							return $q.resolve(new Parse.Query(Parse.User)
+								.equalTo("username", userName)
+								.first());
+						}
+
+						isLoading = isLoading ? isLoading.then(innerLoad) : innerLoad();
+
+						return isLoading.then(function(user) {
+							if(!user) {
+								$location.path('/user/'+userName+'/not/found');
+								return $q.reject(new this.UserNotFoundError(userName));
+							}
+							return $rootScope.user = user
+						}.bind(this)).finally(function() {
+							isLoading = false;
+						})
+					},
+
+					UserNotFoundError: function UserNotFoundError(user) {
+						this.constructor.prototype.__proto__ = Error.prototype
+						Error.call(this)
+						Error.captureStackTrace(this, this.constructor)
+						this.name = this.constructor.name;
+						this.message = "user not found: " + user;
+					}
+				}
+
+
+
+			}]
+
+	})
 
 	.factory('presetManager',
 		['$localStorage',

@@ -12,9 +12,15 @@ angular.module('enilia.overlay', ['ngRoute',
 			.when('/', {
 				redirectTo: '/dpsmeter',
 			})
+			.when('/404/path/:path*', {
+				templateUrl: 'app/Debug/404.html',
+				controller: 'e404Controller'
+			})
 			.otherwise({
-				templateUrl: 'app/Debug/debug.html',
-				controller: 'debugController'
+				redirectTo: function(params, path, search) {
+					return '/404/path/'
+						+ path
+				}
 			});
 	}])
 
@@ -35,15 +41,8 @@ angular.module('enilia.overlay', ['ngRoute',
 		  '$document',
 		  'userManager',
 		  'sanitize',
-		  '$route',
-		  function($scope, $document, userManager, sanitize, $route) {
-
-		  		$scope.$on('$routeChangeStart', function($event, next) {
-		  			if(!userManager.isUserDefined() && !next.$$route.isLoginManager) {
-		  				$event.preventDefault();
-		  				userManager.load().then($route.reload)
-		  			}
-		  		});
+		  '$location',
+		  function($scope, $document, userManager, sanitize, $location) {
 
 				$scope.state = { isLocked: true };
 
@@ -75,11 +74,11 @@ angular.module('enilia.overlay', ['ngRoute',
 			    }
 		}])
 
-	.controller('debugController',
-		['$scope', '$location',
-		function($scope, $location) {
+	.controller('e404Controller',
+		['$scope', '$routeParams',
+		function e404Controller($scope, $routeParams) {
 
-			$scope.loc = $location;
+			$scope.path = $routeParams.path;
 
 		}])
 

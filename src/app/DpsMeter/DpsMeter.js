@@ -5,12 +5,16 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 										   'enilia.overlay.tpls',
 										   'enilia.overlay.dbmanager'])
 
-	.config(['$routeProvider', function($routeProvider) {
-		$routeProvider
-			.when('/dpsmeter', {
-				templateUrl: 'app/DpsMeter/dpsmeter.html',
-				controller: 'dpsmeterController'
-			})
+	.config(['$routeProvider', 'userManagerProvider',
+		function($routeProvider, userManagerProvider) {
+			$routeProvider
+				.when('/dpsmeter', {
+					templateUrl: 'app/DpsMeter/dpsmeter.html',
+					controller: 'dpsmeterController',
+					resolve: {
+						user: userManagerProvider.load,
+					},
+				})
 	}])
 
 	.controller('dpsmeterController',

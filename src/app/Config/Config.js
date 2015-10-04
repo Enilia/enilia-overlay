@@ -5,11 +5,14 @@ angular.module('enilia.overlay.config', ['ngRoute',
 										 'enilia.overlay.dpsmeter',
 										 'enilia.overlay.dbmanager'])
 
-	.config(['$routeProvider', function($routeProvider) {
+	.config(['$routeProvider', 'userManagerProvider', function($routeProvider, userManagerProvider) {
 		$routeProvider
 			.when('/config', {
 				templateUrl: 'app/Config/config.html',
-				controller: 'configController'
+				controller: 'configController',
+				resolve: {
+					user: userManagerProvider.load,
+				},
 			})
 			.when('/config/preset/new', {
 				templateUrl:'app/Config/partials/preset.html',

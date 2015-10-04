@@ -19,8 +19,8 @@
 </head>
     <body ng-class="{resizable: !state.isLocked}">
         <div id="container" ng-class="{expandFromBottom: expandFromBottom}">
-            user: {{ user.get('username') }}
             <ng-view></ng-view>
+            <small ng-if="user">using presets: {{ user.get('username') }}</small>
         </div>
     </body>
 </html>
