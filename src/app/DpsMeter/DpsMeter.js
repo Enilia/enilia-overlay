@@ -33,10 +33,11 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 			});
 
 			function dataUpdate(e) {
-				$scope.encounter = session.encounter;
-				$scope.combatants = session.combatants;
-				$scope.active = session.active;
-				$scope.$apply();
+				$scope.$apply(function() {
+					$scope.encounter = session.encounter;
+					$scope.combatants = session.combatants;
+					$scope.active = session.active;
+				});
 			}
 
 		}])

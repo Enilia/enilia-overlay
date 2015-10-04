@@ -35,7 +35,8 @@ angular.module('enilia.overlay', ['ngRoute',
 		  '$document',
 		  'userManager',
 		  'sanitize',
-		  function($scope, $document, userManager, sanitize) {
+		  '$route',
+		  function($scope, $document, userManager, sanitize, $route) {
 
 		  		$scope.$on('$routeChangeStart', function($event, next) {
 		  			if(!userManager.isUserDefined() && !next.$$route.isLoginManager) {
@@ -50,9 +51,9 @@ angular.module('enilia.overlay', ['ngRoute',
 				$document.on('onOverlayDataUpdate', dataUpdate);
 
 			    function stateUpdate(e) {
-
-			        $scope.state = e.detail;
-			        $scope.$apply();
+			        $scope.$apply(function() {
+			        	$scope.state = e.detail;
+			        });
 			    }
 
 			    function dataUpdate (e) {
