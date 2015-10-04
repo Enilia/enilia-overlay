@@ -40,8 +40,9 @@ angular.module('enilia.overlay.config', ['ngRoute',
 				} else {
 					$scope.checkRemove = preset;
 					$document.one('click', function() {
-						delete $scope.checkRemove;
-						$scope.$apply();
+						$scope.$apply(function() {
+							delete $scope.checkRemove;
+						});
 					});
 					$event.stopPropagation();
 				}
@@ -159,8 +160,9 @@ angular.module('enilia.overlay.config', ['ngRoute',
 						} else {
 							$scope.removeIndex = index;
 							$document.one('click', function() {
-								$scope.removeIndex = -1;
-								$scope.$apply();
+								$scope.$apply(function() {
+									$scope.removeIndex = -1;
+								});
 							});
 							$event.stopPropagation();
 						}

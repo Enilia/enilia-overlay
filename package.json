@@ -33,6 +33,7 @@
         "src/js/vendor/ngstorage/ngStorage.min.js"
       ]
     },
+<<<<<<< HEAD
     "build": {
       "files": {},
       "tokens": {},
@@ -50,6 +51,8 @@
       "tokens": {},
       "out": "parse/public"
     },
+=======
+>>>>>>> master
     "releaseDirectory": "Releases",
     "templatesRoot": "src/app/**/*.html",
     "templatesOut": "app/tpls.js",
