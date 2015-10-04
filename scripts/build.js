@@ -18,8 +18,9 @@ var contentTpl = [
 
 module.exports = build;
 
-function build(config) {
+function build() {
 	var package = require('../package.json')
+	  , config = require('../config.json')
 	  , coreFiles = package.config.files.core.concat(config.files.core || [])
 	  , staticFiles = package.config.files.static.concat(config.files.static || [])
 	  ;

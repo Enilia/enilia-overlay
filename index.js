@@ -4,7 +4,6 @@ var program = require('commander')
   , util = require('util')
   , watch = require('node-watch')
   , package = require('./package.json')
-  , config = require('./config.json')
   , Promise = require("bluebird")
   , build = Promise.resolve()
   ;
@@ -38,13 +37,13 @@ function forceRequire(fileName) {
 
 function main() {
 	package = forceRequire('./package.json')
-	config = forceRequire('./config.json')
+	var config = forceRequire('./config.json')
 
 	var now = Date.now();
 
 	if(program.build) {
-		build = build.then(thenlog("building app"))
-					 .return(config).then(require('./scripts/build.js'));
+		build = build.then(thenlog("building app (%s) -> %s", config.env, config.out))
+					 .then(require('./scripts/build.js'));
 		if(program.release) build = build.then(release)
 	} else if(program.release) {
 		build = build.then(release);
@@ -57,6 +56,7 @@ function main() {
 
 function release() {
 	var now = Date.now();
+	log("creating release zip");
 	return Promise.promisify(require('./scripts/buildRelease.js'))()
 		.spread(function(pointer, outName) {
 			log('%s bytes written in %s (%ss)', pointer, outName, (Date.now() - now) / 1000);

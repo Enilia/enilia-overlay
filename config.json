@@ -1,4 +1,5 @@
 {
+  "env": "server",
   "files": {
     "static": [
       "node_modules/parse/dist/parse-latest.js"
