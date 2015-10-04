@@ -3,9 +3,27 @@
 angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 											'ngStorage'])
 
+	.config(['$routeProvider', function($routeProvider) {
+		$routeProvider
+			.when('/user/load/:userName', {
+				templateUrl: 'app/DBManager/partials/load.html',
+				controller: 'loadUserController',
+				isLoginManager: true,
+			})
+	}])
+
+	.controller('loadUserController',
+		['$scope', '$routeParams', 'userManager', '$location',
+		function($scope, $routeParams, userManager, $location) {
+			userManager.load($routeParams.userName)
+				.then(function() {
+					// $location.path('/')
+				})
+		}])
+
 	.factory('userManager',
-		['$localStorage', '$q',
-		function userManagerFactory ($storage, $q) {
+		['$localStorage', '$q', '$rootScope',
+		function userManagerFactory ($storage, $q, $rootScope) {
 
 			var session = {
 					encounter:{
@@ -31,12 +49,19 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 				},
 
 				isUserDefined: function isUserDefined () {
-					return true;
+					return !!$rootScope.user;
 				},
 
-				load: function() {
+				load: function(userName) {
 					if(isLoading) return $q.reject();
-					return isLoading = $q.resolve().then(function () {
+					return isLoading = $q(function(resolve, reject) {
+						new Parse.Query(Parse.User)
+							.equalTo("username", userName)
+							.first()
+							.then(resolve, reject);
+					}).then(function(user) {
+						$rootScope.user = user
+					}).finally(function() {
 						isLoading = false;
 					})
 				}
@@ -103,6 +128,9 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 
 	.run(['$localStorage', 'VERSION',
 		function update($storage, VERSION) {
+
+			Parse.initialize("{#appId#}", "{#jsKey#}");
+
 			if($storage.VERSION) {
 				var version = $storage.VERSION.match(/(\d+).(\d+).(\d+)(?:-(.+))/)
 				  , major = version[1]
