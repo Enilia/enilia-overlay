@@ -1,4 +1,5 @@
 {
+  "env": "standalone",
   "files": {},
   "tokens": {},
   "out": "build"

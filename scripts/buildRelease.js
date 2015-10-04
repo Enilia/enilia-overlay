@@ -8,10 +8,11 @@ module.exports = release
 
 function release(onfinish) {
   var package = require('../package.json')
+    , config = require('../config.json')
     , archive = archiver.create('zip', {})
     , outName = path.join(
       package.config.releaseDirectory,
-      util.format('%s_v%s.zip', package.name, package.version)
+      util.format('%s_v%s_%s.zip', package.name, package.version, config.env)
     )
     , outStream = fs.createWriteStream(outName)
     ;
@@ -25,7 +26,7 @@ function release(onfinish) {
   })
 
   archive.pipe(outStream);
-  archive.directory("build", false);
+  archive.directory(config.out, false);
   archive.finalize();
 
   return archive;
