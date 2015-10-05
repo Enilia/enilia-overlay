@@ -26,6 +26,10 @@ angular.module('enilia.overlay.config', ['ngRoute',
 				templateUrl:'app/Config/partials/preset.html',
 				controller: 'clonePresetController'
 			})
+			.when('/config/preset/:cloneId/delete', {
+				templateUrl:'app/Config/partials/delete.html',
+				controller: 'deletePresetController'
+			})
 	}])
 
 	.controller('configController',
@@ -39,23 +43,25 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			}
 			$scope.remove = function($event, preset) {
 				if($scope.checkRemove === preset) {
-					presetManager.remove(preset);
+					// follow link
 				} else {
+					$event.preventDefault();
 					$scope.checkRemove = preset;
-					$document.one('click', function() {
-						$scope.$apply(function() {
-							delete $scope.checkRemove;
-						});
-					});
 					$event.stopPropagation();
 				}
 			};
+			var off = $document.on('click', function() {
+				$scope.$apply(function() {
+					delete $scope.checkRemove;
+				});
+			});
+			$scope.$on('$destroy', off)
 
 		}])
 
 	.controller('editPresetController',
 		['$scope', '$routeParams', 'presetManager',
-		function configPresetController($scope, $routeParams, presetManager) {
+		function editPresetController($scope, $routeParams, presetManager) {
 
 			$scope.title = "Editing";
 
@@ -69,7 +75,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 
 	.controller('newPresetController',
 		['$scope', 'presetManager',
-		function configPresetController($scope, presetManager) {
+		function newPresetController($scope, presetManager) {
 
 			$scope.title = "Creating";
 
@@ -83,7 +89,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 
 	.controller('clonePresetController',
 		['$scope', '$routeParams', 'presetManager',
-		function configPresetController($scope, $routeParams, presetManager) {
+		function clonePresetController($scope, $routeParams, presetManager) {
 
 			$scope.title = "Cloning";
 
@@ -91,6 +97,20 @@ angular.module('enilia.overlay.config', ['ngRoute',
 
 			$scope.save = function() {
 				presetManager.add($scope.preset);
+			};
+
+		}])
+
+	.controller('deletePresetController',
+		['$scope', '$routeParams', 'presetManager',
+		function deletePresetController($scope, $routeParams, presetManager) {
+
+			$scope.title = "Deleting";
+
+			$scope.preset = angular.copy(presetManager.get(parseInt($routeParams.cloneId)));
+
+			$scope.delete = function() {
+				presetManager.remove($scope.preset);
 			};
 
 		}])

@@ -12,14 +12,15 @@
 
 		<div ng-repeat="preset in presets" class="preset-line">
 			<div class="controls">
-				<span class="glyphicon delete"
+				<a class="glyphicon delete"
 					  ng-click="remove($event, preset)"
 					  ng-class="{
 					    'glyphicon-minus': checkRemove !== preset,
 					  	'glyphicon-trash': checkRemove === preset,
 					  	'remove': checkRemove === preset
 					  }"
-					  prevent-selection></span>
+					  ng-href="#/config/preset/{{preset.__uid}}/delete"
+					  prevent-selection></a>
 				<a 
 				   class="glyphicon glyphicon-eye-open disabled preview"></a>
 				<a ng-href="#/config/preset/{{preset.__uid}}/clone"
