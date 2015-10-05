@@ -24,20 +24,12 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 				})
 		}])
 
-	.controller('userNotFoundController',
-		['$scope', '$routeParams',
-		function userNotFoundController($scope, $routeParams) {
-
-			$scope.user = $routeParams.user;
-
-		}])
-
 	.provider('userManager', function userManagerProvider() {
 
 		Parse.initialize("LskqcGbieZk8smuFlbNG6BvgOYs1PGmB0WonWo13", "x1HImL2Ezwm1SWFyPjSNNeW5BgV3sDX41U61mCZd");
 
 		this.load = ['userManager', function (userManager) {
-			return userManager.getUser() || userManager.load("anon");
+			return userManager.getUser() || userManager.load("Default");
 		}]
 
 		this.$get = ['$localStorage', '$q', '$rootScope', '$location',
@@ -51,15 +43,17 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 						active: false
 					}
 				  , isLoading
+				  , user
 				  ;
 				
 				return {
 					get: function get(key) {
-						return $storage[key];
+						return user && user.get(key);
 					},
 
 					set: function set(key, value) {
-						$storage[key] = value;
+						user && user.set(key, value);
+						this.save();
 					},
 
 					getSession: function getSession() {
@@ -67,17 +61,19 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 					},
 
 					getUser: function getUser() {
-						return $rootScope.user;
+						return user;
 					},
 
-					getUserName: function getUserName() {
-						return $rootScope.user && $rootScope.user.get('username')
+					save: function save() {
+						if(user.authenticated())
+							return $q.resolve(user.save());
+						$q.reject(new this.UserNotAuthenticatedError());
 					},
 
 					load: function(userName) {
 
-						if(this.getUserName() === userName){
-							return $q.resolve($rootScope.user);
+						if(this.get('username') === userName){
+							return $q.resolve(user);
 						}
 
 						function innerLoad() {
@@ -88,24 +84,32 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 
 						isLoading = isLoading ? isLoading.then(innerLoad) : innerLoad();
 
-						return isLoading.then(function(user) {
-							if(!user) {
+						return isLoading.then(function(_user) {
+							if(!_user) {
 								$location.path('/user/'+userName+'/not/found');
 								return $q.reject(new this.UserNotFoundError(userName));
 							}
-							return $rootScope.user = user
+							return $rootScope.user = user = _user
 						}.bind(this)).finally(function() {
 							isLoading = false;
 						})
 					},
 
-					UserNotFoundError: function UserNotFoundError(user) {
+					UserNotFoundError: function UserNotFoundError(_user) {
 						this.constructor.prototype.__proto__ = Error.prototype
 						Error.call(this)
 						Error.captureStackTrace(this, this.constructor)
 						this.name = this.constructor.name;
-						this.message = "user not found: " + user;
-					}
+						this.message = "user not found: " + _user;
+					},
+
+					UserNotAuthenticatedError: function UserNotAuthenticatedError() {
+						this.constructor.prototype.__proto__ = Error.prototype
+						Error.call(this)
+						Error.captureStackTrace(this, this.constructor)
+						this.name = this.constructor.name;
+						this.message = "user not authenticated";
+					},
 				}
 
 
@@ -115,8 +119,8 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 	})
 
 	.factory('presetManager',
-		['$localStorage',
-		function presetManagerFactory ($storage) {
+		['$localStorage', 'userManager',
+		function presetManagerFactory ($storage, userManager) {
 
 			function uidTest (uid) {
 				return function(preset) {
@@ -169,6 +173,14 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 					}
 				}
 			}
+		}])
+
+	.controller('userNotFoundController',
+		['$scope', '$routeParams',
+		function userNotFoundController($scope, $routeParams) {
+
+			$scope.user = $routeParams.user;
+
 		}])
 
 	.run(['$localStorage', 'VERSION',
