@@ -165,11 +165,11 @@ a:active {
 
 #loading.loading {
     display:block;
-    animation-name: delayedFadeIn;
-    animation-duration: 2s;
+    -webkit-animation-name: delayedFadeIn;
+    -webkit-animation-duration: 2s;
 }
 
-@keyframes delayedFadeIn {
+@-webkit-keyframes delayedFadeIn {
   from, 50% {
     opacity: 0;
   }
