@@ -21,6 +21,7 @@
         <div id="container" ng-class="{expandFromBottom: expandFromBottom}">
             <ng-view></ng-view>
             <small ng-if="user">using presets: {{ user.get('username') }}</small>
+            <div id="loading" ng-class="{loading: isLoading}"></div>
         </div>
     </body>
 </html>

@@ -45,9 +45,23 @@ angular.module('enilia.overlay', ['ngRoute',
 		  function($scope, $document, userManager, sanitize, $location) {
 
 				$scope.state = { isLocked: true };
+				$scope.isLoading = true;
 
 				$document.on('onOverlayStateUpdate', stateUpdate);
 				$document.on('onOverlayDataUpdate', dataUpdate);
+
+				$scope.$on('$locationChangeStart', function() {
+					$scope.isLoading = true;
+				})
+
+				$scope.$on('$routeChangeSuccess', function() {
+					$scope.isLoading = false;
+				})
+
+				$scope.$on('$routeChangeError', function() {
+					console.log(arguments)
+					$scope.isLoading = false;
+				})
 
 			    function stateUpdate(e) {
 			        $scope.$apply(function() {

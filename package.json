@@ -26,6 +26,7 @@
         "src/images/glow/**/*.*",
         "src/images/handle.png",
         "src/images/cover.jpg",
+        "src/images/ajax-loader.svg",
         "src/js/vendor/bootstrap/dist/css/bootstrap.min.css",
         "src/js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.{eot,svg,ttf,woff,woff2}",
         "src/js/vendor/angular/angular.min.{js,js.map}",
