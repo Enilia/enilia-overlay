@@ -19,13 +19,13 @@
 					  	'glyphicon-trash': checkRemove === preset,
 					  	'remove': checkRemove === preset
 					  }"
-					  ng-href="#/config/preset/{{preset.__uid}}/delete"
+					  ng-href="#/config/preset/{{preset.id}}/delete"
 					  prevent-selection></a>
 				<a 
 				   class="glyphicon glyphicon-eye-open disabled preview"></a>
-				<a ng-href="#/config/preset/{{preset.__uid}}/clone"
+				<a ng-href="#/config/preset/{{preset.id}}/clone"
 				   class="glyphicon glyphicon-duplicate clone"></a>
-				<a ng-href="#/config/preset/{{preset.__uid}}/edit"
+				<a ng-href="#/config/preset/{{preset.id}}/edit"
 				   class="glyphicon glyphicon-wrench edit"></a>
 			</div>
 			<span class="field preset"

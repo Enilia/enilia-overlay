@@ -8,6 +8,12 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 			.when('/user/load/:userName', {
 				templateUrl: 'app/DBManager/partials/load.html',
 				controller: 'loadUserController',
+				resolve: {
+					user: ['$route', 'userManager',
+						function($route, userManager) {
+							return userManager.load($route.current.params.userName)
+						}],
+				},
 			})
 			.when('/user/:user/not/found', {
 				templateUrl: 'app/DBManager/partials/userNotFound.html',
@@ -16,12 +22,9 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 	}])
 
 	.controller('loadUserController',
-		['$scope', '$routeParams', 'userManager', '$location',
-		function loadUserController($scope, $routeParams, userManager, $location) {
-			userManager.load($routeParams.userName)
-				.then(function() {
-					$location.path('/')
-				})
+		['$location',
+		function loadUserController($location) {
+			$location.path('/')
 		}])
 
 	.provider('userManager', function userManagerProvider() {
@@ -78,6 +81,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 
 						function innerLoad() {
 							return $q.resolve(new Parse.Query(Parse.User)
+								.include("config.presets")
 								.equalTo("username", userName)
 								.first());
 						}
@@ -89,6 +93,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 								$location.path('/user/'+userName+'/not/found');
 								return $q.reject(new this.UserNotFoundError(userName));
 							}
+							// console.log(_user)
 							return $rootScope.user = user = _user
 						}.bind(this)).finally(function() {
 							isLoading = false;
@@ -122,24 +127,24 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 		['$localStorage', 'userManager',
 		function presetManagerFactory ($storage, userManager) {
 
-			function uidTest (uid) {
+			function idTest (id) {
 				return function(preset) {
-					return preset.__uid === uid;
+					return preset.id === id;
 				}
 			}
 
 			function findPos(preset) {
-				return $storage.presets.findIndex(uidTest(preset.__uid));
+				return $storage.presets.findIndex(idTest(preset.id));
 			}
 
 			return {
-				get: function getPreset(uid) {
-					uid = uid || $storage.preset;
-					return $storage.presets.find(uidTest(uid));
+				get: function getPreset(id) {
+					id = id || $storage.preset;
+					return $storage.presets.find(idTest(id));
 				},
 
 				set: function setPreset(preset) {
-					$storage.preset = preset.__uid;
+					$storage.preset = preset.id;
 					return preset;
 				},
 
@@ -158,7 +163,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 				},
 
 				add: function addPreset (preset) {
-					preset.__uid = $storage.__uid++;
+					preset.id = $storage.id++;
 					return $storage.presets.push(preset) && preset;
 				},
 
@@ -189,21 +194,25 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 			Parse.initialize("{#appId#}", "{#jsKey#}");
 
 			if($storage.VERSION) {
-				var version = $storage.VERSION.match(/(\d+).(\d+).(\d+)(?:-(.+))/)
-				  , major = version[1]
-				  , minor = version[2]
-				  , patch = version[3]
-				  , build = version[4]
-				  ;
 
 				/* Placeholder for future db patchs */
+				if(semver.lt($storage.VERSION, '1.1.0')) {
+					angular.forEach($storage.presets, function(preset) {
+						preset.id = preset.__uid;
+						delete preset.__uid;
+					});
+					$storage.id = $storage.__uid;
+					delete $storage.__uid;
+					$storage.VERSION = VERSION;
+				}
+
 			} else {
 				$storage.$reset({
-					__uid:3,
+					id:3,
 					preset: 1,
 					presets: [
 						{
-							__uid:1,
+							id:1,
 							name:'DPS',
 							cols: [
 								{label:  'Name',value: 'name'},
@@ -214,7 +223,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 							]
 						},
 						{
-							__uid:2,
+							id:2,
 							name:'Heal',
 							cols : [
 								{label:  'Name',value: 'name'},

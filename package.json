@@ -31,7 +31,8 @@
         "src/js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.{eot,svg,ttf,woff,woff2}",
         "src/js/vendor/angular/angular.min.{js,js.map}",
         "src/js/vendor/angular-route/angular-route.min.{js,js.map}",
-        "src/js/vendor/ngstorage/ngStorage.min.js"
+        "src/js/vendor/ngstorage/ngStorage.min.js",
+        "src/js/vendor/semver/semver.browser.js"
       ]
     },
     "releaseDirectory": "Releases",
