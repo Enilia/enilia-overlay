@@ -216,10 +216,12 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 				},
 
 				add: function addPreset (preset) {
-					user.config.presets.push(preset)
-					return $q.resolve(user.config.save())
+					return $q.resolve(preset.save())
+						.then(function() {
+							user.config.presets.push(preset)
+							return user.config.save()
+						})
 						.then(function() { return preset })
-
 				},
 
 				$getDefault: function $getDefault () {
