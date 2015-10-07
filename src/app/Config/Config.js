@@ -16,19 +16,19 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			})
 			.when('/config/preset/new', {
 				templateUrl:'app/Config/partials/preset.html',
-				controller: 'newPresetController'
+				controller: 'newPresetController',
 			})
 			.when('/config/preset/:presetId/edit', {
 				templateUrl:'app/Config/partials/preset.html',
-				controller: 'editPresetController'
+				controller: 'editPresetController',
 			})
 			.when('/config/preset/:cloneId/clone', {
 				templateUrl:'app/Config/partials/preset.html',
-				controller: 'clonePresetController'
+				controller: 'clonePresetController',
 			})
 			.when('/config/preset/:cloneId/delete', {
 				templateUrl:'app/Config/partials/delete.html',
-				controller: 'deletePresetController'
+				controller: 'deletePresetController',
 			})
 	}])
 
@@ -41,6 +41,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			$scope.select = function select(preset) {
 				$scope.selectedPreset = presetManager.set(preset);
 			}
+
 			$scope.remove = function($event, preset) {
 				if($scope.checkRemove === preset) {
 					// follow link
@@ -50,12 +51,18 @@ angular.module('enilia.overlay.config', ['ngRoute',
 					$event.stopPropagation();
 				}
 			};
-			var off = $document.on('click', function() {
+
+			function documentClick() {
 				$scope.$apply(function() {
 					delete $scope.checkRemove;
 				});
-			});
-			$scope.$on('$destroy', off)
+			}
+
+			$document.on('click', documentClick);
+
+			$scope.$on('$destroy', function() {
+				$document.off('click', documentClick);
+			})
 
 		}])
 
