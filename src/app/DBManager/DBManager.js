@@ -27,16 +27,41 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 			$location.path('/')
 		}])
 
-	.provider('userManager', function userManagerProvider() {
+	.factory('ParseClasses',
+		function ParseClassesFactory() {
 
-		Parse.initialize("LskqcGbieZk8smuFlbNG6BvgOYs1PGmB0WonWo13", "x1HImL2Ezwm1SWFyPjSNNeW5BgV3sDX41U61mCZd");
+			Parse.initialize("{#appId#}", "{#jsKey#}");
+
+			[
+				[Parse.User, 'config'],
+				['UserConfig', 'presetIndex', 'presets', 'expandFromBottom'],
+				['Preset', 'name', 'cols']
+			].forEach(function(config) {
+				var klass = typeof config[0] === "string" ?
+						Parse.Object.extend(config[0]) :
+						config[0];
+
+				this[klass.className] = klass;
+
+				config.slice(1).forEach(function(prop) {
+					Object.defineProperty(klass.prototype, prop, {
+						configurable:true,
+						enumerable: true,
+						get: function() {return this.get(prop)},
+						set: function(value) {this.set(prop, value)}
+					});
+				})
+			}, this)
+		})
+
+	.provider('userManager', function userManagerProvider() {
 
 		this.load = ['userManager', function (userManager) {
 			return userManager.getUser() || userManager.load("Default");
 		}]
 
-		this.$get = ['$localStorage', '$q', '$rootScope', '$location',
-			function userManagerFactory ($storage, $q, $rootScope, $location) {
+		this.$get = ['$q', '$rootScope', '$location', 'ParseClasses',
+			function userManagerFactory ($q, $rootScope, $location, ParseClasses) {
 
 				var session = {
 						encounter:{
@@ -94,7 +119,8 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 								return $q.reject(new this.UserNotFoundError(userName));
 							}
 							// console.log(_user)
-							return $rootScope.user = user = _user
+							$rootScope.$broadcast("userChange", _user);
+							return user = _user
 						}.bind(this)).finally(function() {
 							isLoading = false;
 						})
@@ -124,8 +150,14 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 	})
 
 	.factory('presetManager',
-		['$localStorage', 'userManager',
-		function presetManagerFactory ($storage, userManager) {
+		['userManager', '$rootScope', '$q', 'ParseClasses',
+		function presetManagerFactory (userManager, $rootScope, $q, ParseClasses) {
+			
+			var user = userManager.getUser();
+
+			$rootScope.$on('userChange', function($event, _user) {
+				user = _user;
+			});
 
 			function idTest (id) {
 				return function(preset) {
@@ -134,48 +166,71 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 			}
 
 			function findPos(preset) {
-				return $storage.presets.findIndex(idTest(preset.id));
+				return user.config.presets.findIndex(idTest(preset.id));
 			}
 
 			return {
 				get: function getPreset(id) {
-					id = id || $storage.preset;
-					return $storage.presets.find(idTest(id));
+					var config = user.config
+					  , presets = config.presets;
+					if(!id) return presets[config.presetIndex];
+					return presets[presets.findIndex(idTest(id))];
+				},
+
+				getClone: function getClone(id) {
+					var preset = this.get(id)
+					  , clone = preset.clone();
+					clone.cols = preset.cols.slice();
+					return clone;
 				},
 
 				set: function setPreset(preset) {
-					$storage.preset = preset.id;
-					return preset;
+					user.config.presetIndex = findPos(preset);
+					return $q.resolve(user.config.save())
+						.then(function() { return preset })
 				},
 
 				getAll: function getAllPreset() {
-					return $storage.presets;
+					return user.config.presets;
 				},
 
-				update: function updatePreset (preset) {
-					var index = findPos(preset);
-					return ~index && $storage.presets.splice(index, 1, preset) && preset;
+				update: function updatePreset (preset, values) {
+					['name', 'cols'].forEach(function(prop) {
+						if(!angular.equals(preset[prop], values[prop])) {
+							preset[prop] = values[prop];
+						}
+					})
+					return $q.resolve(preset.save())
 				},
 
 				remove: function removePreset (preset) {
-					var index = findPos(preset);
-					return ~index && $storage.presets.splice(index, 1)[0];
+					return $q.resolve(preset.destroy())
+						.then(function() {
+							var index = findPos(preset);
+							if(~index) {
+								user.config.presets.splice(index, 1)
+								return user.config.save();
+							}
+							return $q.reject();
+						})
 				},
 
 				add: function addPreset (preset) {
-					preset.id = $storage.id++;
-					return $storage.presets.push(preset) && preset;
+					user.config.presets.push(preset)
+					return $q.resolve(user.config.save())
+						.then(function() { return preset })
+
 				},
 
 				$getDefault: function $getDefault () {
-					return {
+					return new ParseClasses.Preset({
 						name:'DPS',
 						cols: [
 							{label:  'Name',value: 'name'},
 							{label:  'Encdps',value: 'encdps'},
 							{label:  'Damage (%)',value: 'damagePct'},
 						]
-					}
+					});
 				}
 			}
 		}])
@@ -191,12 +246,10 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 	.run(['$localStorage', 'VERSION',
 		function update($storage, VERSION) {
 
-			Parse.initialize("{#appId#}", "{#jsKey#}");
-
 			if($storage.VERSION) {
 
 				/* Placeholder for future db patchs */
-				if(semver.lt($storage.VERSION, '1.1.0')) {
+				if(semver.lt($storage.VERSION, '1.1.0-beta')) {
 					angular.forEach($storage.presets, function(preset) {
 						preset.id = preset.__uid;
 						delete preset.__uid;
