@@ -300,7 +300,8 @@ a:active {
 .combatant {}
 
 .combatant td.job {
-    background-size: auto 100%;
+    background-size: 1.8em 1.8em;
+    background-position: left center; 
     background-repeat: no-repeat;
     padding-left: 2em;
 }
