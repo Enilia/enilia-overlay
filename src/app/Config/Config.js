@@ -52,7 +52,6 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			$scope.selectedPreset = presetManager.get();
 			$scope.select = function select(preset) {
 				$scope.selectedPreset = preset;
-				presetManager.set(preset);
 			}
 
 			$scope.remove = function($event, preset) {
@@ -75,6 +74,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 
 			$scope.$on('$destroy', function() {
 				$document.off('click', documentClick);
+				presetManager.set($scope.selectedPreset);
 			})
 
 		}])
@@ -87,51 +87,68 @@ angular.module('enilia.overlay.config', ['ngRoute',
 
 			$scope.preset = presetManager.getClone($routeParams.presetId);
 
-			$scope.save = function() {
+			$scope.save = function($event) {
 				presetManager.update(presetManager.get($routeParams.presetId), $scope.preset);
 			};
 
 		}])
 
 	.controller('newPresetController',
-		['$scope', 'presetManager',
-		function newPresetController($scope, presetManager) {
+		['$scope', 'presetManager', '$location',
+		function newPresetController($scope, presetManager, $location) {
 
 			$scope.title = "Creating";
 
 			$scope.preset = presetManager.$getDefault();
-			console.log($scope.preset)
 
-			$scope.save = function() {
-				presetManager.add($scope.preset);
+			$scope.save = function($event) {
+				$event.preventDefault();
+				$scope.setLoading(true);
+				presetManager.add($scope.preset)
+					.finally(function() {
+						$location.path($event.target.hash.replace('#',''));
+						$scope.setLoading(false);
+					})
 			};
 
 		}])
 
 	.controller('clonePresetController',
-		['$scope', '$routeParams', 'presetManager',
-		function clonePresetController($scope, $routeParams, presetManager) {
+		['$scope', '$routeParams', 'presetManager', '$location',
+		function clonePresetController($scope, $routeParams, presetManager, $location) {
 
 			$scope.title = "Cloning";
 
-			$scope.preset = angular.copy(presetManager.get(parseInt($routeParams.cloneId)));
+			$scope.preset = presetManager.getClone($routeParams.presetId);
 
-			$scope.save = function() {
-				presetManager.add($scope.preset);
+			$scope.save = function($event) {
+				$event.preventDefault();
+				$scope.setLoading(true);
+				presetManager.add($scope.preset)
+					.finally(function() {
+						$location.path($event.target.hash.replace('#',''));
+						$scope.setLoading(false);
+					})
 			};
 
 		}])
 
 	.controller('deletePresetController',
-		['$scope', '$routeParams', 'presetManager',
-		function deletePresetController($scope, $routeParams, presetManager) {
+		['$scope', '$routeParams', 'presetManager', '$location',
+		function deletePresetController($scope, $routeParams, presetManager, $location) {
 
 			$scope.title = "Deleting";
 
-			$scope.preset = angular.copy(presetManager.get(parseInt($routeParams.cloneId)));
+			$scope.preset = presetManager.get($routeParams.cloneId);
 
-			$scope.delete = function() {
-				presetManager.remove($scope.preset);
+			$scope.delete = function($event) {
+				$event.preventDefault();
+				$scope.setLoading(true);
+				presetManager.remove($scope.preset)
+					.finally(function() {
+						$location.path($event.target.hash.replace('#',''));
+						$scope.setLoading(false);
+					})
 			};
 
 		}])
