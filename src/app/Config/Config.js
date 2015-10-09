@@ -35,7 +35,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 						user: userManagerProvider.load,
 					},
 			})
-			.when('/config/preset/:cloneId/delete', {
+			.when('/config/preset/:presetId/delete', {
 				templateUrl:'app/Config/partials/delete.html',
 				controller: 'deletePresetController',
 					resolve: {
@@ -119,7 +119,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 
 			$scope.title = "Cloning";
 
-			$scope.preset = presetManager.getClone($routeParams.presetId);
+			$scope.preset = presetManager.getClone($routeParams.cloneId);
 
 			$scope.save = function($event) {
 				$event.preventDefault();
@@ -139,7 +139,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 
 			$scope.title = "Deleting";
 
-			$scope.preset = presetManager.get($routeParams.cloneId);
+			$scope.preset = presetManager.get($routeParams.presetId);
 
 			$scope.delete = function($event) {
 				$event.preventDefault();
