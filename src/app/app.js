@@ -46,6 +46,7 @@ angular.module('enilia.overlay', ['ngRoute',
 
 				$scope.state = { isLocked: true };
 				$scope.isLoading = true;
+				// $scope.pristine = true;
 
 				$document.on('onOverlayStateUpdate', stateUpdate);
 				$document.on('onOverlayDataUpdate', dataUpdate);
@@ -56,11 +57,13 @@ angular.module('enilia.overlay', ['ngRoute',
 
 				$scope.$on('$routeChangeSuccess', function() {
 					$scope.isLoading = false;
+					$scope.pristine = false;
 				})
 
 				$scope.$on('$routeChangeError', function() {
 					console.log(arguments)
 					$scope.isLoading = false;
+					$scope.pristine = false;
 				})
 
 			    function stateUpdate(e) {

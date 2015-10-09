@@ -22,7 +22,7 @@
     
 </head>
     <body ng-class="{resizable: !state.isLocked}">
-        <div id="container" ng-class="{expandFromBottom: expandFromBottom}">
+        <div id="container" ng-class="{expandFromBottom: expandFromBottom, pristine: pristine}">
             <ng-view></ng-view>
             <small ng-if="user">using presets: {{ user.get('username') }}</small>
             <div id="loading" ng-class="{loading: isLoading}"></div>
