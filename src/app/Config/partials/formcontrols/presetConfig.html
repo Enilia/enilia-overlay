@@ -1,5 +1,5 @@
 
-<div ng-repeat="col in cols"
+<div ng-repeat="col in cols track by col.label+col.value"
 	 class="preset-col">
 	<div class="controls">
 		<span class="preset-col-index">({{$index}})</span>
