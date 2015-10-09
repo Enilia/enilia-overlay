@@ -4,6 +4,7 @@ var fs = require('fs-extra-promise')
   , _extend = require('util')._extend
   , Promise = fs.Promise
   , glob = Promise.promisify(require('glob-all'))
+  , uglify = require('uglify-js')
   ;
 
 var headerTpl = 'angular.module("%s", [\n\t%s,\n]);\n';
@@ -51,13 +52,51 @@ function build() {
 	.return(Promise.join(glob(coreFiles), glob(staticFiles), glob(package.config.templatesRoot)))
 	.spread(function (coreFiles, staticFiles, templatesFiles) {
 		return Promise.join(
-			// parse and save core files
-			coreFiles.map(function(fileName) {
+			// parse, save and minify core files
+			Promise.map(coreFiles.sort(function(a, b) {
+			    return a.localeCompare(b);
+			}), function(fileName) {
 				return fs.readFileAsync(fileName, 'utf8')
 						.then(parse.bind(null, config.tokens))
 						.then(function(contents) {
-							return fs.outputFileAsync(path.posix.join(config.out, getPath(fileName)), contents)
+							return fs.outputFileAsync(path.posix.join(config.out, getPath(fileName)), contents).return(contents)
 						})
+						.then(function (contents) {
+							fileName = path.posix.relative('app', getPath(fileName));
+							return {
+								fileName: fileName,
+								contents: contents
+							}
+						})
+			})
+			.then(function(files) {
+				var toplevel
+				  , compressed_ast
+				  , sourceMap = uglify.SourceMap({
+				  	file: 'all.js.map',
+				  })
+				  ;
+				files.forEach(function(fileData){
+					toplevel = uglify.parse(fileData.contents, {
+						filename: fileData.fileName,
+						toplevel: toplevel
+					});
+				});
+				toplevel.figure_out_scope();
+				compressed_ast = toplevel.transform(uglify.Compressor());
+				compressed_ast.figure_out_scope();
+				compressed_ast.compute_char_frequency();
+				compressed_ast.mangle_names();
+				return [compressed_ast.print_to_string({
+					source_map: sourceMap
+				  }),
+				sourceMap.toString()];
+			})
+			.spread(function(code, sourceMap) {
+				return Promise.join(
+					fs.outputFileAsync(path.posix.join(config.out, 'app/all.js'), code + "\n//# sourceMappingURL=all.js.map"),
+					fs.outputFileAsync(path.posix.join(config.out, 'app/all.js.map'), sourceMap)
+					)
 			}),
 			// compile templates
 			Promise.map(templatesFiles.sort(function(a, b) {

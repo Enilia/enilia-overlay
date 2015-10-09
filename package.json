@@ -16,12 +16,13 @@
   "config": {
     "files": {
       "core": [
-        "src/*.*",
         "src/app/**/*.*",
+        "!src/app/Debug/**/*.js",
         "!src/app/**/*.html",
         "!src/app/tpls.js"
       ],
       "static": [
+        "src/*.*",
         "src/css/**/*.*",
         "src/images/glow/**/*.*",
         "src/images/handle.png",
@@ -57,6 +58,7 @@
     "commander": "^2.8.1",
     "fs-extra-promise": "^0.2.1",
     "node-watch": "^0.3.4",
-    "parse": "^1.6.4"
+    "parse": "^1.6.4",
+    "uglify-js": "^2.4.24"
   }
 }
