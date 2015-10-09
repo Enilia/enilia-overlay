@@ -30,6 +30,8 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 	.factory('ParseClasses',
 		function ParseClassesFactory() {
 
+			ParseClasses = {};
+
 			Parse.initialize("{#appId#}", "{#jsKey#}");
 
 			[
@@ -41,7 +43,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 						Parse.Object.extend(config[0]) :
 						config[0];
 
-				this[klass.className] = klass;
+				ParseClasses[klass.className] = klass;
 
 				config.slice(1).forEach(function(prop) {
 					Object.defineProperty(klass.prototype, prop, {
@@ -51,7 +53,9 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 						set: function(value) {this.set(prop, value)}
 					});
 				})
-			}, this)
+			})
+
+			return ParseClasses;
 		})
 
 	.provider('userManager', function userManagerProvider() {
@@ -216,9 +220,9 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 				},
 
 				add: function addPreset (preset) {
+					user.config.presets.push(preset)
 					return $q.resolve(preset.save())
 						.then(function() {
-							user.config.presets.push(preset)
 							return user.config.save()
 						})
 						.then(function() { return preset })
