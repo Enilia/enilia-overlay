@@ -1,4 +1,7 @@
 ;(function() {
+
+	// var DEFAULT_USER = "Default";
+	var DEFAULT_USER = "dede";
 	
 angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 											'ngStorage'])
@@ -30,22 +33,29 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 	.factory('ParseClasses',
 		function ParseClassesFactory() {
 
-			ParseClasses = {};
+			var ParseClasses = {}
+			  , presetProto = {
+			  	clone: function clone() {
+			  		var clone = Parse.Object.prototype.clone.apply(this, arguments);
+			  		clone.cols = angular.copy(this.cols);
+			  		return clone;
+			  	}
+			  };
 
 			Parse.initialize("{#appId#}", "{#jsKey#}");
 
 			[
-				[Parse.User, 'config'],
-				['UserConfig', 'presetIndex', 'presets', 'expandFromBottom'],
-				['Preset', 'name', 'cols']
+				[Parse.User, ['config']],
+				['UserConfig', ['presetIndex', 'presets', 'expandFromBottom']],
+				['Preset', ['name', 'cols'], presetProto]
 			].forEach(function(config) {
 				var klass = typeof config[0] === "string" ?
-						Parse.Object.extend(config[0]) :
+						Parse.Object.extend(config[0], config[2]) :
 						config[0];
 
 				ParseClasses[klass.className] = klass;
 
-				config.slice(1).forEach(function(prop) {
+				config[1].forEach(function(prop) {
 					Object.defineProperty(klass.prototype, prop, {
 						configurable:true,
 						enumerable: true,
@@ -61,7 +71,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 	.provider('userManager', function userManagerProvider() {
 
 		this.load = ['userManager', function (userManager) {
-			return userManager.getUser() || userManager.load("Default");
+			return userManager.getUser() || userManager.load(DEFAULT_USER);
 		}]
 
 		this.$get = ['$q', '$rootScope', '$location', 'ParseClasses',
@@ -80,11 +90,11 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 				
 				return {
 					get: function get(key) {
-						return user && user.get(key);
+						return user && user.config.get(key);
 					},
 
 					set: function set(key, value) {
-						user && user.set(key, value);
+						user && user.config.set(key, value);
 						this.save();
 					},
 
@@ -98,8 +108,8 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 
 					save: function save() {
 						if(user.authenticated())
-							return $q.resolve(user.save());
-						$q.reject(new this.UserNotAuthenticatedError());
+							return $q.resolve(user.config.save());
+						return $q.reject(new this.UserNotAuthenticatedError());
 					},
 
 					load: function(userName) {
@@ -184,12 +194,13 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 				getClone: function getClone(id) {
 					var preset = this.get(id)
 					  , clone = preset.clone();
-					clone.cols = preset.cols.slice();
 					return clone;
 				},
 
 				set: function setPreset(preset) {
-					user.config.presetIndex = findPos(preset);
+					var pos = findPos(preset);
+					if(user.config.presetIndex === pos) return;
+					user.config.presetIndex = pos;
 					return $q.resolve(user.config.save())
 						.then(function() { return preset })
 				},
@@ -204,6 +215,9 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 							preset[prop] = values[prop];
 						}
 					})
+					preset.cols.forEach(function(col) {
+						delete col.$$hashKey;
+					})
 					return $q.resolve(preset.save())
 				},
 
@@ -212,7 +226,8 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 						.then(function() {
 							var index = findPos(preset);
 							if(~index) {
-								user.config.presets.splice(index, 1)
+								user.config.presets.splice(index, 1);
+								user.config.presets = user.config.presets;
 								return user.config.save();
 							}
 							return $q.reject();
@@ -220,9 +235,12 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 				},
 
 				add: function addPreset (preset) {
-					user.config.presets.push(preset)
+					preset.cols.forEach(function(col) {
+						delete col.$$hashKey;
+					})
 					return $q.resolve(preset.save())
 						.then(function() {
+							user.config.presets.push(preset)
 							return user.config.save()
 						})
 						.then(function() { return preset })
