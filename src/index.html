@@ -17,12 +17,14 @@
     <script type="text/javascript" src="app/DpsMeter/DpsMeter.js"></script>
     <script type="text/javascript" src="app/Config/Config.js"></script>
     <script type="text/javascript" src="app/DBManager/DBManager.js"></script>
+    <script type="text/javascript" src="app/Navigation/Navigation.js"></script>
     
     <script type="text/javascript" src="app/Debug/Debug.js"></script>
     
 </head>
     <body ng-class="{resizable: !state.isLocked}">
         <div id="container" ng-class="{expandFromBottom: expandFromBottom, pristine: pristine}">
+            <menu></menu>
             <ng-view></ng-view>
             <small ng-if="user">using presets: {{ user.get('username') }}</small>
             <div id="loading" ng-class="{loading: isLoading}"></div>

@@ -1,0 +1,20 @@
+
+<div class="menu">
+
+	<span ng-if="location == '/dpsmeter'">
+		<a class="glyphicon menu-item" 
+		   ng-class="{
+		   	'glyphicon-object-align-top':		!expandFromBottom,
+		   	'glyphicon-object-align-bottom':	expandFromBottom}"
+		   ng-click="setExpandFromBottom(!expandFromBottom)"
+		   prevent-selection></a>
+
+		<a href="#/config"
+		   class="glyphicon glyphicon-cog menu-item"></a>
+	</span>
+
+	<span ng-if="location != '/dpsmeter'">
+		<a href="#/dpsmeter"
+		   class="glyphicon glyphicon-tasks menu-item"></a>
+	</span>
+</div>
