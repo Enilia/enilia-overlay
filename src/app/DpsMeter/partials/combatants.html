@@ -3,7 +3,7 @@
 	<table>
 			<tr class="tableheader">
 				<th class="header"
-					ng-repeat="header in headers"
+					ng-repeat="header in headers track by $index"
 					ng-class="header.value">{{header.label}}</th>
 			</tr>
 			<tr combatant="combatant"
