@@ -19,10 +19,11 @@ angular.module('enilia.overlay.message', ['ngRoute',
 			  , unread = 0
 			  ;
 
-			function Message(title, content) {
+			function Message(title, content, error) {
 				messages.push({
 					title : title,
 					content: content,
+					error: error,
 					read: false,
 					date: Date.now(),
 				});
