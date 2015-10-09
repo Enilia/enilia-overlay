@@ -74,8 +74,8 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 			return userManager.getUser() || userManager.load(DEFAULT_USER);
 		}]
 
-		this.$get = ['$q', '$rootScope', '$location', 'ParseClasses',
-			function userManagerFactory ($q, $rootScope, $location, ParseClasses) {
+		this.$get = ['$q', '$rootScope', '$location', 'ParseClasses', 'message',
+			function userManagerFactory ($q, $rootScope, $location, ParseClasses, message) {
 
 				var session = {
 						encounter:{
@@ -95,7 +95,10 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 
 					set: function set(key, value) {
 						user && user.config.set(key, value);
-						this.save();
+						this.save().catch(function (e) {
+							message('userManager.set', 'could not save {'+key+'} whith value {'+value+'}',
+								e)
+						});
 					},
 
 					getSession: function getSession() {
@@ -122,7 +125,12 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 							return $q.resolve(new Parse.Query(Parse.User)
 								.include("config.presets")
 								.equalTo("username", userName)
-								.first());
+								.first()).catch(function(e) {
+									message('userManager.load',
+										'Could not load user {'+userName+'}',
+										e)
+									return $q.reject(e);
+								});
 						}
 
 						isLoading = isLoading ? isLoading.then(innerLoad) : innerLoad();
@@ -164,8 +172,8 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 	})
 
 	.factory('presetManager',
-		['userManager', '$rootScope', '$q', 'ParseClasses',
-		function presetManagerFactory (userManager, $rootScope, $q, ParseClasses) {
+		['userManager', '$rootScope', '$q', 'ParseClasses', 'message',
+		function presetManagerFactory (userManager, $rootScope, $q, ParseClasses, message) {
 			
 			var user = userManager.getUser();
 
@@ -203,6 +211,12 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 					user.config.presetIndex = pos;
 					return $q.resolve(user.config.save())
 						.then(function() { return preset })
+						.catch(function(e) {
+							message('presetManager.set',
+								'could not save preset {'+preset.id+'} at index {'+pos+'}',
+								e)
+							return $q.reject(e);
+						})
 				},
 
 				getAll: function getAllPreset() {
@@ -219,6 +233,13 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 						delete col.$$hashKey;
 					})
 					return $q.resolve(preset.save())
+						.catch(function(e) {
+							console.log(values);
+							message('presetManager.update',
+								'could not update preset {'+preset.id+'} with values {'+angular.toJson(values)+'}',
+								e)
+							return $q.reject(e);
+						})
 				},
 
 				remove: function removePreset (preset) {
@@ -230,7 +251,13 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 								user.config.presets = user.config.presets;
 								return user.config.save();
 							}
-							return $q.reject();
+							return $q.reject({message:'no index found for {'+preset.id+'}'});
+						})
+						.catch(function(e) {
+							message('presetManager.remove',
+								'could not remove preset {'+preset.id+'}',
+								e)
+							return $q.reject(e);
 						})
 				},
 
@@ -244,6 +271,12 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 							return user.config.save()
 						})
 						.then(function() { return preset })
+						.catch(function(e) {
+							message('presetManager.add',
+								'could not add preset {'+preset.id+'}',
+								e)
+							return $q.reject(e);
+						})
 				},
 
 				$getDefault: function $getDefault () {
