@@ -17,18 +17,30 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			.when('/config/preset/new', {
 				templateUrl:'app/Config/partials/preset.html',
 				controller: 'newPresetController',
+					resolve: {
+						user: userManagerProvider.load,
+					},
 			})
 			.when('/config/preset/:presetId/edit', {
 				templateUrl:'app/Config/partials/preset.html',
 				controller: 'editPresetController',
+					resolve: {
+						user: userManagerProvider.load,
+					},
 			})
 			.when('/config/preset/:cloneId/clone', {
 				templateUrl:'app/Config/partials/preset.html',
 				controller: 'clonePresetController',
+					resolve: {
+						user: userManagerProvider.load,
+					},
 			})
 			.when('/config/preset/:cloneId/delete', {
 				templateUrl:'app/Config/partials/delete.html',
 				controller: 'deletePresetController',
+					resolve: {
+						user: userManagerProvider.load,
+					},
 			})
 	}])
 
@@ -39,7 +51,8 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			$scope.presets = presetManager.getAll();
 			$scope.selectedPreset = presetManager.get();
 			$scope.select = function select(preset) {
-				$scope.selectedPreset = presetManager.set(preset);
+				$scope.selectedPreset = preset;
+				presetManager.set(preset);
 			}
 
 			$scope.remove = function($event, preset) {
@@ -72,10 +85,10 @@ angular.module('enilia.overlay.config', ['ngRoute',
 
 			$scope.title = "Editing";
 
-			$scope.preset = angular.copy(presetManager.get(parseInt($routeParams.presetId)));
+			$scope.preset = presetManager.getClone($routeParams.presetId);
 
 			$scope.save = function() {
-				presetManager.update($scope.preset);
+				presetManager.update(presetManager.get($routeParams.presetId), $scope.preset);
 			};
 
 		}])
@@ -87,6 +100,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			$scope.title = "Creating";
 
 			$scope.preset = presetManager.$getDefault();
+			console.log($scope.preset)
 
 			$scope.save = function() {
 				presetManager.add($scope.preset);
