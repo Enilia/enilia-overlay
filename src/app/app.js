@@ -3,7 +3,8 @@ angular.module('enilia.overlay', ['ngRoute',
 								  'enilia.overlay.tpls',
 								  'enilia.overlay.dpsmeter',
 								  'enilia.overlay.config',
-								  'enilia.overlay.dbmanager'])
+								  'enilia.overlay.dbmanager',
+								  'enilia.overlay.navigation'])
 
 	.constant('VERSION', '{#VERSION#}')
 
@@ -79,14 +80,15 @@ angular.module('enilia.overlay', ['ngRoute',
 					session.active = e.detail.isActive;
 			    }
 
-			    $scope.setExpandFromBottom = function(value, save) {
-			    	$scope.expandFromBottom = value;
-			    	if(save !== false) {
-			    		userManager.set('expandFromBottom', value);
-			    	}
+			    $scope.setLoading = function setLoading(value) {
+			    	$scope.isLoading = value;
 			    }
 
-			    $scope.getExpandFromBottom = function() {
+			    $scope.setExpandFromBottom = function setExpandFromBottom(value) {
+			    	$scope.expandFromBottom = value;
+			    }
+
+			    $scope.getExpandFromBottom = function getExpandFromBottom() {
 			    	return userManager.get('expandFromBottom');
 			    }
 		}])
