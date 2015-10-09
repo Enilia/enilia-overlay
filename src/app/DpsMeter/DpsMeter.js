@@ -3,7 +3,8 @@
 angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 										   'ngStorage',
 										   'enilia.overlay.tpls',
-										   'enilia.overlay.dbmanager'])
+										   'enilia.overlay.dbmanager',
+										   'enilia.overlay.navigation'])
 
 	.config(['$routeProvider', 'userManagerProvider',
 		function($routeProvider, userManagerProvider) {
@@ -23,7 +24,7 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 
 			var session = userManager.getSession();
 
-			$scope.setExpandFromBottom($scope.getExpandFromBottom(), false);
+			$scope.setExpandFromBottom($scope.getExpandFromBottom());
 
 			$scope.encounter = session.encounter;
 			$scope.combatants = session.combatants;
@@ -32,7 +33,9 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 			$document.on('onOverlayDataUpdate', dataUpdate);
 
 			$scope.$on('$destroy', function $destroy() {
-				$scope.setExpandFromBottom(false, false);
+				if($scope.expandFromBottom !== userManager.get('expandFromBottom'))
+					userManager.set('expandFromBottom', $scope.expandFromBottom);
+				$scope.setExpandFromBottom(false);
 				$document.off('onOverlayDataUpdate', dataUpdate);
 			});
 
@@ -58,7 +61,7 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 
 			$scope.bestdps = 0;
 
-			$scope.headers = presetManager.get().cols;
+			$scope.headers = presetManager.get().cols.slice();
 
 			$scope.$watch('combatants', update);
 
@@ -79,7 +82,7 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 		['$scope', 'presetManager',
 		function CombatantController($scope, presetManager) {
 
-			$scope.cols = presetManager.get().cols;
+			$scope.cols = presetManager.get().cols.slice();
 
 			$scope.$watch('combatant', update);
 
