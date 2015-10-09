@@ -158,9 +158,10 @@ a:active {
     display:none;
 }
 
-#loading.boot {
+#container.pristine #loading {
     display: block;
-    opacity: 1;
+    opacity: 1!important;
+    -webkit-animation-name: none;
 }
 
 #loading.loading {
