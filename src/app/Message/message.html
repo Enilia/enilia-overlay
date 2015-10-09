@@ -1,0 +1,14 @@
+
+<div ng-repeat="message in messages" class="message">
+	<div class="message-title">
+		<div class="controls">
+			<span class="glyphicon glyphicon-trash delete"
+				  ng-click="remove(message)"
+				  prevent-selection></span>
+		</div>
+		{{message.title}}
+	</div>
+	<div class="message-content">
+		{{message.content}}
+	</div>
+</div>

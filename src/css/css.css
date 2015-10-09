@@ -90,6 +90,59 @@ a:active {
 
 .menu-item {}
 
+/* Message-icon */
+
+.message-icon {
+    position: relative;
+}
+
+.message-icon .unread {
+    display:none;
+}
+
+.message-icon.unread .unread {
+    display:block;
+    position: absolute;
+    font-size: 0.8em;
+    line-height: 1.1em;
+    top: -0.5em;
+    left:-0.5em;
+    width:1em;
+    height:1em;
+    text-align: center;
+    border-radius: 1em;
+    background:red;
+}
+
+.message-icon.plus .unread::after {
+    content:'+';
+    position: relative;
+    right: 0.2em;
+}
+
+/* Message */
+
+.message {
+    border: 1px solid #DED7BE;
+    margin-bottom: 1em;
+    clear:both;
+}
+
+.message .message-title {
+    border-bottom: 1px solid #DED7BE;
+    padding: 0.2em 0.5em;
+    text-transform: uppercase;
+}
+
+.message-title .controls .glyphicon {
+    font-size:1em;
+    float:right;
+}
+
+.message-content {
+    padding:0.5em;
+}
+
 /* fieldselect */
 
 .field {

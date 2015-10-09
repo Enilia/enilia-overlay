@@ -4,7 +4,8 @@ angular.module('enilia.overlay', ['ngRoute',
 								  'enilia.overlay.dpsmeter',
 								  'enilia.overlay.config',
 								  'enilia.overlay.dbmanager',
-								  'enilia.overlay.navigation'])
+								  'enilia.overlay.navigation',
+								  'enilia.overlay.message'])
 
 	.constant('VERSION', '{#VERSION#}')
 
