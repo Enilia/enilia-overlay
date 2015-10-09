@@ -2,10 +2,10 @@
   "env": "server",
   "files": {
     "static": [
-      "node_modules/parse/dist/parse-latest.js"
+      "node_modules/parse/dist/parse-latest.min.js"
     ],
     "map": {
-      "node_modules/parse/dist/parse-latest.js": "js/vendor/parse/dist/parse-latest.js"
+      "node_modules/parse/dist/parse-latest.min.js": "js/vendor/parse/dist/parse-latest.min.js"
     }
   },
   "tokens": {
