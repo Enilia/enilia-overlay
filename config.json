@@ -2,35 +2,36 @@
   "env": "server",
   "files": {
     "core": [
-      "app/**/*.js",
-      "!app/Debug/**/*.js"
+      "app/**/*.js"
     ],
-    "static": [
+    "assets": [
       "index.html",
       "css/**/*.*",
       "images/glow/**/*.*",
       "images/handle.png",
       "images/cover.jpg",
-      "images/ajax-loader.svg",
-      "js/vendor/bootstrap/dist/css/bootstrap.min.css",
-      "js/vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.{eot,svg,ttf,woff,woff2}",
-      "js/vendor/angular/angular.min.{js,js.map}",
-      "js/vendor/angular-route/angular-route.min.{js,js.map}",
-      "js/vendor/ngstorage/ngStorage.min.js",
-      "js/vendor/semver/semver.browser.js",
-      "node_modules/parse/dist/parse-latest.min.js"
+      "images/ajax-loader.svg"
     ],
-    "map": {
-      "node_modules/parse/dist/parse-latest.min.js": "js/vendor/parse/dist/parse-latest.min.js"
-    }
+    "bower": [
+      "bootstrap/dist/css/bootstrap.{css,css.map}",
+      "bootstrap/dist/fonts/glyphicons-halflings-regular.{eot,svg,ttf,woff,woff2}",
+      "angular/angular.js",
+      "angular-route/angular-route.js",
+      "ngstorage/ngStorage.js",
+      "semver/semver.browser.js"
+    ],
+    "node_modules": [
+      "parse/dist/parse-latest.js"
+    ]
   },
   "tokens": {
     "appId": "LskqcGbieZk8smuFlbNG6BvgOYs1PGmB0WonWo13",
     "jsKey": "x1HImL2Ezwm1SWFyPjSNNeW5BgV3sDX41U61mCZd"
   },
-  "out": "parse/public",
+  "srcDirectory": "src",
+  "outDirectory": "parse/public",
   "releaseDirectory": "Releases",
-  "templatesRoot": "src/app/**/*.html",
+  "templatesRoot": "app/**/*.html",
   "templatesOut": "app/tpls.js",
   "templatesModuleName": "enilia.overlay.tpls"
 }

@@ -13,9 +13,11 @@ parse
 
 # Dependency directory
 node_modules
+bower_components
 src/js/vendor
 
 # Builds
 build
 Releases
 .sublime-grunt.cache
+.tmp

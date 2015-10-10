@@ -4,16 +4,30 @@
     <meta charset="utf-8" />
     <title></title>
     <script>document.write('<base href="' + document.location + '" />');</script>
-    <link rel="stylesheet" type="text/css" href="js/vendor/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- build:css css/app.min.css -->
     <link rel="stylesheet" type="text/css" href="css/css.css" />
     <link rel="stylesheet" type="text/css" href="css/jobs.css" />
-    <script type="text/javascript" src="js/vendor/angular/angular.min.js"></script>
-    <script type="text/javascript" src="js/vendor/angular-route/angular-route.min.js"></script>
-    <script type="text/javascript" src="js/vendor/ngstorage/ngStorage.min.js"></script>
-    <script type="text/javascript" src="js/vendor/semver/semver.browser.js"></script>
-    <script type="text/javascript" src="js/vendor/parse/dist/parse-latest.min.js"></script>
-    <script type="text/javascript" src="app/all.js"></script>
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/dist/css/bootstrap.css" />
+    <!-- endbuild -->
+    <!-- build:cache js/vendor.min.js -->
+    <script type="text/javascript" src="vendor/angular/angular.js"></script>
+    <script type="text/javascript" src="vendor/angular-route/angular-route.js"></script>
+    <script type="text/javascript" src="vendor/ngstorage/ngStorage.js"></script>
+    <script type="text/javascript" src="vendor/semver/semver.browser.js"></script>
+    <script type="text/javascript" src="vendor/parse/dist/parse-latest.js"></script>
+    <!-- endbuild -->
+    <!-- build:js js/app.min.js -->
+    <script type="text/javascript" src="app/app.js"></script>
     <script type="text/javascript" src="app/tpls.js"></script>
+    <script type="text/javascript" src="app/DpsMeter/DpsMeter.js"></script>
+    <script type="text/javascript" src="app/Config/Config.js"></script>
+    <script type="text/javascript" src="app/DBManager/DBManager.js"></script>
+    <script type="text/javascript" src="app/Navigation/Navigation.js"></script>
+    <script type="text/javascript" src="app/Message/Message.js"></script>
+    <script type="text/javascript" src="app/Debug/Debug.js"></script>
+    <!-- endbuild -->
+    <!--
+     -->
 </head>
     <body ng-class="{resizable: !state.isLocked}">
         <div id="container" ng-class="{expandFromBottom: expandFromBottom, pristine: pristine}">
