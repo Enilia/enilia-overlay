@@ -30,8 +30,8 @@ function build() {
 		tokens = _extend({
 			VERSION: package.version
 		}, tokens);
-		return contents.replace(/\{#(.+?)#\}/g, function(match, token) {
-			return tokens[token] || "";
+		return contents.replace(/<%=(.+?)%>/g, function(match, token) {
+			return tokens[token.trim()] || "";
 		})
 	}
 

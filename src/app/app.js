@@ -7,7 +7,7 @@ angular.module('enilia.overlay', ['ngRoute',
 								  'enilia.overlay.navigation',
 								  'enilia.overlay.message'])
 
-	.constant('VERSION', '{#VERSION#}')
+	.constant('VERSION', '<%= version %>')
 
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider

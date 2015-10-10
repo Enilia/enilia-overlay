@@ -2,7 +2,7 @@
 
 	// var DEFAULT_USER = "Default";
 	var DEFAULT_USER = "dede";
-	
+
 angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 											'ngStorage'])
 
@@ -42,7 +42,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 			  	}
 			  };
 
-			Parse.initialize("{#appId#}", "{#jsKey#}");
+			Parse.initialize("<%= appId %>", "<%= jsKey %>");
 
 			[
 				[Parse.User, ['config']],
@@ -87,7 +87,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 				  , isLoading
 				  , user
 				  ;
-				
+
 				return {
 					get: function get(key) {
 						return user && user.config.get(key);
@@ -174,7 +174,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 	.factory('presetManager',
 		['userManager', '$rootScope', '$q', 'ParseClasses', 'message',
 		function presetManagerFactory (userManager, $rootScope, $q, ParseClasses, message) {
-			
+
 			var user = userManager.getUser();
 
 			$rootScope.$on('userChange', function($event, _user) {
