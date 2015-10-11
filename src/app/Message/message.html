@@ -8,9 +8,8 @@
 		</div>
 		{{message.title}}
 	</div>
-	<div class="message-content">
-		{{message.content}}
-		<br/>
-		{{message.error.message}}
-	</div>
+	<pre class="message-content">
+{{message.content}}
+({{message.error.code}}) {{message.error.message}}
+	</pre>
 </div>

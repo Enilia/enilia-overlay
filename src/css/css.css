@@ -141,6 +141,8 @@ a:active {
 
 .message-content {
     padding:0.5em;
+    background: transparent;
+    color:inherit;
 }
 
 /* fieldselect */
@@ -301,7 +303,7 @@ a:active {
 
 .combatant td.job {
     background-size: 1.8em 1.8em;
-    background-position: left center; 
+    background-position: left center;
     background-repeat: no-repeat;
     padding-left: 2em;
 }

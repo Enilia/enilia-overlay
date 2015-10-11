@@ -236,7 +236,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 						.catch(function(e) {
 							console.log(values);
 							message('presetManager.update',
-								'could not update preset {'+preset.id+'} with values {'+angular.toJson(values)+'}',
+								'could not update preset {'+preset.id+'} with values {'+angular.toJson(values, true)+'}',
 								e)
 							return $q.reject(e);
 						})
@@ -351,6 +351,20 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 		}])
 
 	.run(function() {
+
+	  if (!XMLHttpRequest.prototype.toJSON) {
+	  	XMLHttpRequest.prototype.toJSON = function() {
+	  	    return {
+	  	        readyState: this.readyState,
+	  	        response: this.response,
+	  	        responseText: this.responseText,
+	  	        responseType: this.responseType,
+	  	        responseURL: this.responseURL,
+	  	        status: this.status,
+	  	        statusText: this.statusText
+	  	    }
+	  	}
+	  }
 
 	  if (!Array.prototype.findIndex) {
 	    Array.prototype.findIndex = function(predicate) {

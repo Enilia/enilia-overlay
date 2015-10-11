@@ -1,5 +1,5 @@
 ;(function() {
-	
+
 angular.module('enilia.overlay.message', ['ngRoute',
 										  'enilia.overlay.tpls'])
 
@@ -20,6 +20,11 @@ angular.module('enilia.overlay.message', ['ngRoute',
 			  ;
 
 			function Message(title, content, error) {
+
+				error.message = error.message.replace(/\{.*\}/, function(match) {
+					return angular.toJson(angular.fromJson(match), true)
+				})
+
 				messages.push({
 					title : title,
 					content: content,
@@ -52,7 +57,7 @@ angular.module('enilia.overlay.message', ['ngRoute',
 				unread = 0;
 				$rootScope.$broadcast('read');
 			}
-			
+
 			return Message
 		}])
 
