@@ -25,13 +25,7 @@
   "license": "ISC",
   "private": true,
   "dependencies": {
-    "archiver": "^0.15.1",
-    "bluebird": "^2.10.2",
-    "commander": "^2.8.1",
-    "fs-extra-promise": "^0.2.1",
-    "node-watch": "^0.3.4",
-    "parse": "^1.6.4",
-    "uglify-js": "^2.4.24"
+    "parse": "^1.6.4"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
@@ -45,6 +39,8 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-template": "^0.2.3",
     "grunt-usemin": "^3.1.1",
-    "load-grunt-tasks": "^3.3.0"
+    "grunt-zip": "^0.17.1",
+    "load-grunt-tasks": "^3.3.0",
+    "uglify-js": "^2.4.24"
   }
 }
