@@ -1,14 +1,14 @@
 ;(function() {
 
-	// var DEFAULT_USER = "Default";
-	var DEFAULT_USER = "dede";
+	// var DEFAULT_USER = "dede";
+	var DEFAULT_USER = "Default";
 
 angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 											'ngStorage'])
 
 	.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
-			.when('/user/load/:userName', {
+			.when('/u/:userName', {
 				templateUrl: 'app/DBManager/partials/load.html',
 				controller: 'loadUserController',
 				resolve: {
@@ -21,6 +21,10 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 			.when('/user/:user/not/found', {
 				templateUrl: 'app/DBManager/partials/userNotFound.html',
 				controller: 'userNotFoundController',
+			})
+			.when('/user/login/return_url/:path*', {
+				templateUrl: 'app/DBManager/partials/userLogin.html',
+				controller: 'userLoginController',
 			})
 	}])
 
@@ -71,7 +75,20 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 	.provider('userManager', function userManagerProvider() {
 
 		this.load = ['userManager', function (userManager) {
-			return userManager.getUser() || userManager.load(DEFAULT_USER);
+			return userManager.getUser() ||
+					userManager.load(Parse.User.current() || DEFAULT_USER);
+		}]
+
+		this.logIn = ['userManager', '$q', '$location',
+		function (userManager, $q, $location) {
+			return $q(function(resolve, reject) {
+				if(userManager.isAuthenticated()) {
+					resolve()
+				} else {
+					reject()
+					$location.path('/user/login/return_url/'+$location.path())
+				}
+			})
 		}]
 
 		this.$get = ['$q', '$rootScope', '$location', 'ParseClasses', 'message',
@@ -95,7 +112,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 
 					set: function set(key, value) {
 						user && user.config.set(key, value);
-						this.save().catch(function (e) {
+						this.isAuthenticated() && this.save().catch(function (e) {
 							message('userManager.set', 'could not save {'+key+'} whith value {'+value+'}',
 								e)
 						});
@@ -109,6 +126,10 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 						return user;
 					},
 
+					isAuthenticated: function isAuthenticated() {
+						return user && user.authenticated();
+					},
+
 					save: function save() {
 						if(user.authenticated())
 							return $q.resolve(user.config.save());
@@ -117,7 +138,9 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 
 					load: function(userName) {
 
-						if(this.get('username') === userName){
+						if(userName instanceof Parse.User) userName = userName.getUsername();
+
+						if(user && user.getUsername() === userName){
 							return $q.resolve(user);
 						}
 
@@ -146,6 +169,11 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 						}.bind(this)).finally(function() {
 							isLoading = false;
 						})
+					},
+
+					logIn: function logIn(name, pass) {
+						return $q.resolve(Parse.User.logIn(name, pass))
+							.then(this.load.bind(this))
 					},
 
 					UserNotFoundError: function UserNotFoundError(_user) {
@@ -209,14 +237,14 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 					var pos = findPos(preset);
 					if(user.config.presetIndex === pos) return;
 					user.config.presetIndex = pos;
-					return $q.resolve(user.config.save())
+					return userManager.isAuthenticated() && $q.resolve(user.config.save())
 						.then(function() { return preset })
 						.catch(function(e) {
 							message('presetManager.set',
 								'could not save preset {'+preset.id+'} at index {'+pos+'}',
 								e)
 							return $q.reject(e);
-						})
+						}) || $q.resolve();
 				},
 
 				getAll: function getAllPreset() {
@@ -298,6 +326,26 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 
 			$scope.user = $routeParams.user;
 
+		}])
+
+	.controller('userLoginController',
+		['$scope', 'userManager', '$location', '$routeParams',
+		function userLoginController($scope, userManager, $location, $routeParams) {
+			var fromUser = userManager.getUser().get('username')
+			$scope.username = fromUser;
+
+			$scope.login = function login($event) {
+				userManager.logIn($scope.username, $scope.password)
+					.then(function() {
+						if($routeParams.path && $scope.username === fromUser)
+							$location.path($routeParams.path)
+						else
+							$location.path('/')
+					})
+					.catch(function(e) {
+						$scope.errorMessage = e.message
+					})
+			}
 		}])
 
 	.run(['$localStorage', 'VERSION',

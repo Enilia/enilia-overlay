@@ -1,0 +1,16 @@
+<div class="loginForm">
+
+	<div class="login">
+		<label>Login:</label> <input type="text" ng-model="username" />
+		<div>{{errorMessage}}</div>
+	</div>
+
+	<div class="password">
+		<label>Password:</label> <input type="password" ng-model="password" />
+	</div>
+
+	<div class="submit">
+		<input type="submit" ng-click="login($event)" />
+	</div>
+
+</div>

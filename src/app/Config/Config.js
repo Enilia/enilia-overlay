@@ -18,28 +18,28 @@ angular.module('enilia.overlay.config', ['ngRoute',
 				templateUrl:'app/Config/partials/preset.html',
 				controller: 'newPresetController',
 					resolve: {
-						user: userManagerProvider.load,
+						user: userManagerProvider.logIn,
 					},
 			})
 			.when('/config/preset/:presetId/edit', {
 				templateUrl:'app/Config/partials/preset.html',
 				controller: 'editPresetController',
 					resolve: {
-						user: userManagerProvider.load,
+						user: userManagerProvider.logIn,
 					},
 			})
 			.when('/config/preset/:cloneId/clone', {
 				templateUrl:'app/Config/partials/preset.html',
 				controller: 'clonePresetController',
 					resolve: {
-						user: userManagerProvider.load,
+						user: userManagerProvider.logIn,
 					},
 			})
 			.when('/config/preset/:presetId/delete', {
 				templateUrl:'app/Config/partials/delete.html',
 				controller: 'deletePresetController',
 					resolve: {
-						user: userManagerProvider.load,
+						user: userManagerProvider.logIn,
 					},
 			})
 	}])
@@ -72,7 +72,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 
 			$document.on('click', documentClick);
 
-			$scope.$on('$destroy', function() {
+			$scope.$on('$routeChangeStart', function() {
 				$document.off('click', documentClick);
 				presetManager.set($scope.selectedPreset);
 			})
@@ -187,7 +187,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			scope: {
 				cols: '='
 			},
-			controller:['$scope', '$document', 
+			controller:['$scope', '$document',
 				function($scope, $document) {
 
 					$scope.colsCollection = [
@@ -289,7 +289,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			},
 			controller:['$scope',
 				function checkboxController ($scope) {
-				
+
 					$scope.click = function click () {
 						$scope.checked = !$scope.checked;
 					};
@@ -317,7 +317,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 
 					$scope.$watch('$index', setScope);
 					$scope.$watch('ngModel.length', setScope);
-				
+
 					$scope.up = function up() {
 						if($scope.$first) return;
 						var move = $scope.ngModel.splice($scope.$index, 1);
@@ -333,6 +333,6 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		}
 	})
 
-	
+
 
 })();
