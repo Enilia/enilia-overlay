@@ -54,16 +54,18 @@ angular.module('enilia.overlay', ['ngRoute',
 				$document.on('onOverlayDataUpdate', dataUpdate);
 
 				$scope.$on('$locationChangeStart', function() {
+					console.log('$locationChangeStart', arguments)
 					$scope.isLoading = true;
 				})
 
 				$scope.$on('$routeChangeSuccess', function() {
+					console.log('$routeChangeSuccess', arguments)
 					$scope.isLoading = false;
 					$scope.pristine = false;
 				})
 
 				$scope.$on('$routeChangeError', function() {
-					console.log(arguments)
+					console.log('$routeChangeError', arguments)
 					$scope.isLoading = false;
 					$scope.pristine = false;
 				})
