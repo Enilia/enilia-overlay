@@ -21,3 +21,4 @@ build
 Releases
 .sublime-grunt.cache
 .tmp
+src/app/tpls.js
