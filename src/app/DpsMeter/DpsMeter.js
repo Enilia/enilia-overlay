@@ -32,7 +32,7 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 
 			$document.on('onOverlayDataUpdate', dataUpdate);
 
-			$scope.$on('$destroy', function $destroy() {
+			$scope.$on('$routeChangeStart', function $destroy() {
 				if($scope.expandFromBottom !== userManager.get('expandFromBottom'))
 					userManager.set('expandFromBottom', $scope.expandFromBottom);
 				$scope.setExpandFromBottom(false);
