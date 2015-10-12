@@ -6,11 +6,6 @@
 # Windows
 *.bat
 
-# project specific
-dataExample.json
-cover.png
-parse
-
 # Dependency directory
 node_modules
 bower_components
@@ -21,4 +16,9 @@ build
 Releases
 .sublime-grunt.cache
 .tmp
+
+# project specific
+dataExample.json
+cover.png
+parse
 src/app/tpls.js
