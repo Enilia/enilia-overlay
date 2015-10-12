@@ -51,14 +51,18 @@ a:hover,
 a:focus,
 a:active {
     color:inherit;
-
     text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
 
 /* Glyphicon */
 
 .glyphicon,
 .glyphicon:hover,
+.glyphicon:focus,
 .glyphicon:active {
     /* Goldish */
     color:#DED7BE;
@@ -88,7 +92,10 @@ a:active {
     margin-left:-100%;
 }
 
-.menu-item {}
+.menu-item {
+    margin: 0 0.2em;
+    float:left;
+}
 
 /* Message-icon */
 
