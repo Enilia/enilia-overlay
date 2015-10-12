@@ -1,23 +1,25 @@
 
+path = require 'path'
+
 module.exports = (grunt) ->
 
 	grunt.registerTask 'default', [
-		'clean',
-		'template',
+		'clean:build',
 		'copy:assets',
 		'ngtemplates',
 		'useminPrepare:html',
+		'template',
 		'cssmin:generated',
 		'uglify:generated',
 		'usemin'
 	]
 
 	grunt.registerTask 'all', [
-		'clean',
-		'template',
+		'clean:all',
 		'copy',
 		'ngtemplates',
 		'useminPrepare',
+		'template',
 		'cssmin:generated',
 		'uglify:generated',
 		'usemin'
@@ -25,6 +27,7 @@ module.exports = (grunt) ->
 
 	grunt.registerTask 'cache', [
 		'copy:libs',
+		'copy:libstransform',
 		'useminPrepare:cache',
 		'uglify:generated',
 		'usemin:html'
@@ -33,17 +36,11 @@ module.exports = (grunt) ->
 	require('load-grunt-tasks') grunt
 
 	grunt.initConfig
+		pkg: grunt.file.readJSON('package.json')
 		config: grunt.file.readJSON('config.json')
 		template:
 			options:
 				data: '<%= config.tokens %>'
-			core:
-				files: [
-					expand: true
-					cwd: '<%= config.srcDirectory %>'
-					src: ['<%= config.files.core %>']
-					dest: '<%= config.outDirectory %>'
-				]
 		copy:
 			assets:
 				files: [
@@ -58,17 +55,35 @@ module.exports = (grunt) ->
 					cwd: 'bower_components/'
 					src: ['<%= config.files.bower %>']
 					dest: '<%= config.outDirectory %>/vendor/'
+					filter: (src) -> return !src.match(/\.css$/)
 				,
 					expand: true
 					cwd: 'node_modules/'
 					src: ['<%= config.files.node_modules %>']
 					dest: '<%= config.outDirectory %>/vendor/'
 				]
+			libstransform:
+				options:
+					process: (content, srcpath) ->
+						content.replace ///
+							/\*\#\s*			# comment start
+							sourceMappingURL=
+							[\w.]+				# filename
+							\s*\*/				# comment end
+							[\s\n]*$			# end of file (whitespace only)
+							///, ''
+				files: [
+					expand: true
+					cwd: 'bower_components/'
+					src: ['<%= config.files.bower %>']
+					dest: '<%= config.outDirectory %>/vendor/'
+					filter: (src) -> return !!src.match(/\.css$/)
+				]
 		ngtemplates:
 			app:
 				cwd: '<%= config.srcDirectory %>'
 				src: '<%= config.templatesRoot %>'
-				dest: '<%= config.outDirectory %>/<%= config.templatesOut %>'
+				dest: '<%= config.srcDirectory %>/<%= config.templatesOut %>'
 				options:
 					htmlmin:
 						collapseBooleanAttributes:      true
@@ -84,6 +99,10 @@ module.exports = (grunt) ->
 		uglify:
 			options:
 				sourceMap: true
+		cssmin:
+			options:
+				sourceMap: true
+				root: '<%= config.outDirectory %>/css'
 		useminPrepare:
 			html: '<%= config.srcDirectory %>/index.html'
 			cache: '<%= config.srcDirectory %>/index.html'
@@ -95,7 +114,26 @@ module.exports = (grunt) ->
 						steps:
 							cache: ['uglify']
 					steps:
-						js: ['uglify']
+						js: [
+							name:'template'
+							createConfig: (context, block) ->
+								cfg =
+									files: []
+
+								context.outFiles = []
+								context.outDir = grunt.config('config.outDirectory')
+
+								context.inFiles.forEach (fname) ->
+									file = path.join context.inDir, fname
+									outfile = path.join context.outDir, fname
+									cfg.files.push
+										src: [file]
+										dest: outfile
+									context.outFiles.push fname
+								cfg
+
+						,	'uglify'
+						]
 						css: ['cssmin']
 		usemin:
 			html: '<%= config.outDirectory %>/index.html'
@@ -116,18 +154,32 @@ module.exports = (grunt) ->
 				atBegin: true
 				spawn: false
 			app:
-				files: ['<%= config.srcDirectory %>', 'package.json', 'config.json']
+				files: ['<%= config.srcDirectory %>/**', 'package.json', 'config.json']
 				tasks: ['default']
 		clean:
 			build: ['<%= config.outDirectory %>/*',
 					'!<%= config.outDirectory %>/vendor',
 					'!<%= config.outDirectory %>/js']
+			all: ['<%= config.outDirectory %>/*']
 		connect:
 			server:
 				options:
 					port:80
 					base: '<%= config.outDirectory %>'
 					keepalive: true
+		zip:
+			release:
+				compression: 'DEFLATE'
+				cwd: '<%= config.outDirectory %>'
+				src: ['<%= config.outDirectory %>/**',
+					  # '!<%= config.outDirectory %>/app/**',
+					  '!<%= config.outDirectory %>/vendor/**',
+					  # '!<%= config.outDirectory %>/**/*.map',
+					  '!<%= config.outDirectory %>/**/*.css',
+					  '<%= config.outDirectory %>/**/*.min.css',
+					  '<%= config.outDirectory %>/**/*.{eot,svg,ttf,woff,woff2}']
+				dest: '<%= config.releaseDirectory %>/<%= pkg.name %>_v<%= pkg.version %>_<%= config.env %>.zip'
+
 
 
 	grunt.event.on 'watch', (action, path) ->
