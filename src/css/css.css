@@ -47,6 +47,13 @@ input.ng-invalid.ng-touched.ng-dirty {
     border:1px solid red;
 }
 
+input.ng-invalid.ng-touched.ng-dirty + [ng-messages] {
+    /* Redish */
+    color: #DEBEBE;
+    text-shadow: 0 0 2px #791616, 0 0 5px #791616, 0 0 10px #791616, 0 0 15px #791616;
+    font-weight: 300;
+}
+
 h1 {
     font-size: 2em;
     margin: 0 0 0.5em;
@@ -291,6 +298,10 @@ form.loginForm {
 
 :-webkit-any(.login,.password,.errormessage,.submit) > * {
     flex: 1 1 50%;
+}
+
+[ng-messages] {
+    padding-left:0.5em;
 }
 
 
