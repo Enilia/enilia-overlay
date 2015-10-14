@@ -17,6 +17,7 @@
       "bootstrap/dist/fonts/glyphicons-halflings-regular.{eot,svg,ttf,woff,woff2}",
       "angular/angular.js",
       "angular-route/angular-route.js",
+      "angular-messages/angular-messages.js",
       "ngstorage/ngStorage.js",
       "semver/semver.browser.js"
     ],

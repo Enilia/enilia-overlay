@@ -1,16 +1,21 @@
-<div class="loginForm">
+<form class="loginForm">
 
 	<div class="login">
 		<label>Login:</label> <input type="text" ng-model="username" />
-		<div>{{errorMessage}}</div>
 	</div>
 
 	<div class="password">
 		<label>Password:</label> <input type="password" ng-model="password" />
 	</div>
 
+	<div class="errormessage">{{errorMessage}}</div>
+
 	<div class="submit">
 		<input type="submit" ng-click="login($event)" />
 	</div>
 
-</div>
+	<div>
+		No account yet ? <a ng-href="#/user/signup/return_url/{{returnUrl}}">Sign Up</a>! It's fast, easy and allow you to personalize your overlay
+	</div>
+
+</form>

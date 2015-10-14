@@ -9,7 +9,6 @@
 # Dependency directory
 node_modules
 bower_components
-src/js/vendor
 
 # Builds
 build
@@ -20,5 +19,7 @@ Releases
 # project specific
 dataExample.json
 cover.png
-parse
+parse/.parse.*
+parse/log
+parse/public
 src/app/tpls.js

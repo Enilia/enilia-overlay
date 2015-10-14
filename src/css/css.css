@@ -32,6 +32,8 @@ td, th {
     text-align:center;
 }
 
+/* Others */
+
 input, button {
     /* Blueish */
     color:#E2EBF5;
@@ -39,6 +41,10 @@ input, button {
     font-weight: 300;
     background: rgba(0,0,0,0.4);
     padding: 0 0.2em;
+}
+
+input.ng-invalid.ng-touched.ng-dirty {
+    border:1px solid red;
 }
 
 h1 {
@@ -50,8 +56,11 @@ a,
 a:hover,
 a:focus,
 a:active {
-    color:inherit;
     text-decoration: none;
+    /* Goldish */
+    color:#DED7BE;
+    text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
+    font-weight: 300;
 }
 
 a:hover {
@@ -127,31 +136,6 @@ a:hover {
     right: 0.2em;
 }
 
-/* Message */
-
-.message {
-    border: 1px solid #DED7BE;
-    margin-bottom: 1em;
-    clear:both;
-}
-
-.message .message-title {
-    border-bottom: 1px solid #DED7BE;
-    padding: 0.2em 0.5em;
-    text-transform: uppercase;
-}
-
-.message-title .controls .glyphicon {
-    font-size:1em;
-    float:right;
-}
-
-.message-content {
-    padding:0.5em;
-    background: transparent;
-    color:inherit;
-}
-
 /* fieldselect */
 
 .field {
@@ -199,8 +183,9 @@ a:hover {
     background: rgba(0,0,0,0.4);
     padding: 10px;
     border-radius: 10px;
-    position: relative;
+    position: absolute;
     min-height: 80px;
+    width:100%;
 
     overflow: hidden;
 
@@ -255,6 +240,59 @@ a:hover {
     background-repeat: no-repeat;
     box-sizing: border-box;
 }
+
+/* Message */
+
+.message {
+    border: 1px solid #DED7BE;
+    margin-bottom: 1em;
+    clear:both;
+}
+
+.message .message-title {
+    border-bottom: 1px solid #DED7BE;
+    padding: 0.2em 0.5em;
+    text-transform: uppercase;
+}
+
+.message-title .controls .glyphicon {
+    font-size:1em;
+    float:right;
+}
+
+.message-content {
+    padding:0.5em;
+    background: transparent;
+    color:inherit;
+}
+
+/* login */
+
+form.loginForm {
+    clear: both;
+    max-width: 400px;
+    margin: auto;
+}
+
+.login,
+.password,
+.errormessage,
+.submit {
+    display: flex;
+    align-items: center;
+}
+
+.login,
+.password,
+.errormessage,
+.submit {
+    display: flex;
+}
+
+:-webkit-any(.login,.password,.errormessage,.submit) > * {
+    flex: 1 1 50%;
+}
+
 
 /* dpsmeter */
 

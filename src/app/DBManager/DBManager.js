@@ -4,6 +4,7 @@
 	var DEFAULT_USER = "Default";
 
 angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
+											'ngMessages',
 											'ngStorage'])
 
 	.config(['$routeProvider', function($routeProvider) {
@@ -25,6 +26,14 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 			.when('/user/login/return_url/:path*', {
 				templateUrl: 'app/DBManager/partials/userLogin.html',
 				controller: 'userLoginController',
+			})
+			.when('/user/signup/return_url/:path*', {
+				templateUrl: 'app/DBManager/partials/userSignup.html',
+				controller: 'userSignupController',
+			})
+			.when('/user/about/return_url/:path*', {
+				templateUrl: 'app/DBManager/partials/userAbout.html',
+				controller: 'userAboutController',
 			})
 	}])
 
@@ -176,6 +185,19 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 							.then(this.load.bind(this))
 					},
 
+					signUp: function logIn(name, pass, from) {
+						return $q.resolve(Parse.Cloud.run('Signup', {
+							username: name,
+							password: pass,
+							fromuser: from,
+						}))
+						.then(function(sessionToken) {
+							return Parse.User.become(sessionToken);
+						})
+						.then(this.load.bind(this))
+
+					},
+
 					UserNotFoundError: function UserNotFoundError(_user) {
 						this.constructor.prototype.__proto__ = Error.prototype
 						Error.call(this)
@@ -229,7 +251,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 
 				getClone: function getClone(id) {
 					var preset = this.get(id)
-					  , clone = preset.clone();
+					  , clone = preset && preset.clone();
 					return clone;
 				},
 
@@ -331,21 +353,55 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 	.controller('userLoginController',
 		['$scope', 'userManager', '$location', '$routeParams',
 		function userLoginController($scope, userManager, $location, $routeParams) {
-			var fromUser = userManager.getUser().get('username')
+			var user = userManager.getUser()
+			  , fromUser = user && user.get('username')
+
+			$scope.returnUrl = $routeParams.path
+
 			$scope.username = fromUser;
 
 			$scope.login = function login($event) {
 				userManager.logIn($scope.username, $scope.password)
 					.then(function() {
-						if($routeParams.path && $scope.username === fromUser)
-							$location.path($routeParams.path)
-						else
-							$location.path('/')
+						$location.path($routeParams.path)
 					})
 					.catch(function(e) {
 						$scope.errorMessage = e.message
 					})
 			}
+		}])
+
+	.controller('userSignupController',
+		['$scope', 'userManager', '$location', '$routeParams', '$q',
+		function userSignupController($scope, userManager, $location, $routeParams, $q) {
+			var user = userManager.getUser()
+			  , fromUser = user && user.get('username')
+			  ;
+
+			$scope.signUp = function login($event) {
+				userManager.signUp($scope.username, $scope.password, fromUser)
+				.catch(function(e) {
+					$scope.errorMessage = e.message
+					return $q.reject()
+				})
+				.then(function() {
+					$location.path('/user/about/return_url/'+$routeParams.path)
+				})
+
+			}
+		}])
+
+	.controller('userAboutController',
+		['$scope', 'userManager', '$location', '$routeParams', '$q',
+		function userAboutController($scope, userManager, $location, $routeParams, $q) {
+			var username = userManager.getUser().get('username')
+			  ;
+
+			$scope.username = username
+
+			$scope.url = $location.host() + "/#/u/" + username
+
+			$scope.returnUrl = "#" + $routeParams.path
 		}])
 
 	.run(['$localStorage', 'VERSION',
