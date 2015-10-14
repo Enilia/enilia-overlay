@@ -6,7 +6,7 @@ window.start = start;
 window.stop = stop;
 window.step = dispatch;
 
-start();
+// start();
 
 function start() {
 	stop();
