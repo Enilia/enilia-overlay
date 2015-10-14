@@ -154,7 +154,7 @@ module.exports = (grunt) ->
 				atBegin: true
 				spawn: false
 			app:
-				files: ['<%= config.srcDirectory %>/**', 'package.json', 'config.json']
+				files: ['<%= config.srcDirectory %>/**', 'package.json', 'config.json', 'Gruntfile.coffee']
 				tasks: ['default']
 		clean:
 			build: ['<%= config.outDirectory %>/*',
