@@ -42,6 +42,26 @@ angular.module('enilia.overlay.config', ['ngRoute',
 						user: userManagerProvider.logIn,
 					},
 			})
+			.when('/config/preset/:presetId/copy', {
+				templateUrl:'app/Config/partials/preset.html',
+				controller: 'copyPresetController',
+					resolve: {
+						preset: ['ParseClasses', '$q', '$route', 'userManager',
+						function(ParseClasses, $q, $route, userManager) {
+							return $q.resolve(new Parse.Query(ParseClasses['Preset'])
+								.get($route.current.params.presetId))
+								.then(function(preset) {
+									var acl = new Parse.ACL(userManager.getUser())
+									  , clone = preset.clone()
+									  ;
+
+									acl.setPublicReadAccess(true);
+									clone.setACL(acl);
+									return clone;
+								})
+						}],
+					},
+			})
 	}])
 
 	.controller('configController',
@@ -80,8 +100,14 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		}])
 
 	.controller('editPresetController',
-		['$scope', '$routeParams', 'presetManager',
-		function editPresetController($scope, $routeParams, presetManager) {
+		['$scope', '$routeParams', 'presetManager', '$location',
+		function editPresetController($scope, $routeParams, presetManager, $location) {
+
+			var preset = presetManager.getClone($routeParams.presetId);
+
+			if(!preset) {
+				$location.path('/config/preset/'+$routeParams.presetId+'/copy');
+			}
 
 			$scope.title = "Editing";
 
@@ -117,6 +143,12 @@ angular.module('enilia.overlay.config', ['ngRoute',
 		['$scope', '$routeParams', 'presetManager', '$location',
 		function clonePresetController($scope, $routeParams, presetManager, $location) {
 
+			var preset = presetManager.getClone($routeParams.cloneId);
+
+			if(!preset) {
+				$location.path('/config/preset/'+$routeParams.cloneId+'/copy');
+			}
+
 			$scope.title = "Cloning";
 
 			$scope.preset = presetManager.getClone($routeParams.cloneId);
@@ -145,6 +177,26 @@ angular.module('enilia.overlay.config', ['ngRoute',
 				$event.preventDefault();
 				$scope.setLoading(true);
 				presetManager.remove($scope.preset)
+					.finally(function() {
+						$location.path($event.target.hash.replace('#',''));
+						$scope.setLoading(false);
+					})
+			};
+
+		}])
+
+	.controller('copyPresetController',
+		['$scope', '$routeParams', 'presetManager', '$location', 'preset',
+		function copyPresetController($scope, $routeParams, presetManager, $location, preset) {
+
+			$scope.title = "Copying";
+
+			$scope.preset = preset;
+
+			$scope.save = function($event) {
+				$event.preventDefault();
+				$scope.setLoading(true);
+				presetManager.add($scope.preset)
 					.finally(function() {
 						$location.path($event.target.hash.replace('#',''));
 						$scope.setLoading(false);
