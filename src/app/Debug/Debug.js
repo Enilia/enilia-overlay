@@ -42,6 +42,7 @@ function dispatch(c) {
 		    "duration": getDuration(),
 		}
 	  , combatants = {}
+	  , tmpCombatants = []
 	  , combatant
 	  , jobs = ["Arc","Ast","Blm","Brd","Drg","Drk","Gld","Mch","Mnk","Nin","Pld","Sch","Smn","War","Whm"]
 	  , duration
@@ -50,13 +51,23 @@ function dispatch(c) {
 	  ;
 
 	do {
-		combatant = combatants["Name"+length] = getCombatant("Name"+length);
+		combatant = getCombatant("Name"+length);
+		tmpCombatants.push(combatant);
 		overalldps += parseInt(combatant.encdps)
 	} while (length-- > 1)
 
-	for(length in combatants) {
-		combatants[length]["damage%"] = parseInt(combatants[length].encdps * 100 / overalldps) + "%";
-	}
+	tmpCombatants.sort(function(a, b) {
+		return parseFloat(a.encdps) < parseFloat(b.encdps);
+	})
+
+	tmpCombatants.forEach(function(combatant) {
+		combatant["damage%"] = parseInt(combatant.encdps * 100 / overalldps) + "%";
+		combatants[combatant.name] = combatant;
+	})
+
+	// for(length in combatants) {
+	// 	combatants[length]["damage%"] = parseInt(combatants[length].encdps * 100 / overalldps) + "%";
+	// }
 
 	encounter.encdps = overalldps.toFixed(2);
 
