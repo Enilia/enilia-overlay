@@ -84,17 +84,17 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 	.provider('userManager', function userManagerProvider() {
 
 		this.load = ['userManager', function (userManager) {
-			return userManager.getUser() ||
-					userManager.load(Parse.User.current() || DEFAULT_USER);
+			return userManager.load();
 		}]
 
 		this.logIn = ['userManager', '$q', '$location',
 		function (userManager, $q, $location) {
-			return $q(function(resolve, reject) {
+			return userManager.load()
+			.then(function(user) {
 				if(userManager.isAuthenticated()) {
-					resolve()
+					$q.resolve(user)
 				} else {
-					reject()
+					$q.reject()
 					$location.path('/user/login/return_url/'+$location.path())
 				}
 			})
@@ -145,7 +145,9 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 						return $q.reject(new this.UserNotAuthenticatedError());
 					},
 
-					load: function(userName) {
+					load: function load(userName) {
+
+						userName = userName || this.getUser() || Parse.User.current() || DEFAULT_USER;
 
 						if(userName instanceof Parse.User) userName = userName.getUsername();
 
@@ -353,7 +355,7 @@ angular.module('enilia.overlay.dbmanager', ['enilia.overlay.tpls',
 	.controller('userLoginController',
 		['$scope', 'userManager', '$location', '$routeParams',
 		function userLoginController($scope, userManager, $location, $routeParams) {
-			var user = userManager.getUser()
+			var user = userManager.getUser() || Parse.User.current()
 			  , fromUser = user && user.get('username')
 
 			$scope.returnUrl = $routeParams.path
