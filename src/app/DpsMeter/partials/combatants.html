@@ -9,7 +9,9 @@
 
 		<div ng-repeat="combatant in combatants track by combatant.name"
 			 class="combatant"
-			 ng-class="combatant.Job"
+			 ng-class="[combatant.Job, {
+			 	misses: header.value === 'misses' &amp;&amp; combatant[header.value] !== '0'
+			 }]"
 			 best="bestdps"
 			 value="combatant.encdps">
 			{{combatant[header.value]}}
