@@ -1,6 +1,23 @@
+
 <div class="combatants">
 
-	<table>
+	<div ng-repeat="header in headers track by $index"
+		 class="column"
+		 ng-class="[{job: $first}, col.value]">
+
+		<div class="header">{{header.label}}</div>
+
+		<div ng-repeat="combatant in combatants track by combatant.name"
+			 class="combatant"
+			 ng-class="combatant.Job"
+			 best="bestdps"
+			 value="combatant.encdps">
+			{{combatant[header.value]}}
+		</div>
+	</div>
+
+
+<!-- 	<table>
 			<tr class="tableheader">
 				<th class="header"
 					ng-repeat="header in headers track by $index"
@@ -16,6 +33,6 @@
 					<div class="message">--- Waiting for Data ---</div>
 				</td>
 			</tr>
-	</table>
+	</table> -->
 
 </div>

@@ -59,65 +59,90 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 		['$scope', 'presetManager',
 		function CombatantsController($scope, presetManager) {
 
-			$scope.bestdps = 0;
-
 			$scope.headers = presetManager.get().cols.slice();
 
 			$scope.$watch('combatants', update);
 
 			function update() {
 
-				$scope.bestdps = 0;
+				$scope.bestdps = 0
 
 				angular.forEach($scope.combatants, function(combatant) {
-					if(parseFloat(combatant.encdps) > $scope.bestdps){
+					var index;
+
+					if(parseFloat(combatant.encdps) > $scope.bestdps) {
 						$scope.bestdps = parseFloat(combatant.encdps);
 					}
-				});
-			}
 
-		}])
-
-	.controller('CombatantController',
-		['$scope', 'presetManager',
-		function CombatantController($scope, presetManager) {
-
-			$scope.cols = presetManager.get().cols.slice();
-
-			$scope.$watch('combatant', update);
-
-			function update() {
-
-				var index
-				  , combatant = $scope.combatant
-				  ;
-
-				if(!combatant.Job) {
-					if(~(index = combatant.name.indexOf("-Egi ("))) {
-						combatant.Job = combatant.name.substring(0,index);
-						combatant.isEgi = true;
-					} else if(combatant.name.indexOf("Eos (")==0) {
-						combatant.Job = "Eos";
-						combatant.isFairy = true;
-					} else if(combatant.name.indexOf("Selene (")==0) {
-						combatant.Job = "Selene";
-						combatant.isFairy = true;
-					} else if(combatant.name.indexOf("Carbuncle (")==0) {
-						combatant.Job = "Carbuncle";
-						combatant.isCarbuncle = true;
-					} else if(~combatant.name.indexOf(" (")) {
-						combatant.Job = "Choco";
-						combatant.isChoco = true;
-					} else if(combatant.name === "Limit Break") {
-						combatant.Job = "Limit-Break";
-						combatant.isLB = true;
-					} else {
-						combatant.Job = "Error";
+					if(!combatant.Job) {
+						if(~(index = combatant.name.indexOf("-Egi ("))) {
+							combatant.Job = combatant.name.substring(0,index);
+							combatant.isEgi = true;
+						} else if(combatant.name.indexOf("Eos (")==0) {
+							combatant.Job = "Eos";
+							combatant.isFairy = true;
+						} else if(combatant.name.indexOf("Selene (")==0) {
+							combatant.Job = "Selene";
+							combatant.isFairy = true;
+						} else if(combatant.name.indexOf("Carbuncle (")==0) {
+							combatant.Job = "Carbuncle";
+							combatant.isCarbuncle = true;
+						} else if(~combatant.name.indexOf(" (")) {
+							combatant.Job = "Choco";
+							combatant.isChoco = true;
+						} else if(combatant.name === "Limit Break") {
+							combatant.Job = "Limit-Break";
+							combatant.isLB = true;
+						} else {
+							combatant.Job = "Error";
+						}
 					}
-				}
+				});
+
 			}
 
 		}])
+
+	// .controller('CombatantController',
+	// 	['$scope', 'presetManager',
+	// 	function CombatantController($scope, presetManager) {
+
+	// 		$scope.cols = presetManager.get().cols.slice();
+
+	// 		$scope.$watch('combatant.Job', update);
+
+	// 		function update() {
+
+	// 			var index
+	// 			  , combatant = $scope.combatant
+	// 			  ;
+
+	// 			if(!combatant.Job) {
+	// 				if(~(index = combatant.name.indexOf("-Egi ("))) {
+	// 					combatant.Job = combatant.name.substring(0,index);
+	// 					combatant.isEgi = true;
+	// 				} else if(combatant.name.indexOf("Eos (")==0) {
+	// 					combatant.Job = "Eos";
+	// 					combatant.isFairy = true;
+	// 				} else if(combatant.name.indexOf("Selene (")==0) {
+	// 					combatant.Job = "Selene";
+	// 					combatant.isFairy = true;
+	// 				} else if(combatant.name.indexOf("Carbuncle (")==0) {
+	// 					combatant.Job = "Carbuncle";
+	// 					combatant.isCarbuncle = true;
+	// 				} else if(~combatant.name.indexOf(" (")) {
+	// 					combatant.Job = "Choco";
+	// 					combatant.isChoco = true;
+	// 				} else if(combatant.name === "Limit Break") {
+	// 					combatant.Job = "Limit-Break";
+	// 					combatant.isLB = true;
+	// 				} else {
+	// 					combatant.Job = "Error";
+	// 				}
+	// 			}
+	// 		}
+
+	// 	}])
 
 	.directive('encounter', function encounterDirective() {
 		return {
@@ -142,23 +167,40 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 		}
 	})
 
-	.directive('combatant', function combatantDirective() {
+	// .directive('combatant', function combatantDirective() {
+	// 	return {
+	// 		restrict: 'A',
+	// 		templateUrl:'app/DpsMeter/partials/combatant.html',
+	// 		controller:'CombatantController',
+	// 		scope:{
+	// 			combatant:'=',
+	// 			bestdps:'='
+	// 		},
+	// 		link:function(scope, element) {
+	// 			scope.$watchGroup(['bestdps', 'combatant.encdps'], update);
+	// 			function update() {
+	// 				var stop = scope.combatant.encdps * 100 / scope.bestdps;
+	// 				// element.css('background-size', stop + "% 100%");
+	// 			}
+	// 		}
+	// 	}
+	// })
+
+	.directive('best', function bestDirective() {
 		return {
 			restrict: 'A',
-			templateUrl:'app/DpsMeter/partials/combatant.html',
-			controller:'CombatantController',
 			scope:{
-				combatant:'=',
-				bestdps:'='
+				best:'=',
+				value:'=',
 			},
 			link:function(scope, element) {
-				scope.$watchGroup(['bestdps', 'combatant.encdps'], update);
+				scope.$watchGroup(['best', 'value'], update);
 				function update() {
-					var stop = scope.combatant.encdps * 100 / scope.bestdps;
-					element.css('background-size', stop + "% 100%");
+					var stop = Math.max(10, parseFloat(scope.value) * 100 / scope.best);
+					element.css('background-size', stop + "% 100%, 100%");
 				}
 			}
 		}
-	});
+	})
 
 })();

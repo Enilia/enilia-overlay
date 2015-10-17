@@ -194,7 +194,7 @@ a:hover {
     min-height: 80px;
     width:100%;
 
-    overflow: hidden;
+    /*overflow: hidden;*/
 
     /* Blueish */
     color:#E2EBF5;
@@ -332,13 +332,25 @@ form.loginForm {
     font-weight: 300;
 }
 
+
+
 /* combatants */
 
-.combatants  {
+.combatants {
+    display:flex;
+    flex-direction:row;
     text-align: center;
 }
 
-.tableheader {
+.combatants .column {
+    flex: 1 1 auto;
+}
+
+.combatants .name {
+    flex: 2 1 auto;
+}
+
+.header {
     border-bottom: 1px solid #DED7BE;
     /* Goldish */
     color:#DED7BE;
@@ -346,23 +358,80 @@ form.loginForm {
     font-weight: 300;
 }
 
-.header {
-    width:2em;
-}
-.header.name {
-    width:6em;
-}
 
 /* combatant */
 
-.combatant {}
+.combatant {
+    background-size: 0 0, 100%;
+    background-attachment: fixed, scroll;
+}
 
-.combatant td.job {
+.combatant.misses {
+    /* Redish */
+    color: #DEBEBE;
+    text-shadow: 0 0 2px #791616, 0 0 5px #791616, 0 0 10px #791616, 0 0 15px #791616;
+    font-weight: 300;
+}
+
+.job .combatant {
+    padding-left:2em;
+    position: relative;
+}
+
+.job .combatant:before {
     background-size: 1.8em 1.8em;
     background-position: left center;
     background-repeat: no-repeat;
-    padding-left: 2em;
+    width:2em;
+    height:100%;
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
 }
+
+/*
+.combatants  {
+    text-align: center;
+}
+
+.tableheader {
+    border-bottom: 1px solid #DED7BE;
+    color:#DED7BE;
+    text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
+    font-weight: 300;
+
+    display: flex;
+}
+
+.header {
+    flex: 1 1 auto;
+    border:1px solid red;
+}
+.combatants .name {
+    flex: 2 1 auto;
+}*/
+
+/* combatant */
+/*
+.combatant {
+    display:flex;
+}
+
+.combatant > div {
+    flex:1 1 auto;
+    border:1px solid blue;
+}
+
+.combatant .job {
+    padding: 0 2em;
+}
+
+.combatant {
+    background-size: 1.8em 1.8em;
+    background-position: left center;
+    background-repeat: no-repeat;
+}*/
 
 /* config */
 
@@ -433,78 +502,72 @@ fieldselect {
 
 /* Jobs */
 
-tr.Gld,
-tr.Pld,
-tr.Mrd,
-tr.War,
-tr.Drk {
+.Gld,
+.Pld,
+.Mrd,
+.War,
+.Drk {
     /*background-color: rgba(41,112,243,0.2);*/
-    background: -webkit-gradient(linear, left top,right top, color-stop(0.95,rgba(41,112,243,0.2)), to(rgba(24,24,24,0.0))),
+    background-image: -webkit-gradient(linear, left top,right top, color-stop(0.85,rgba(41,112,243,0.2)), to(rgba(24,24,24,0.0))),
                 linear-gradient(to top, rgba(0,0,0,0.25) 0%,rgba(255,255,255,0.1) 40%);
-    background-attachment: fixed, scroll;
     background-repeat: no-repeat, repeat;
     background-blend-mode: soft-light;
 }
 
-tr.Cnj,
-tr.Whm,
-tr.Sch,
-tr.Ast {
+.Cnj,
+.Whm,
+.Sch,
+.Ast {
     /*background-color: rgba(107,240,86,0.2);*/
-    background: -webkit-gradient(linear, left top,right top, color-stop(0.95,rgba(107,240,86,0.2)), to(rgba(24,24,24,0.0))),
+    background-image: -webkit-gradient(linear, left top,right top, color-stop(0.85,rgba(107,240,86,0.2)), to(rgba(24,24,24,0.0))),
                 linear-gradient(to top, rgba(0,0,0,0.25) 0%,rgba(255,255,255,0.1) 40%);
-    background-attachment: fixed, scroll;
     background-repeat: no-repeat, repeat;
     background-blend-mode: soft-light;
 }
 
-tr.Pgl,
-tr.Mnk,
-tr.Lnc,
-tr.Drg,
-tr.Arc,
-tr.Brd,
-tr.Rog,
-tr.Nin,
-tr.Acn,
-tr.Smn,
-tr.Thm,
-tr.Blm,
-tr.Mch {
+.Pgl,
+.Mnk,
+.Lnc,
+.Drg,
+.Arc,
+.Brd,
+.Rog,
+.Nin,
+.Acn,
+.Smn,
+.Thm,
+.Blm,
+.Mch {
     /*background-color: rgba(200,3,8,0.2);*/
-    background: -webkit-gradient(linear, left top,right top, color-stop(0.95,rgba(200,3,8,0.2)), to(rgba(24,24,24,0.0))),
+    background-image: -webkit-gradient(linear, left top,right top, color-stop(0.85,rgba(200,3,8,0.2)), to(rgba(24,24,24,0.0))),
                 linear-gradient(to top, rgba(0,0,0,0.25) 0%,rgba(255,255,255,0.1) 40%);
-    background-attachment: fixed, scroll;
     background-repeat: no-repeat, repeat;
     background-blend-mode: soft-light;
 }
 
-tr.Limit-Break {
-    background: -webkit-gradient(linear, left top,right top, color-stop(0.95,rgba(128,0,255,0.3)), to(rgba(24,24,24,0.0))),
+.Limit-Break {
+    background-image: -webkit-gradient(linear, left top,right top, color-stop(0.85,rgba(128,0,255,0.3)), to(rgba(24,24,24,0.0))),
                 linear-gradient(to top, rgba(0,0,0,0.25) 0%,rgba(255,255,255,0.1) 40%);
-    background-attachment: fixed, scroll;
     background-repeat: no-repeat, repeat;
     background-blend-mode: soft-light;
 }
 
-tr.Choco {
-    background: -webkit-gradient(linear, left top,right top, color-stop(0.95,rgba(245, 240, 0,0.3)), to(rgba(24,24,24,0.0))),
+.Choco {
+    background-image: -webkit-gradient(linear, left top,right top, color-stop(0.85,rgba(245, 240, 0,0.3)), to(rgba(24,24,24,0.0))),
                 linear-gradient(to top, rgba(0,0,0,0.25) 0%,rgba(255,255,255,0.1) 40%);
-    background-attachment: fixed, scroll;
     background-repeat: no-repeat, repeat;
     background-blend-mode: soft-light;
 }
 
 
-tr.Titan,
-tr.Eos,
-tr.Selene,
-tr.Carbuncle,
-tr.Garuda,
-tr.Ifrit {
-    background: -webkit-gradient(linear, left top,right top, color-stop(0.95,rgba(153, 0, 245,0.3)), to(rgba(24,24,24,0.0))),
+.Titan,
+.Eos,
+.Selene,
+.Carbuncle,
+.Garuda,
+.Ifrit {
+    background-image: -webkit-gradient(linear, left top,right top, color-stop(0.85,rgba(153, 0, 245,0.3)), to(rgba(24,24,24,0.0))),
                 linear-gradient(to top, rgba(0,0,0,0.25) 0%,rgba(255,255,255,0.1) 40%);
-    background-attachment: fixed, scroll;
     background-repeat: no-repeat, repeat;
     background-blend-mode: soft-light;
 }
