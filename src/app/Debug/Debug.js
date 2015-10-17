@@ -1,24 +1,43 @@
 ;(function() {
 
-var intervalId;
+var intervalId
+  , search = {}
+  ;
 
 window.start = start;
 window.stop = stop;
 window.step = dispatch;
 
-// start();
+document.addEventListener('DOMContentLoaded', function() {
 
-function start() {
+	if(location.search) {
+		location.search.slice(1).split('&').forEach(function(v) {
+			var value = v.split('=')
+			search[value[0]] = value[1] || true;
+		})
+		if(search.d) { // debug
+			if(search.s) { // step
+				dispatch(parseInt(search.c))
+			} else {
+				dispatch(parseInt(search.c))
+				start(parseInt(search.c), search.i)
+			}
+		}
+	}
+
+}, false);
+
+function start(c, i) {
 	stop();
-	dispatch();
-	intervalId = setInterval(dispatch, 1000);
+	dispatch(c);
+	intervalId = setInterval(dispatch, i || 1000, c);
 }
 
 function stop() {
 	intervalId = clearInterval(intervalId);
 }
 
-function dispatch() {
+function dispatch(c) {
 	var encounter = {
 		    "duration": getDuration(),
 		}
@@ -26,7 +45,7 @@ function dispatch() {
 	  , combatant
 	  , jobs = ["Arc","Ast","Blm","Brd","Drg","Drk","Gld","Mch","Mnk","Nin","Pld","Sch","Smn","War","Whm"]
 	  , duration
-	  , length = parseInt(Math.random() * 8 + 1)
+	  , length = c || parseInt(Math.random() * 8 + 1)
 	  , overalldps = 0
 	  ;
 
