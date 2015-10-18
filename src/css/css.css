@@ -110,6 +110,7 @@ menu {
 .menu {
     float:right;
     margin-left:-100%;
+    font-size: 0.8em;
 }
 
 .menu-item {
