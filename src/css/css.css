@@ -1,10 +1,10 @@
 
 * {
     font-family: "Meiryo";
-    font-size: 11px;
 }
 body, html {
     margin: 0;
+    font-size: 14px;
     background-color: transparent;
 
 }
@@ -102,6 +102,10 @@ a:hover {
 }
 
 /* Menu */
+
+menu {
+    margin:0;
+}
 
 .menu {
     float:right;
@@ -307,7 +311,9 @@ form.loginForm {
 
 /* dpsmeter */
 
-.encounter {}
+.encounter {
+    font-size:1.3em;
+}
 
 .encounter .encounter-duration {
     float: left;
@@ -322,7 +328,6 @@ form.loginForm {
     text-shadow: -1px 0 2px #167930, 0 1px 2px #167930, 1px 0 2px #167930, 0 -1px 2px #167930;
     font-weight: 300;
 
-    font-size:1.3em;
 }
 
 .encounter.active .encounter-encdps {
@@ -364,6 +369,8 @@ form.loginForm {
 .combatant {
     background-size: 0 0, 100%;
     background-attachment: fixed, scroll;
+    transition:all linear 1s;
+    height:1.36em;
 }
 
 .combatant.misses {
@@ -373,7 +380,7 @@ form.loginForm {
     font-weight: 300;
 }
 
-.job .combatant {
+.job :-webkit-any(.header, .combatant) {
     padding-left:2em;
     position: relative;
 }
@@ -508,7 +515,7 @@ fieldselect {
 .War,
 .Drk {
     /*background-color: rgba(41,112,243,0.2);*/
-    background-image: -webkit-gradient(linear, left top,right top, color-stop(0.85,rgba(41,112,243,0.2)), to(rgba(24,24,24,0.0))),
+    background-image: -webkit-gradient(linear, left top,right top, color-stop(0.85,rgba(41,112,243,0.35)), to(rgba(24,24,24,0.0))),
                 linear-gradient(to top, rgba(0,0,0,0.25) 0%,rgba(255,255,255,0.1) 40%);
     background-repeat: no-repeat, repeat;
     background-blend-mode: soft-light;
@@ -519,7 +526,7 @@ fieldselect {
 .Sch,
 .Ast {
     /*background-color: rgba(107,240,86,0.2);*/
-    background-image: -webkit-gradient(linear, left top,right top, color-stop(0.85,rgba(107,240,86,0.2)), to(rgba(24,24,24,0.0))),
+    background-image: -webkit-gradient(linear, left top,right top, color-stop(0.85,rgba(107,240,86,0.35)), to(rgba(24,24,24,0.0))),
                 linear-gradient(to top, rgba(0,0,0,0.25) 0%,rgba(255,255,255,0.1) 40%);
     background-repeat: no-repeat, repeat;
     background-blend-mode: soft-light;
@@ -539,7 +546,7 @@ fieldselect {
 .Blm,
 .Mch {
     /*background-color: rgba(200,3,8,0.2);*/
-    background-image: -webkit-gradient(linear, left top,right top, color-stop(0.85,rgba(200,3,8,0.2)), to(rgba(24,24,24,0.0))),
+    background-image: -webkit-gradient(linear, left top,right top, color-stop(0.85,rgba(200,3,8,0.35)), to(rgba(24,24,24,0.0))),
                 linear-gradient(to top, rgba(0,0,0,0.25) 0%,rgba(255,255,255,0.1) 40%);
     background-repeat: no-repeat, repeat;
     background-blend-mode: soft-light;
