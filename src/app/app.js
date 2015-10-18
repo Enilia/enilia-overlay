@@ -1,5 +1,6 @@
 
 angular.module('enilia.overlay', ['ngRoute',
+								  'ngAnimate',
 								  'enilia.overlay.tpls',
 								  'enilia.overlay.dpsmeter',
 								  'enilia.overlay.config',

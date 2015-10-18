@@ -18,6 +18,7 @@
       "angular/angular.js",
       "angular-route/angular-route.js",
       "angular-messages/angular-messages.js",
+      "angular-animate/angular-animate.js",
       "ngstorage/ngStorage.js",
       "semver/semver.browser.js"
     ],

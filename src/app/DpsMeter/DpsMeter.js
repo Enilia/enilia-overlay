@@ -186,21 +186,48 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 	// 	}
 	// })
 
-	.directive('best', function bestDirective() {
+	.directive('bestdps', function bestDirective() {
 		return {
 			restrict: 'A',
-			scope:{
-				best:'=',
-				value:'=',
-			},
 			link:function(scope, element) {
-				scope.$watchGroup(['best', 'value'], update);
+				scope.$watchGroup(['bestdps', 'combatant.encdps'], update);
 				function update() {
-					var stop = Math.max(10, parseFloat(scope.value) * 100 / scope.best);
+					var stop = Math.max(10, parseFloat(scope.combatant.encdps) * 100 / scope.bestdps);
 					element.css('background-size', stop + "% 100%, 100%");
 				}
 			}
 		}
 	})
+
+	.directive('sortIndex',
+		['$animateCss',
+		function sortAnimateDirective($animateCss) {
+			return {
+				restrict: 'A',
+				scope: {
+					sortIndex:"=",
+				},
+				link:function(scope, element) {
+					scope.lastIndex = scope.sortIndex;
+					scope.$watch('sortIndex', update);
+					function update() {
+						if(scope.lastIndex - scope.sortIndex)
+							$animateCss(element, {
+								easing:'linear',
+								from:{
+									position:'relative',
+									top: (scope.lastIndex - scope.sortIndex) * 1.36 + 'em',
+								},
+								to:{
+									position:'relative',
+									top: '0',
+								},
+								duration: 0.5
+							}).start()
+						scope.lastIndex = scope.sortIndex;
+					}
+				}
+			}
+		}])
 
 })();
