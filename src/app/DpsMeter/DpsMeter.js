@@ -166,84 +166,101 @@ angular.module('enilia.overlay.dpsmeter', ['ngRoute',
 			}
 		}])
 
-	.directive('graph', function graphDirective() {
-		return {
-			restrict: 'AE',
-			scope: {
-				foreground:"=",
-				background:"=",
-			},
-			link:function graphLink(scope, element) {
-				var data = []
-				  , now = Date.now()
-				  , width = element.parent()[0].offsetWidth
-				  , height = element.parent()[0].offsetHeight
-				  , svg = d3.select(element[0])
-							.attr('width', '100%')
-							.attr('height', '100%')
-				  , x = d3.scale.linear()
-				  		  .domain([now - 30000, now])
-				  		  .range([0, width])
-		  		  , y = d3.scale.linear()
-		  		  		  .range([height, 0])
-  		  		  , area = d3.svg.area()
-  		  		  			 .x(function(d) { return x(d[0]) })
-  		  		  			 .y0(height)
-  		  		  			 .y1(function(d) { return y(d[2]) })
-  		  		  , line = d3.svg.line()
-  		  		  			 .interpolate('basic')
-  		  		  			 .x(function(d) { return x(d[0]) })
-  		  		  			 .y(function(d) { return y(d[1]) })
-  		  		  , wArea = svg.append('g')
-	  			  			   .attr('transform', 'translate(0,0)')
-	  			  			   .append('path')
-	  			  			   	.attr('class', 'area')
-	  			  , yLine = svg.append('g')
-	  			  			   .attr('transform', 'translate(0,0)')
-	  			  			   .append('path')
-	  			  			   	.attr('class', 'line')
-				  ;
-
-				scope.$watch('foreground', update);
-
-				function update() {
-					var now = Date.now()
-					  , shift = x(x.domain()[1]) - x(now)
-					  , width = element.parent()[0].offsetWidth
-					  , height = element.parent()[0].offsetHeight
+	.directive('graph', [
+		'userManager', '$document',
+		function graphDirective(userManager, $document) {
+			var session = userManager.getSession();
+			return {
+				restrict: 'AE',
+				scope: {
+					foreground:"=",
+					background:"=",
+				},
+				link:function graphLink(scope, element) {
+					var data = []
+					  , now = Date.now()
+					  , width = element[0].offsetWidth
+					  , height = element[0].offsetHeight
+					  , svg = d3.select(element[0])
+					  , x = d3.scale.linear()
+					  		  .domain([now - 30000, now])
+					  		  .range([0, width])
+			  		  , y = d3.scale.linear()
+			  		  		  .range([height, 0])
+	  		  		  , area = d3.svg.area()
+	  		  		  			 .x(function(d) { return x(d[0]) })
+	  		  		  			 .y0(height)
+	  		  		  			 .y1(function(d) { return y(d[2]) })
+	  		  		  , line = d3.svg.line()
+	  		  		  			 .interpolate('basic')
+	  		  		  			 .x(function(d) { return x(d[0]) })
+	  		  		  			 .y(function(d) { return y(d[1]) })
+	  		  		  , wArea = svg.append('g')
+		  			  			   .attr('transform', 'translate(0,0)')
+		  			  			   .append('path')
+		  			  			   	.attr('class', 'area')
+		  			  , yLine = svg.append('g')
+		  			  			   .attr('transform', 'translate(0,0)')
+		  			  			   .append('path')
+		  			  			   	.attr('class', 'line')
 					  ;
 
-					x.range([0, width])
+					scope.$watch('foreground', update);
+					$document.on('onOverlayDataUpdate', dataUpdate);
+					scope.$on('$destroy', function $destroy() {
+						$document.off('onOverlayDataUpdate', dataUpdate);
+					})
 
-					data.push([now, scope.foreground, scope.background])
+					function dataUpdate(e) {
+						if(!session.active) {
+							data = []
+						}
+					}
 
-					wArea.attr("d", area(data))
-						 .attr('transform', null)
-						 .transition()
-						 	.duration(250)
-						 	.ease('linear')
-						 	.attr('transform', 'translate('+shift+',0)')
+					function update() {
+						var now = Date.now()
+						  , shift = x(x.domain()[1]) - x(now)
+						  , width = element[0].offsetWidth
+						  , height = element[0].offsetHeight
+						  , fg = parseFloat(scope.foreground)
+						  , bg = parseFloat(scope.background)
+						  ;
 
-					yLine.attr('d', line(data))
-						 .attr('transform', null)
-						 .transition()
-						 	.duration(250)
-						 	.ease('linear')
-						 	.attr('transform', 'translate('+shift+',0)')
+						x.range([0, width])
+						y.range([0, height])
+						area.y0(height)
 
-				 	x.domain([now - 30000, now])
-				 	y.domain([
-				 		d3.min(data, function(d) { return Math.min(d[1], d[2]) * 0.85 }),
-				 		d3.max(data, function(d) { return Math.max(d[1], d[2]) * 1.15 })
-			 		])
+						data.push([now, isNaN(fg) ? 0 : fg, isNaN(bg) ? 0 : bg])
 
-			 		data = data.filter(function(v) {
-			 			return v[0] >= (now - 32000)
-			 		})
+						wArea.attr("d", area(data))
+							 .attr('transform', null)
+							 .transition()
+							 	.duration(250)
+							 	.ease('linear')
+							 	.attr('transform', 'translate('+shift+',0)')
+
+						yLine.attr('d', line(data))
+							 .attr('transform', null)
+							 .transition()
+							 	.duration(250)
+							 	.ease('linear')
+							 	.attr('transform', 'translate('+shift+',0)')
+
+					 	x.domain([now - 30000, now])
+					 	y.domain([
+					 		d3.min(data, function(d) { return Math.min(d[1], d[2]) * 0.85 }),
+					 		d3.max(data, function(d) { return Math.max(d[1], d[2]) * 1.15 })
+				 		])
+
+				 		data = data.filter(function(v) {
+			 				return v[0] >= (now - 32000)
+			 			})
+
+
+					}
+
 				}
-
 			}
-		}
-	})
+		}])
 
 })();
