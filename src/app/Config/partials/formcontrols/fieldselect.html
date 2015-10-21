@@ -8,7 +8,7 @@
 	<div class="fields" ng-click="isExpanded = false">
 		<div class="field"
 			 ng-repeat="option in parsedOptions"
-			 ng-click="setSelected(option)"
+			 ng-click="setSelected($index)"
 			 prevent-selection
 			 >
 			 {{option.label}}</div>

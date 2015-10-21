@@ -19,6 +19,7 @@
       "angular-route/angular-route.js",
       "angular-messages/angular-messages.js",
       "angular-animate/angular-animate.js",
+      "d3/d3.js",
       "ngstorage/ngStorage.js",
       "semver/semver.browser.js"
     ],

@@ -2,6 +2,7 @@
 
 var intervalId
   , search = {}
+  , staticCombatants = {}
   ;
 
 window.start = start;
@@ -48,12 +49,14 @@ function dispatch(c) {
 	  , duration
 	  , length = c || parseInt(Math.random() * 8 + 1)
 	  , overalldps = 0
+	  , overallLast10Dps = 0
 	  ;
 
 	do {
-		combatant = getCombatant("Name"+length);
+		combatant = getCombatant("fName"+length + " lName");
 		tmpCombatants.push(combatant);
 		overalldps += parseInt(combatant.encdps)
+		overallLast10Dps += parseInt(combatant.Last10DPS)
 	} while (length-- > 1)
 
 	tmpCombatants.sort(function(a, b) {
@@ -65,11 +68,8 @@ function dispatch(c) {
 		combatants[combatant.name] = combatant;
 	})
 
-	// for(length in combatants) {
-	// 	combatants[length]["damage%"] = parseInt(combatants[length].encdps * 100 / overalldps) + "%";
-	// }
-
 	encounter.encdps = overalldps.toFixed(2);
+	encounter.Last10DPS = overallLast10Dps.toFixed(2);
 
 	// Dispatch the event.
 	document.dispatchEvent(
@@ -82,13 +82,21 @@ function dispatch(c) {
 	);
 
 	function getCombatant(name) {
+		if(!staticCombatants[name]) {
+			staticCombatants[name] = {
+				dps: Math.random() * 1000,
+				job: jobs[parseInt(Math.random() * jobs.length)],
+			}
+		}
+
 		return {
 			name: name,
 		    "duration": getDuration(),
-		    "encdps": getDPS(),
+		    "encdps": getDPS(name),
+		    "Last10DPS": getLast10DPS(name),
 		    "crithit%": getCritPct(),
 		    "misses": getMisses(),
-		    "Job": getJob(),
+		    "Job": getJob(name),
 		};
 	}
 
@@ -97,8 +105,12 @@ function dispatch(c) {
 		return duration = new Date().toTimeString().split(' ')[0];
 	}
 
-	function getDPS() {
-		return (Math.random() * 1000).toFixed(2);
+	function getDPS(name) {
+		return (staticCombatants[name].dps + Math.random() * 100).toFixed(2);
+	}
+
+	function getLast10DPS(name) {
+		return (staticCombatants[name].dps + Math.random() * 100).toFixed(2);
 	}
 
 	function getCritPct() {
@@ -109,8 +121,8 @@ function dispatch(c) {
 		return parseInt(Math.random() * 10) + "";
 	}
 
-	function getJob() {
-		return jobs[parseInt(Math.random() * jobs.length)];
+	function getJob(name) {
+		return staticCombatants[name].job;
 	}
 }
 

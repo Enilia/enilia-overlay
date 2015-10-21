@@ -246,7 +246,7 @@ angular.module('enilia.overlay.config', ['ngRoute',
 						{label:  'Name',value: 'name'},{label:  'Duration',value: 'duration'},{label:  'Duration (s)',value: 'DURATION'},
 						{label:  'Damage',value: 'damage'},
 						{label:  'Damage (%)',value: 'damagePct'},{label:  'dps',value: 'dps'},
-						{label:  'Encdps',value: 'encdps'},
+						{label:  'Encdps',value: 'encdps', canGraph:true, graphfg:'Last10DPS', graphbg:'encdps'},
 						{label:  'Hits',value: 'hits'},
 						{label:  'Crit Hits',value: 'crithits'},{label:  'Crit Hits (%)',value: 'crithitPct'},{label:  'Misses',value: 'misses'},
 						{label:  'Accuracy',value: 'tohit'},
@@ -335,14 +335,14 @@ angular.module('enilia.overlay.config', ['ngRoute',
 								label:getLabel(option) || getLabel(null, key),
 								value:getValue(option)
 							};
-						if(angular.equals(obj.value, $scope.ngModel)) $scope.selectedLabel = obj.label;
+						if(angular.equals(obj.value, getValue($scope.ngModel))) $scope.selectedLabel = obj.label;
 						parsedOptions.push(obj);
 					});
 
-					$scope.setSelected = function(option) {
-						$scope.ngModel = angular.copy(option.value);
-						$scope.selectedLabel = option.label;
-						($scope.onChange || angular.identity)(option.value);
+					$scope.setSelected = function(index) {
+						angular.copy($scope.options[index], $scope.ngModel);
+						$scope.selectedLabel = $scope.options[index].label;
+						($scope.onChange || angular.identity)($scope.ngModel);
 					};
 				}],
 		}
@@ -353,13 +353,13 @@ angular.module('enilia.overlay.config', ['ngRoute',
 			restrict:'E',
 			templateUrl:'app/Config/partials/formcontrols/checkbox.html',
 			scope: {
-				checked: '='
+				ngModel: '=',
 			},
 			controller:['$scope',
 				function checkboxController ($scope) {
 
 					$scope.click = function click () {
-						$scope.checked = !$scope.checked;
+						$scope.ngModel = !$scope.ngModel;
 					};
 
 				}],

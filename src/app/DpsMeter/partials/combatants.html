@@ -14,7 +14,13 @@
 			 }]"
 			 sort-index="$index"
 			 bestdps>
-			{{combatant[header.value]}}
+			<svg graph
+				 ng-if="header.isGraph"
+				 foreground="combatant[header.graphfg]"
+				 background="combatant[header.graphbg]"
+				 width="0"
+				 height="0"></svg>
+			<span class="value">{{combatant[header.value]}}</span>
 		</div>
 	</div>
 

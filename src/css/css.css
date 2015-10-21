@@ -99,6 +99,8 @@ a:hover {
 
 .glyphicon.checkbox {
     font-size: 1em;
+    display: inline-block;
+    margin: 0 0.4em;
 }
 
 /* Menu */
@@ -356,6 +358,10 @@ form.loginForm {
     flex: 2 1 auto;
 }
 
+.combatants .graph {
+    flex: 1 1 auto;
+}
+
 .header {
     border-bottom: 1px solid #DED7BE;
     /* Goldish */
@@ -372,6 +378,12 @@ form.loginForm {
     background-attachment: fixed, scroll;
     transition:all linear 1s;
     height:1.36em;
+    position: relative;
+}
+
+.combatant .value {
+    position: relative;
+    white-space: nowrap;
 }
 
 .combatant.misses {
@@ -396,6 +408,31 @@ form.loginForm {
     position:absolute;
     top:0;
     left:0;
+}
+
+svg {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    opacity: 0.6;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    position: absolute;
+    top:0;
+    left:0;
+}
+
+svg .line {
+    shape-rendering: auto;
+    stroke: #FFF;
+    fill: none;
+}
+
+svg .area {
+    shape-rendering: auto;
+    stroke: rgb(64, 128, 255);
+    fill: rgba(64, 128, 255, 0.5);
 }
 
 /*
@@ -503,6 +540,11 @@ fieldselect {
 
 .preset-col-label {
     flex: 1 1 auto;
+}
+
+.preset-col-graph {
+    flex: 0 1 auto;
+    margin:0 1em;
 }
 
 .preset-col-template {}
