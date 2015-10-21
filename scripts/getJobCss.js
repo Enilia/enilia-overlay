@@ -3,7 +3,7 @@ var fs = require('fs-extra-promise')
   , path = require('path')
   ;
 
-var line = ".job .%s:before { background-image:url('../images/glow/%s') }"
+var line = ".%s .job:before { background-image:url('../images/glow/%s') }"
 
 fs.readdirAsync('src/images/glow')
 .then(function(files) {

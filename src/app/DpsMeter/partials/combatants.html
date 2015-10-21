@@ -1,7 +1,7 @@
 
 <div class="combatants">
 
-	<div ng-repeat="header in headers track by $index"
+<!-- 	<div ng-repeat="header in headers track by $index"
 		 class="column"
 		 ng-class="[{job: $first}, header.value]">
 
@@ -22,7 +22,7 @@
 				 height="0"></svg>
 			<span class="value">{{combatant[header.value]}}</span>
 		</div>
-	</div>
+	</div> -->
 
 
 <!-- 	<table>
@@ -42,5 +42,40 @@
 				</td>
 			</tr>
 	</table> -->
+
+</div>
+
+<div class="combatants">
+
+	<div class="headers">
+
+		<div class="column"
+			 ng-repeat="header in headers track by $index"
+			 ng-class="[header.value, {
+		 	 	job: $first
+		 	 }]">{{header.label}}</div>
+
+ 	</div>
+
+	<div ng-repeat="combatant in combatants track by combatant.name"
+		 class="combatant"
+		 ng-class="[combatant.Job]"
+		 sort-index="$index"
+		 bestdps>
+
+		<div ng-repeat="header in headers track by $index"
+			 class="column"
+		 	 ng-class="[header.value, {
+		 	 	job: $first,
+		 	 	hasmisses: header.value === 'misses' &amp;&amp; combatant[header.value] !== '0'
+		 	 }]">
+
+			<svg graph
+				 ng-if="header.isGraph"
+				 foreground="combatant[header.graphfg]"
+				 background="combatant[header.graphbg]"></svg>
+			<span class="value">{{combatant[header.value]}}</span>
+		</div>
+	</div>
 
 </div>

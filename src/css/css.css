@@ -340,34 +340,53 @@ form.loginForm {
     font-weight: 300;
 }
 
+/* combatants2 */
+
+.combatants2 {
+    text-align: center;
+}
+
+.combatant2 {
+    display: flex;
+}
+
+.column2 {
+    flex: 1 1 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 
 /* combatants */
 
 .combatants {
-    display:flex;
-    flex-direction:row;
     text-align: center;
 }
 
 .combatants .column {
-    flex: 1 1 auto;
+    flex: 1 1 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
 }
 
 .combatants .name {
-    flex: 2 1 auto;
+    flex: 2 1 1px;
 }
 
-.combatants .graph {
-    flex: 1 1 auto;
+.combatants .encdps {
+    flex: 1.5 1 1px;
 }
 
-.header {
+.headers {
     border-bottom: 1px solid #DED7BE;
     /* Goldish */
     color:#DED7BE;
     text-shadow: -1px 0 2px #795516, 0 1px 2px #795516, 1px 0 2px #795516, 0 -1px 2px #795516;
     font-weight: 300;
+    display: flex
 }
 
 
@@ -379,26 +398,27 @@ form.loginForm {
     transition:all linear 1s;
     height:1.36em;
     position: relative;
+    display: flex;
 }
 
 .combatant .value {
     position: relative;
-    white-space: nowrap;
 }
 
-.combatant.misses {
+.combatant .hasmisses {
+    transition:all linear 1s;
     /* Redish */
     color: #DEBEBE;
     text-shadow: 0 0 2px #791616, 0 0 5px #791616, 0 0 10px #791616, 0 0 15px #791616;
     font-weight: 300;
 }
 
-.job :-webkit-any(.header, .combatant) {
+.column.job {
     padding-left:2em;
     position: relative;
 }
 
-.job .combatant:before {
+.combatant .job:before {
     background-size: 1.8em 1.8em;
     background-position: left center;
     background-repeat: no-repeat;
@@ -411,10 +431,8 @@ form.loginForm {
 }
 
 svg {
-    display: inline-block;
-    vertical-align: middle;
-    margin: 0;
-    padding: 0;
+    width:100%;
+    height:100%;
     opacity: 0.6;
     background-color: rgba(0, 0, 0, 0.5);
 
